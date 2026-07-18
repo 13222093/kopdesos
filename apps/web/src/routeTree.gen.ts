@@ -9,38 +9,168 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SimpanPinjamRouteImport } from './routes/simpan-pinjam'
+import { Route as PosRouteImport } from './routes/pos'
+import { Route as KeuanganRouteImport } from './routes/keuangan'
+import { Route as InventoriRouteImport } from './routes/inventori'
+import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AnggotaIndexRouteImport } from './routes/anggota.index'
+import { Route as AnggotaAnggotaIdRouteImport } from './routes/anggota.$anggotaId'
 
+const SimpanPinjamRoute = SimpanPinjamRouteImport.update({
+  id: '/simpan-pinjam',
+  path: '/simpan-pinjam',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PosRoute = PosRouteImport.update({
+  id: '/pos',
+  path: '/pos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KeuanganRoute = KeuanganRouteImport.update({
+  id: '/keuangan',
+  path: '/keuangan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventoriRoute = InventoriRouteImport.update({
+  id: '/inventori',
+  path: '/inventori',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InboxRoute = InboxRouteImport.update({
+  id: '/inbox',
+  path: '/inbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnggotaIndexRoute = AnggotaIndexRouteImport.update({
+  id: '/anggota/',
+  path: '/anggota/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnggotaAnggotaIdRoute = AnggotaAnggotaIdRouteImport.update({
+  id: '/anggota/$anggotaId',
+  path: '/anggota/$anggotaId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/inbox': typeof InboxRoute
+  '/inventori': typeof InventoriRoute
+  '/keuangan': typeof KeuanganRoute
+  '/pos': typeof PosRoute
+  '/simpan-pinjam': typeof SimpanPinjamRoute
+  '/anggota/$anggotaId': typeof AnggotaAnggotaIdRoute
+  '/anggota/': typeof AnggotaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/inbox': typeof InboxRoute
+  '/inventori': typeof InventoriRoute
+  '/keuangan': typeof KeuanganRoute
+  '/pos': typeof PosRoute
+  '/simpan-pinjam': typeof SimpanPinjamRoute
+  '/anggota/$anggotaId': typeof AnggotaAnggotaIdRoute
+  '/anggota': typeof AnggotaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/inbox': typeof InboxRoute
+  '/inventori': typeof InventoriRoute
+  '/keuangan': typeof KeuanganRoute
+  '/pos': typeof PosRoute
+  '/simpan-pinjam': typeof SimpanPinjamRoute
+  '/anggota/$anggotaId': typeof AnggotaAnggotaIdRoute
+  '/anggota/': typeof AnggotaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/inbox'
+    | '/inventori'
+    | '/keuangan'
+    | '/pos'
+    | '/simpan-pinjam'
+    | '/anggota/$anggotaId'
+    | '/anggota/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/inbox'
+    | '/inventori'
+    | '/keuangan'
+    | '/pos'
+    | '/simpan-pinjam'
+    | '/anggota/$anggotaId'
+    | '/anggota'
+  id:
+    | '__root__'
+    | '/'
+    | '/inbox'
+    | '/inventori'
+    | '/keuangan'
+    | '/pos'
+    | '/simpan-pinjam'
+    | '/anggota/$anggotaId'
+    | '/anggota/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  InboxRoute: typeof InboxRoute
+  InventoriRoute: typeof InventoriRoute
+  KeuanganRoute: typeof KeuanganRoute
+  PosRoute: typeof PosRoute
+  SimpanPinjamRoute: typeof SimpanPinjamRoute
+  AnggotaAnggotaIdRoute: typeof AnggotaAnggotaIdRoute
+  AnggotaIndexRoute: typeof AnggotaIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/simpan-pinjam': {
+      id: '/simpan-pinjam'
+      path: '/simpan-pinjam'
+      fullPath: '/simpan-pinjam'
+      preLoaderRoute: typeof SimpanPinjamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pos': {
+      id: '/pos'
+      path: '/pos'
+      fullPath: '/pos'
+      preLoaderRoute: typeof PosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/keuangan': {
+      id: '/keuangan'
+      path: '/keuangan'
+      fullPath: '/keuangan'
+      preLoaderRoute: typeof KeuanganRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventori': {
+      id: '/inventori'
+      path: '/inventori'
+      fullPath: '/inventori'
+      preLoaderRoute: typeof InventoriRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inbox': {
+      id: '/inbox'
+      path: '/inbox'
+      fullPath: '/inbox'
+      preLoaderRoute: typeof InboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +178,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/anggota/': {
+      id: '/anggota/'
+      path: '/anggota'
+      fullPath: '/anggota/'
+      preLoaderRoute: typeof AnggotaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anggota/$anggotaId': {
+      id: '/anggota/$anggotaId'
+      path: '/anggota/$anggotaId'
+      fullPath: '/anggota/$anggotaId'
+      preLoaderRoute: typeof AnggotaAnggotaIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  InboxRoute: InboxRoute,
+  InventoriRoute: InventoriRoute,
+  KeuanganRoute: KeuanganRoute,
+  PosRoute: PosRoute,
+  SimpanPinjamRoute: SimpanPinjamRoute,
+  AnggotaAnggotaIdRoute: AnggotaAnggotaIdRoute,
+  AnggotaIndexRoute: AnggotaIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

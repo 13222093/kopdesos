@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 
+import { PendampingAI } from "~/components/pendamping/PendampingAI";
 import { Avatar } from "~/components/ui/avatar";
 import { Input } from "~/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
@@ -107,10 +108,16 @@ function SidebarContent() {
         <NavGroup items={navUtama} />
         <NavGroup label="CRM" items={navCrm} />
         <NavGroup label="ERP" items={navErp} />
-        <NavGroup
-          label="Lainnya"
-          items={[{ to: "/", label: "Pengaturan", icon: Settings } as NavItem]}
-        />
+        <p className="px-3 pt-4 pb-1 text-[10px] font-semibold tracking-[0.14em] text-muted/70 uppercase">
+          Lainnya
+        </p>
+        <span className="flex cursor-not-allowed items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted/50">
+          <Settings className="size-4 shrink-0" />
+          Pengaturan
+          <span className="ml-auto rounded-full border border-line px-1.5 text-[9px] tracking-wide text-muted/60 uppercase">
+            segera
+          </span>
+        </span>
       </nav>
 
       <div className="border-t border-line px-4 py-3">
@@ -172,6 +179,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         <main className="min-w-0 flex-1 p-4 md:p-6">{children}</main>
       </div>
+
+      <PendampingAI />
     </div>
   );
 }
