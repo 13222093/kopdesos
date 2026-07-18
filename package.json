@@ -1,0 +1,8 @@
+{
+  "name": "kopdesos",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @kopdesos/web dev",
+    "build": "pnpm --filter @kopdesos/web build"
+  }
+}
