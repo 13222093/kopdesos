@@ -14,6 +14,14 @@ KopdesOS — CRM+ERP multi-tenant untuk Koperasi Desa Merah Putih + AI pendampin
 - Data mock: fixtures deterministik di `src/mocks/` (tanpa `Math.random()`/`Date.now()` di render path), diakses lewat TanStack Query fetcher palsu di `src/lib/api.ts`.
 - Path alias: `~/*` → `apps/web/src/*`.
 
+## Pendamping AI (backend)
+
+- Endpoint `POST /api/pendamping` — Hono app di `apps/web/src/server/app.ts`, model **Kimi K2 (Moonshot)** via Vercel AI SDK (`@ai-sdk/openai-compatible`), tool-calling maks 6 step.
+- Tools di `src/server/tools.ts` membaca **data-access layer** `src/server/data.ts` (sumber: fixtures `src/mocks/`). Saat backend Postgres dibangun, ganti HANYA `data.ts`.
+- Aturan grounding: angka WAJIB dari tools, model tidak boleh mengarang (lihat SYSTEM_PROMPT di `app.ts`).
+- Dev: `/api/*` dilayani `@hono/vite-dev-server` di dalam `pnpm dev`. Produksi: Vercel serverless via `apps/web/api/index.ts` + rewrite di `vercel.json`.
+- Env: `MOONSHOT_API_KEY` (wajib), `MOONSHOT_MODEL`, `MOONSHOT_BASE_URL` (opsional) — lihat `.env.example`. Tanpa key, panel jatuh ke mode scripted (demo tetap jalan).
+
 ## Perintah
 
 - `pnpm dev` — jalankan dev server (dari root atau `apps/web`)

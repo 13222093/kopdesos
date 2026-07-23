@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.14",
+    "@ai-sdk/react": "^4.0.37",
     "@fontsource-variable/bricolage-grotesque": "^5.2.10",
     "@fontsource-variable/public-sans": "^5.2.7",
     "@fontsource/ibm-plex-mono": "^5.2.7",
@@ -21,15 +23,19 @@
     "@tanstack/react-query": "^5.90.0",
     "@tanstack/react-router": "^1.132.0",
     "@tanstack/react-table": "^8.21.0",
+    "ai": "^7.0.34",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "hono": "^4.12.31",
     "lucide-react": "^0.545.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "recharts": "^3.2.0",
-    "tailwind-merge": "^3.3.0"
+    "tailwind-merge": "^3.3.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@hono/vite-dev-server": "^0.26.1",
     "@tailwindcss/vite": "^4.1.0",
     "@tanstack/router-plugin": "^1.132.0",
     "@types/node": "^22.15.0",

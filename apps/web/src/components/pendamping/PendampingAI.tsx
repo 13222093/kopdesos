@@ -1,18 +1,12 @@
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import { Send, Sparkles, X } from "lucide-react";
 import * as React from "react";
 
-import { Badge } from "~/components/ui/badge";
 import { cn } from "~/lib/utils";
 
-type PesanChat = { id: number; dari: "ai" | "saya"; teks: string };
-
-const sapaanAwal: PesanChat[] = [
-  {
-    id: 1,
-    dari: "ai",
-    teks: "Selamat pagi Bu Sari 🙏 Ringkasan pagi ini:\n\n• Penjualan kemarin Rp4,6 jt (naik 9% dari rata-rata Jumat)\n• Saldo kas Rp128,4 jt\n• Angsuran BRI Rp43,1 jt jatuh tempo 7 hari lagi (25 Juli)\n• 3 barang laris hampir habis — beras premium, minyak 1 L, gas LPG\n\nAda yang mau ditanyakan? Saya bisa jelaskan angka mana pun dengan bahasa sederhana.",
-  },
-];
+const SAPAAN_AWAL =
+  "Selamat pagi Bu Sari 🙏 Ringkasan pagi ini:\n\n• Penjualan kemarin Rp4,6 jt (naik 9% dari rata-rata Jumat)\n• Saldo kas Rp128,4 jt\n• Angsuran BRI Rp43,1 jt jatuh tempo 7 hari lagi (25 Juli)\n• 3 barang laris hampir habis — beras premium, minyak 1 L, gas LPG\n\nAda yang mau ditanyakan? Saya bisa jelaskan angka mana pun dengan bahasa sederhana.";
 
 const pertanyaanCepat = [
   "Berapa untung minggu ini?",
@@ -21,52 +15,81 @@ const pertanyaanCepat = [
   "Bagaimana pinjaman yang macet?",
 ];
 
-function jawab(pertanyaan: string): string {
+/** Jawaban scripted — fallback saat MOONSHOT_API_KEY belum diatur / API error */
+function jawabScripted(pertanyaan: string): string {
   const q = pertanyaan.toLowerCase();
   if (q.includes("untung") || q.includes("penjualan") || q.includes("omzet")) {
-    return "Penjualan 7 hari terakhir totalnya sekitar Rp31,4 jt. Setelah dikurangi harga beli barang, untung kotornya kira-kira Rp3,4 jt (11%).\n\nYang paling laku: beras premium, minyak goreng, dan mie instan. Kalau mau untung lebih besar, stok cabai di cold storage bisa dijual minggu ini selagi harga pasar tinggi (Rp45.000/kg).";
+    return "Penjualan 7 hari terakhir totalnya sekitar Rp31,4 jt. Setelah dikurangi harga beli barang, untung kotornya kira-kira Rp3,4 jt (11%).\n\nYang paling laku: beras premium, minyak goreng, dan mie instan.";
   }
   if (q.includes("kas") || q.includes("cicilan") || q.includes("angsuran") || q.includes("bayar")) {
-    return "Cukup, tapi harus hati-hati. Saldo kas sekarang Rp128,4 jt. Angsuran BRI tanggal 25 Juli besarnya Rp43,1 jt.\n\nSetelah bayar angsuran dan gaji, sisa kas kira-kira Rp71 jt. Saran saya: belanja stok bulan ini jangan lebih dari Rp40 jt, dan tunda pembelian yang tidak mendesak sampai tanggal 26.";
+    return "Cukup, tapi harus hati-hati. Saldo kas sekarang Rp128,4 jt. Angsuran BRI tanggal 25 Juli besarnya Rp43,1 jt.\n\nSetelah bayar angsuran dan gaji, sisa kas kira-kira Rp71 jt. Saran saya: belanja stok bulan ini jangan lebih dari Rp40 jt.";
   }
   if (q.includes("stok") || q.includes("beli") || q.includes("barang")) {
-    return "Ada 5 barang yang perlu segera dipesan:\n\n1. Beras premium — sisa 12 sak (min. 20). Akhir pekan biasanya laku 8 sak/hari\n2. Minyak goreng 1 L — sisa 8 botol\n3. Gas LPG 3 kg — sisa 6 tabung\n4. Oralit — sisa 9 sachet\n5. Bawang merah — sisa 14 kg\n\nPerkiraan biaya pesan semuanya: sekitar Rp4,2 jt. Mau saya buatkan daftar pesanan ke distributor?";
+    return "Ada beberapa barang yang perlu segera dipesan: beras premium (sisa 12 sak), minyak goreng 1 L (8 botol), gas LPG 3 kg (6 tabung), oralit (9 sachet), dan bawang merah (14 kg).\n\nPerkiraan biaya pesan semuanya sekitar Rp4,2 jt.";
   }
-  if (q.includes("macet") || q.includes("pinjaman") || q.includes("nunggak") || q.includes("piutang")) {
-    return "Dari 12 pinjaman anggota, 1 macet dan 2 perlu perhatian:\n\n• Pak Ketut Suardana — Rp4,95 jt, telat 38 hari. Saran: kunjungi langsung minggu ini, jangan hanya kirim pesan\n• Bu Kadek Dwi Anjani — telat 3 hari, biasanya bayar kok, kirim pengingat WA yang ramah\n• Pak Made Suarta — baru mulai mengangsur, telat 6 hari\n\nSisanya lancar semua. Total piutang beredar Rp83,1 jt.";
+  if (q.includes("macet") || q.includes("pinjaman") || q.includes("piutang")) {
+    return "Dari 12 pinjaman anggota, 1 macet (Pak Ketut Suardana, Rp4,95 jt, telat 38 hari) dan 2 perlu perhatian. Total piutang beredar Rp83,1 jt.\n\nSaran: kunjungi Pak Ketut langsung minggu ini, jangan hanya kirim pesan.";
   }
-  if (q.includes("rat") || q.includes("laporan") || q.includes("rapat")) {
-    return "RAT tahun buku 2026 paling lambat digelar sebelum akhir Maret 2027. Yang perlu disiapkan: LPJ pengurus, laporan keuangan SAK-EP (5 laporan), dan daftar hadir anggota.\n\nTenang, semua angkanya sudah tercatat otomatis di sistem. Menjelang tutup buku, saya bisa susun draf LPJ dan laporannya — pengurus tinggal periksa dan tanda tangan.";
-  }
-  return "Terima kasih pertanyaannya 🙏 Di versi demo ini saya baru bisa menjawab soal penjualan, kas & cicilan, stok, pinjaman anggota, dan persiapan RAT.\n\nDi versi lengkap, saya membaca seluruh data koperasi dan bisa menjawab pertanyaan apa pun — plus mengirim ringkasan tiap pagi ke WhatsApp pengurus.";
+  return "Ini mode demo (AI belum tersambung — MOONSHOT_API_KEY belum diatur). Saya baru bisa menjawab soal penjualan, kas & cicilan, stok, dan pinjaman anggota.\n\nSetelah AI tersambung, saya membaca seluruh data koperasi dan bisa menjawab pertanyaan apa pun.";
 }
+
+type PesanLokal = { id: string; dari: "ai" | "saya"; teks: string };
 
 export function PendampingAI() {
   const [buka, setBuka] = React.useState(false);
-  const [pesan, setPesan] = React.useState<PesanChat[]>(sapaanAwal);
   const [teks, setTeks] = React.useState("");
-  const [mengetik, setMengetik] = React.useState(false);
+  const [modeAi, setModeAi] = React.useState<boolean | null>(null); // null = belum dicek
+  const [pesanScripted, setPesanScripted] = React.useState<PesanLokal[]>([]);
   const ujungRef = React.useRef<HTMLDivElement>(null);
+
+  const { messages, sendMessage, status, error } = useChat({
+    transport: new DefaultChatTransport({ api: "/api/pendamping" }),
+  });
+
+  // cek sekali apakah AI tersambung
+  React.useEffect(() => {
+    if (!buka || modeAi !== null) return;
+    fetch("/api/health")
+      .then((r) => r.json())
+      .then((d) => setModeAi(Boolean(d.aiSiap)))
+      .catch(() => setModeAi(false));
+  }, [buka, modeAi]);
+
+  // kalau AI error di tengah jalan, jatuh ke mode scripted
+  React.useEffect(() => {
+    if (error) setModeAi(false);
+  }, [error]);
+
+  const sedangMengetik = status === "submitted" || status === "streaming";
 
   React.useEffect(() => {
     ujungRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [pesan, mengetik, buka]);
+  }, [messages, pesanScripted, sedangMengetik, buka]);
 
   function kirim(isi: string) {
     const bersih = isi.trim();
-    if (!bersih || mengetik) return;
+    if (!bersih || sedangMengetik) return;
     setTeks("");
-    setPesan((p) => [...p, { id: p.length + 1, dari: "saya", teks: bersih }]);
-    setMengetik(true);
-    window.setTimeout(() => {
-      setPesan((p) => [...p, { id: p.length + 1, dari: "ai", teks: jawab(bersih) }]);
-      setMengetik(false);
-    }, 900);
+    if (modeAi) {
+      sendMessage({ text: bersih });
+    } else {
+      setPesanScripted((p) => [
+        ...p,
+        { id: `${p.length}-q`, dari: "saya", teks: bersih },
+        { id: `${p.length}-a`, dari: "ai", teks: jawabScripted(bersih) },
+      ]);
+    }
+  }
+
+  function teksDariPesan(m: (typeof messages)[number]): string {
+    return m.parts
+      .filter((p): p is Extract<typeof p, { type: "text" }> => p.type === "text")
+      .map((p) => p.text)
+      .join("");
   }
 
   return (
     <>
-      {/* Tombol mengambang */}
       <button
         type="button"
         onClick={() => setBuka((b) => !b)}
@@ -80,13 +103,10 @@ export function PendampingAI() {
         <span className="absolute -top-0.5 -right-0.5 size-3 rounded-full border-2 border-white bg-hijau" />
       </button>
 
-      {/* Panel chat */}
       <div
         className={cn(
           "fixed right-5 bottom-5 z-50 flex h-[540px] max-h-[calc(100dvh-6rem)] w-[380px] max-w-[calc(100vw-2.5rem)] origin-bottom-right flex-col overflow-hidden rounded-2xl border border-line bg-card shadow-2xl transition-all",
-          buka
-            ? "scale-100 opacity-100"
-            : "pointer-events-none scale-90 opacity-0",
+          buka ? "scale-100 opacity-100" : "pointer-events-none scale-90 opacity-0",
         )}
       >
         <div className="flex items-center gap-2.5 border-b border-line bg-merah px-4 py-3 text-white">
@@ -96,7 +116,9 @@ export function PendampingAI() {
           <div className="flex-1">
             <p className="font-display text-sm font-semibold">Pendamping AI</p>
             <p className="text-[11px] text-white/80">
-              Selalu siaga · memantau semua gerai
+              {modeAi === false
+                ? "Mode demo (AI belum tersambung)"
+                : "Kimi K2 · membaca data koperasi langsung"}
             </p>
           </div>
           <button
@@ -110,7 +132,11 @@ export function PendampingAI() {
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-y-auto bg-paper p-3.5">
-          {pesan.map((p) => (
+          <div className="max-w-[85%] self-start rounded-xl rounded-tl-sm border border-line bg-card px-3 py-2 text-[13px] leading-relaxed whitespace-pre-line shadow-sm">
+            {SAPAAN_AWAL}
+          </div>
+
+          {pesanScripted.map((p) => (
             <div
               key={p.id}
               className={cn(
@@ -123,9 +149,29 @@ export function PendampingAI() {
               {p.teks}
             </div>
           ))}
-          {mengetik ? (
+
+          {messages.map((m) => {
+            const isi = teksDariPesan(m);
+            if (!isi) return null;
+            return (
+              <div
+                key={m.id}
+                className={cn(
+                  "max-w-[85%] rounded-xl px-3 py-2 text-[13px] leading-relaxed whitespace-pre-line shadow-sm",
+                  m.role === "assistant"
+                    ? "self-start rounded-tl-sm border border-line bg-card"
+                    : "self-end rounded-tr-sm bg-merah text-white",
+                )}
+              >
+                {isi}
+              </div>
+            );
+          })}
+
+          {sedangMengetik ? (
             <div className="flex items-center gap-1.5 self-start rounded-xl border border-line bg-card px-3 py-2 text-xs text-muted">
-              <Sparkles className="size-3 animate-pulse" /> sedang mengetik…
+              <Sparkles className="size-3 animate-pulse" />
+              {status === "submitted" ? "membaca data koperasi…" : "sedang mengetik…"}
             </div>
           ) : null}
           <div ref={ujungRef} />
@@ -160,7 +206,7 @@ export function PendampingAI() {
             <button
               type="submit"
               className="flex size-9 items-center justify-center rounded-lg bg-merah text-white hover:bg-merah-dark disabled:opacity-50"
-              disabled={!teks.trim() || mengetik}
+              disabled={!teks.trim() || sedangMengetik}
             >
               <Send className="size-4" />
               <span className="sr-only">Kirim</span>
