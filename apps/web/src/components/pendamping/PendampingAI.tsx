@@ -2,8 +2,51 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { Send, Sparkles, X } from "lucide-react";
 import * as React from "react";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 import { cn } from "~/lib/utils";
+
+/** Render markdown jawaban AI (bold, daftar, tabel) dengan gaya bubble */
+function IsiMarkdown({ teks }: { teks: string }) {
+  return (
+    <Markdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        p: ({ node, ...props }) => <p className="mb-1.5 last:mb-0" {...props} />,
+        strong: ({ node, ...props }) => (
+          <strong className="font-semibold" {...props} />
+        ),
+        ol: ({ node, ...props }) => (
+          <ol className="mb-1.5 list-decimal pl-4 last:mb-0" {...props} />
+        ),
+        ul: ({ node, ...props }) => (
+          <ul className="mb-1.5 list-disc pl-4 last:mb-0" {...props} />
+        ),
+        li: ({ node, ...props }) => <li className="mb-0.5" {...props} />,
+        a: ({ node, ...props }) => (
+          <a className="text-merah underline" target="_blank" rel="noreferrer" {...props} />
+        ),
+        code: ({ node, ...props }) => (
+          <code className="rounded bg-line-soft px-1 font-mono text-[12px]" {...props} />
+        ),
+        table: ({ node, ...props }) => (
+          <div className="mb-1.5 overflow-x-auto">
+            <table className="w-full border-collapse text-[12px]" {...props} />
+          </div>
+        ),
+        th: ({ node, ...props }) => (
+          <th className="border-b border-line px-1.5 py-1 text-left font-semibold" {...props} />
+        ),
+        td: ({ node, ...props }) => (
+          <td className="border-b border-line-soft px-1.5 py-1 align-top" {...props} />
+        ),
+      }}
+    >
+      {teks}
+    </Markdown>
+  );
+}
 
 const SAPAAN_AWAL =
   "Selamat pagi Bu Sari 🙏 Ringkasan pagi ini:\n\n• Penjualan kemarin Rp4,6 jt (naik 9% dari rata-rata Jumat)\n• Saldo kas Rp128,4 jt\n• Angsuran BRI Rp43,1 jt jatuh tempo 7 hari lagi (25 Juli)\n• 3 barang laris hampir habis — beras premium, minyak 1 L, gas LPG\n\nAda yang mau ditanyakan? Saya bisa jelaskan angka mana pun dengan bahasa sederhana.";
@@ -157,13 +200,13 @@ export function PendampingAI() {
               <div
                 key={m.id}
                 className={cn(
-                  "max-w-[85%] rounded-xl px-3 py-2 text-[13px] leading-relaxed whitespace-pre-line shadow-sm",
+                  "max-w-[85%] rounded-xl px-3 py-2 text-[13px] leading-relaxed shadow-sm",
                   m.role === "assistant"
                     ? "self-start rounded-tl-sm border border-line bg-card"
-                    : "self-end rounded-tr-sm bg-merah text-white",
+                    : "self-end rounded-tr-sm bg-merah whitespace-pre-line text-white",
                 )}
               >
-                {isi}
+                {m.role === "assistant" ? <IsiMarkdown teks={isi} /> : isi}
               </div>
             );
           })}
