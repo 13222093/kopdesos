@@ -131,7 +131,7 @@ export function PendampingAI() {
           </button>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-y-auto bg-paper p-3.5">
+        <div className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-y-auto bg-line-soft/60 p-3.5">
           <div className="max-w-[85%] self-start rounded-xl rounded-tl-sm border border-line bg-card px-3 py-2 text-[13px] leading-relaxed whitespace-pre-line shadow-sm">
             {SAPAAN_AWAL}
           </div>
@@ -198,7 +198,7 @@ export function PendampingAI() {
             }}
           >
             <input
-              className="h-9 flex-1 rounded-lg border border-line bg-paper px-3 text-sm placeholder:text-muted/70"
+              className="h-9 flex-1 rounded-lg border border-line bg-card px-3 text-sm placeholder:text-muted/70"
               placeholder="Tanya apa saja soal koperasi…"
               value={teks}
               onChange={(e) => setTeks(e.target.value)}

@@ -85,7 +85,7 @@ function HalamanInbox() {
             </Button>
           </div>
 
-          <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto bg-paper p-4">
+          <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto bg-line-soft/60 p-4">
             {room.pesan.map((p) => (
               <div
                 key={p.id}

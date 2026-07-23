@@ -12,8 +12,9 @@
   --font-display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, monospace;
 
-  /* Netral (skala neutral Tailwind) */
-  --color-paper: #fafafa;
+  /* Netral ala haloai: latar & kartu sama-sama putih murni,
+     pemisahan permukaan lewat border + shadow, bukan beda warna latar */
+  --color-paper: #ffffff;
   --color-card: #ffffff;
   --color-ink: #171717;
   --color-muted: #737373;
