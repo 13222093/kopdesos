@@ -28,7 +28,7 @@ export const toolsPendamping = {
         .union([z.literal(7), z.literal(30), z.literal(90)])
         .describe("Periode ke belakang dalam hari: 7, 30, atau 90"),
     }),
-    execute: async ({ hari }) => dataPenjualan(hari),
+    execute: async ({ hari }: { hari: 7 | 30 | 90 }) => dataPenjualan(hari),
   }),
 
   lihat_stok: tool({
@@ -39,7 +39,10 @@ export const toolsPendamping = {
       gerai: z.enum(["sembako", "apotek", "gudang"]).optional()
         .describe("gudang = cold storage"),
     }),
-    execute: async (input) => dataStok(input),
+    execute: async (input: {
+      filter: "semua" | "menipis" | "kedaluwarsa";
+      gerai?: "sembako" | "apotek" | "gudang";
+    }) => dataStok(input),
   }),
 
   lihat_pinjaman_anggota: tool({
@@ -48,7 +51,11 @@ export const toolsPendamping = {
     inputSchema: z.object({
       kolektibilitas: z.enum(["lancar", "perhatian", "macet"]).optional(),
     }),
-    execute: async ({ kolektibilitas }) => dataPinjamanAnggota(kolektibilitas),
+    execute: async ({
+      kolektibilitas,
+    }: {
+      kolektibilitas?: "lancar" | "perhatian" | "macet";
+    }) => dataPinjamanAnggota(kolektibilitas),
   }),
 
   lihat_pinjaman_himbara: tool({
@@ -71,7 +78,8 @@ export const toolsPendamping = {
     inputSchema: z.object({
       kata_kunci: z.string().min(2).describe("Nama, ID anggota, atau nama banjar"),
     }),
-    execute: async ({ kata_kunci }) => cariAnggota(kata_kunci),
+    execute: async ({ kata_kunci }: { kata_kunci: string }) =>
+      cariAnggota(kata_kunci),
   }),
 
   lihat_laporan_keuangan: tool({
@@ -80,6 +88,7 @@ export const toolsPendamping = {
     inputSchema: z.object({
       jenis: z.enum(["neraca", "phu", "arus_kas"]),
     }),
-    execute: async ({ jenis }) => dataLaporan(jenis),
+    execute: async ({ jenis }: { jenis: "neraca" | "phu" | "arus_kas" }) =>
+      dataLaporan(jenis),
   }),
 };
