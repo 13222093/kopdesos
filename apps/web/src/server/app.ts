@@ -10,7 +10,7 @@ import { Hono } from "hono";
 import { HARI_INI, koperasi } from "./data";
 import { toolsPendamping } from "./tools";
 
-const MODEL_DEFAULT = "kimi-k2-turbo-preview";
+const MODEL_DEFAULT = "kimi-k3";
 
 function konfigurasi() {
   return {
@@ -85,10 +85,9 @@ app.post("/pendamping", async (c) => {
   const result = streamText({
     model: moonshot.chatModel(model),
     system: SYSTEM_PROMPT,
-    messages: convertToModelMessages(messages),
+    messages: await convertToModelMessages(messages),
     tools: toolsPendamping,
     stopWhen: stepCountIs(6),
-    temperature: 0.3,
     onError: ({ error }) => {
       console.error("[pendamping] stream error:", error);
     },
