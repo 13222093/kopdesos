@@ -3,11 +3,8 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import "@fontsource-variable/bricolage-grotesque";
-import "@fontsource-variable/public-sans";
-import "@fontsource/ibm-plex-mono/400.css";
-import "@fontsource/ibm-plex-mono/500.css";
-import "@fontsource/ibm-plex-mono/600.css";
+import "@fontsource-variable/geist";
+import "@fontsource-variable/geist-mono";
 
 import { routeTree } from "./routeTree.gen";
 import "./styles/app.css";
