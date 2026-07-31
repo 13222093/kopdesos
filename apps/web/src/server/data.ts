@@ -19,7 +19,13 @@ import {
   ringkasanSimpanPinjam,
   type Kolektibilitas,
 } from "../mocks/pinjaman";
-import { daftarProduk, hampirKedaluwarsa, stokMenipis } from "../mocks/produk";
+import {
+  daftarProduk,
+  hampirKedaluwarsa,
+  prediksiStok,
+  stokMenipis,
+} from "../mocks/produk";
+import { ringkasanPpob } from "../mocks/ppob";
 import { daftarInsight } from "../mocks/insight";
 
 export { HARI_INI, koperasi };
@@ -36,6 +42,10 @@ export function ringkasanHariIni() {
     },
     piutangAnggotaBeredar: ringkasanSimpanPinjam.totalPinjamanBeredar,
     jumlahStokMenipis: daftarProduk.filter(stokMenipis).length,
+    ppob: {
+      komisiBulanIni: ringkasanPpob.komisiBulanIni,
+      jumlahTransaksiBulanIni: ringkasanPpob.jumlahTransaksiBulanIni,
+    },
     insightPeringatan: daftarInsight
       .filter((i) => i.tipe === "peringatan")
       .map((i) => i.judul),
@@ -75,20 +85,29 @@ export function dataStok(opsi: {
   if (opsi.gerai) hasil = hasil.filter((p) => p.gerai === opsi.gerai);
   if (opsi.filter === "menipis") hasil = hasil.filter(stokMenipis);
   if (opsi.filter === "kedaluwarsa") hasil = hasil.filter((p) => hampirKedaluwarsa(p));
-  return hasil.map((p) => ({
-    id: p.id,
-    nama: p.nama,
-    gerai: p.gerai,
-    stok: p.stok,
-    satuan: p.satuan,
-    stokMinimum: p.stokMinimum,
-    hargaBeli: p.hargaBeli,
-    hargaJual: p.hargaJual,
-    menipis: stokMenipis(p),
-    batch: p.batch,
-    kedaluwarsa: p.kedaluwarsa,
-    hampirKedaluwarsa: hampirKedaluwarsa(p),
-  }));
+  return hasil.map((p) => {
+    const pred = prediksiStok(p);
+    return {
+      id: p.id,
+      nama: p.nama,
+      gerai: p.gerai,
+      stok: p.stok,
+      satuan: p.satuan,
+      stokMinimum: p.stokMinimum,
+      hargaBeli: p.hargaBeli,
+      hargaJual: p.hargaJual,
+      menipis: stokMenipis(p),
+      batch: p.batch,
+      kedaluwarsa: p.kedaluwarsa,
+      hampirKedaluwarsa: hampirKedaluwarsa(p),
+      prediksi: {
+        rataTerjualPerHari: pred.lajuHarian,
+        habisDalamHari: pred.habisDalamHari,
+        saranPesanUlang: pred.saranPesan,
+        estimasiBiayaPesan: pred.estimasiBiayaPesan,
+      },
+    };
+  });
 }
 
 export function dataPinjamanAnggota(kolektibilitas?: Kolektibilitas) {

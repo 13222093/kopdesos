@@ -25,6 +25,14 @@ export const daftarInsight: Insight[] = [
     aksi: "Lihat Inventori",
   },
   {
+    id: "INS-07",
+    tipe: "peluang",
+    judul: "Rekomendasi promosi minggu ini",
+    isi: "Antasida (66 strip) dan salep kulit (21 tube) mendekati kedaluwarsa — buat bundel 'Paket Lambung' (antasida + oralit) diskon 15% dan salep diskon 20%; berpotensi menyelamatkan ±Rp438 rb nilai stok. Kentang juga menumpuk 120 kg: tawarkan harga grosir ke warung makan anggota (ada 2 pedagang bakso & sayur).",
+    waktu: "Hari ini 06.00",
+    aksi: "Lihat Inventori",
+  },
+  {
     id: "INS-03",
     tipe: "info",
     judul: "Penjualan kemarin naik 9% dari rata-rata",

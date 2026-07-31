@@ -13,6 +13,7 @@ import {
   Search,
   Settings,
   ShoppingCart,
+  Smartphone,
   Users,
 } from "lucide-react";
 import * as React from "react";
@@ -58,6 +59,7 @@ const navCrm: NavItem[] = [
 
 const navErp: NavItem[] = [
   { to: "/pos", label: "Kasir", icon: ShoppingCart },
+  { to: "/produk-digital", label: "Produk Digital", icon: Smartphone },
   { to: "/inventori", label: "Inventori", icon: Boxes },
   { to: "/simpan-pinjam", label: "Simpan Pinjam", icon: HandCoins },
   { to: "/keuangan", label: "Keuangan", icon: BookOpenText },

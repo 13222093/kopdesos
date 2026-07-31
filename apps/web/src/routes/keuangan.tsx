@@ -190,26 +190,47 @@ function HalamanKeuangan() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Saldo kas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="tnum font-mono text-2xl font-bold">
-              {formatRupiah(saldoKas)}
-            </p>
-            <p className="mt-1 text-xs text-muted">
-              Kas gerai + rekening koperasi, per hari ini
-            </p>
-            <div className="mt-4 rounded-lg border border-amber/30 bg-amber-soft p-3 text-xs leading-relaxed text-ink">
-              Setelah angsuran BNI (25 Jul) dan gaji, perkiraan sisa kas akhir
-              bulan <span className="tnum font-mono font-semibold">Rp 71 jt</span>.
-              Jaga pembelian stok tetap di bawah{" "}
-              <span className="tnum font-mono font-semibold">Rp 40 jt</span>{" "}
-              bulan ini.
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex flex-col gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Saldo kas</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="tnum font-mono text-2xl font-bold">
+                {formatRupiah(saldoKas)}
+              </p>
+              <p className="mt-1 text-xs text-muted">
+                Kas gerai + rekening koperasi, per hari ini
+              </p>
+              <div className="mt-4 rounded-lg border border-amber/30 bg-amber-soft p-3 text-xs leading-relaxed text-ink">
+                Setelah angsuran BNI (25 Jul) dan gaji, perkiraan sisa kas akhir
+                bulan <span className="tnum font-mono font-semibold">Rp 71 jt</span>.
+                Jaga pembelian stok tetap di bawah{" "}
+                <span className="tnum font-mono font-semibold">Rp 40 jt</span>{" "}
+                bulan ini.
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex-row items-center justify-between">
+              <CardTitle>Penggajian</CardTitle>
+              <Badge variant="hijau">Juli: Dibayar</Badge>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted">4 karyawan gerai · tiap tgl 15</span>
+                <span className="tnum font-mono font-semibold">
+                  {formatRupiah(6_400_000)}
+                </span>
+              </div>
+              <p className="mt-2 text-[11px] text-muted">
+                Autodebet via BNI Payroll —{" "}
+                <Badge variant="netral">Segera</Badge>
+              </p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">

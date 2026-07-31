@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SimpanPinjamRouteImport } from './routes/simpan-pinjam'
+import { Route as ProdukDigitalRouteImport } from './routes/produk-digital'
 import { Route as PosRouteImport } from './routes/pos'
 import { Route as KeuanganRouteImport } from './routes/keuangan'
 import { Route as InventoriRouteImport } from './routes/inventori'
@@ -24,6 +25,11 @@ import { Route as AnggotaAnggotaIdRouteImport } from './routes/anggota.$anggotaI
 const SimpanPinjamRoute = SimpanPinjamRouteImport.update({
   id: '/simpan-pinjam',
   path: '/simpan-pinjam',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProdukDigitalRoute = ProdukDigitalRouteImport.update({
+  id: '/produk-digital',
+  path: '/produk-digital',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PosRoute = PosRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/inventori': typeof InventoriRoute
   '/keuangan': typeof KeuanganRoute
   '/pos': typeof PosRoute
+  '/produk-digital': typeof ProdukDigitalRoute
   '/simpan-pinjam': typeof SimpanPinjamRoute
   '/anggota/$anggotaId': typeof AnggotaAnggotaIdRoute
   '/ekspor/dokumen': typeof EksporDokumenRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/inventori': typeof InventoriRoute
   '/keuangan': typeof KeuanganRoute
   '/pos': typeof PosRoute
+  '/produk-digital': typeof ProdukDigitalRoute
   '/simpan-pinjam': typeof SimpanPinjamRoute
   '/anggota/$anggotaId': typeof AnggotaAnggotaIdRoute
   '/ekspor/dokumen': typeof EksporDokumenRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/inventori': typeof InventoriRoute
   '/keuangan': typeof KeuanganRoute
   '/pos': typeof PosRoute
+  '/produk-digital': typeof ProdukDigitalRoute
   '/simpan-pinjam': typeof SimpanPinjamRoute
   '/anggota/$anggotaId': typeof AnggotaAnggotaIdRoute
   '/ekspor/dokumen': typeof EksporDokumenRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/inventori'
     | '/keuangan'
     | '/pos'
+    | '/produk-digital'
     | '/simpan-pinjam'
     | '/anggota/$anggotaId'
     | '/ekspor/dokumen'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/inventori'
     | '/keuangan'
     | '/pos'
+    | '/produk-digital'
     | '/simpan-pinjam'
     | '/anggota/$anggotaId'
     | '/ekspor/dokumen'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/inventori'
     | '/keuangan'
     | '/pos'
+    | '/produk-digital'
     | '/simpan-pinjam'
     | '/anggota/$anggotaId'
     | '/ekspor/dokumen'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   InventoriRoute: typeof InventoriRoute
   KeuanganRoute: typeof KeuanganRoute
   PosRoute: typeof PosRoute
+  ProdukDigitalRoute: typeof ProdukDigitalRoute
   SimpanPinjamRoute: typeof SimpanPinjamRoute
   AnggotaAnggotaIdRoute: typeof AnggotaAnggotaIdRoute
   EksporDokumenRoute: typeof EksporDokumenRoute
@@ -180,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/simpan-pinjam'
       fullPath: '/simpan-pinjam'
       preLoaderRoute: typeof SimpanPinjamRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/produk-digital': {
+      id: '/produk-digital'
+      path: '/produk-digital'
+      fullPath: '/produk-digital'
+      preLoaderRoute: typeof ProdukDigitalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pos': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   InventoriRoute: InventoriRoute,
   KeuanganRoute: KeuanganRoute,
   PosRoute: PosRoute,
+  ProdukDigitalRoute: ProdukDigitalRoute,
   SimpanPinjamRoute: SimpanPinjamRoute,
   AnggotaAnggotaIdRoute: AnggotaAnggotaIdRoute,
   EksporDokumenRoute: EksporDokumenRoute,

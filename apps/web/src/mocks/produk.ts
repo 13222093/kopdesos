@@ -60,6 +60,75 @@ export function stokMenipis(p: Produk): boolean {
   return p.stok < p.stokMinimum;
 }
 
+/** Rata-rata laju penjualan harian per produk (unit/hari) — dasar prediksi permintaan */
+const LAJU_JUAL_HARIAN: Record<string, number> = {
+  "SMB-001": 4, "SMB-002": 5, "SMB-003": 3, "SMB-004": 4, "SMB-005": 6,
+  "SMB-006": 3, "SMB-007": 4, "SMB-008": 28, "SMB-009": 3, "SMB-010": 5,
+  "SMB-011": 6, "SMB-012": 2, "SMB-013": 4, "SMB-014": 8, "SMB-015": 3,
+  "SMB-016": 2, "SMB-017": 5, "SMB-018": 4,
+  "APT-001": 9, "APT-002": 2, "APT-003": 3, "APT-004": 5, "APT-005": 1,
+  "APT-006": 2, "APT-007": 2, "APT-008": 12, "APT-009": 3, "APT-010": 1,
+  "APT-011": 1, "APT-012": 0.5,
+  "CLD-001": 9, "CLD-002": 6, "CLD-003": 4, "CLD-004": 5, "CLD-005": 11,
+};
+
+export type PrediksiStok = {
+  lajuHarian: number;
+  habisDalamHari: number;
+  saranPesan: number;
+  estimasiBiayaPesan: number;
+};
+
+/**
+ * Prediksi permintaan sederhana & transparan:
+ * habis = stok / laju; saran pesan = kebutuhan 7 hari + stok minimum − stok saat ini.
+ */
+export function prediksiStok(p: Produk): PrediksiStok {
+  const laju = LAJU_JUAL_HARIAN[p.id] ?? 1;
+  const habisDalamHari = Math.max(0, Math.round(p.stok / laju));
+  const saranPesan = Math.max(0, Math.ceil(laju * 7 + p.stokMinimum - p.stok));
+  return {
+    lajuHarian: laju,
+    habisDalamHari,
+    saranPesan,
+    estimasiBiayaPesan: saranPesan * p.hargaBeli,
+  };
+}
+
+// ── Pengadaan (Purchase Order) — mock ────────────────────────────
+
+export type StatusPo = "draft" | "dikirim" | "diterima";
+
+export const daftarPengadaan = [
+  {
+    id: "PO-007",
+    tanggal: "2026-07-18",
+    pemasok: "Distributor Sembako Tabanan",
+    isi: "Beras Premium 5 kg × 36 sak",
+    nilai: 2_232_000,
+    status: "draft" as StatusPo,
+    catatan: "Dibuat dari saran prediksi permintaan",
+  },
+  {
+    id: "PO-006",
+    tanggal: "2026-07-16",
+    pemasok: "Distributor Sembako Tabanan",
+    isi: "Minyak goreng 1 L × 37 btl · Gas LPG 3 kg × 23 tbg",
+    nilai: 964_100,
+    status: "dikirim" as StatusPo,
+    catatan: "Perkiraan tiba 19 Juli",
+  },
+  {
+    id: "PO-005",
+    tanggal: "2026-07-17",
+    pemasok: "Distributor Sembako Tabanan",
+    isi: "Beras Medium 5 kg × 28 sak",
+    nilai: 1_736_000,
+    status: "diterima" as StatusPo,
+    catatan: "Sudah tercatat di buku kas (KAS-115)",
+  },
+];
+
 /** Kedaluwarsa dalam ≤ hariBatas hari dari HARI_INI (2026-07-18) */
 export function hampirKedaluwarsa(p: Produk, hariBatas = 30): boolean {
   if (!p.kedaluwarsa) return false;

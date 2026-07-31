@@ -19,7 +19,7 @@ import {
 export const toolsPendamping = {
   lihat_ringkasan_hari_ini: tool({
     description:
-      "Ringkasan kondisi koperasi hari ini: penjualan hari ini & kemarin per gerai, saldo kas, angsuran bank terdekat, piutang, jumlah stok menipis, dan peringatan penting.",
+      "Ringkasan kondisi koperasi hari ini: penjualan hari ini & kemarin per gerai, saldo kas, angsuran bank terdekat, piutang, jumlah stok menipis, komisi PPOB/produk digital bulan berjalan, dan peringatan penting.",
     inputSchema: z.object({}),
     execute: async () => ringkasanHariIni(),
   }),

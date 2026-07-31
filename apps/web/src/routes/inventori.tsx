@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
-import { Card } from "~/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "~/components/ui/sheet";
 import {
   Table,
@@ -17,10 +17,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { formatRupiah, formatTanggal } from "~/lib/format";
 import {
+  daftarPengadaan,
   daftarProduk,
   hampirKedaluwarsa,
+  prediksiStok,
   stokMenipis,
   type Produk,
+  type StatusPo,
 } from "~/mocks/produk";
 
 export const Route = createFileRoute("/inventori")({
@@ -52,6 +55,7 @@ function TabelProduk({
             <TableHead className="text-right">Harga Beli</TableHead>
             <TableHead className="text-right">Harga Jual</TableHead>
             <TableHead className="text-right">Stok</TableHead>
+            <TableHead className="text-right">Perkiraan Habis</TableHead>
             {adaKedaluwarsa ? <TableHead>Batch / Kedaluwarsa</TableHead> : null}
             <TableHead>Status</TableHead>
           </TableRow>
@@ -78,6 +82,16 @@ function TabelProduk({
               <TableCell className="tnum text-right font-mono">
                 {p.stok}{" "}
                 <span className="text-[11px] text-muted">{p.satuan}</span>
+              </TableCell>
+              <TableCell
+                className={
+                  "tnum text-right font-mono " +
+                  (prediksiStok(p).habisDalamHari < 7
+                    ? "font-semibold text-merah"
+                    : "text-muted")
+                }
+              >
+                ± {prediksiStok(p).habisDalamHari} hari
               </TableCell>
               {adaKedaluwarsa ? (
                 <TableCell className="text-muted">
@@ -153,6 +167,68 @@ function HalamanInventori() {
         </TabsContent>
       </Tabs>
 
+      <Card>
+        <CardHeader className="flex-row items-center justify-between">
+          <div>
+            <CardTitle>Pengadaan (Purchase Order)</CardTitle>
+            <p className="mt-0.5 text-xs text-muted">
+              PO bisa dibuat otomatis dari saran prediksi permintaan
+            </p>
+          </div>
+          <Button size="sm" variant="secondary">
+            Buat PO dari saran
+          </Button>
+        </CardHeader>
+        <CardContent className="px-0 pb-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="pl-5">PO</TableHead>
+                <TableHead>Pemasok</TableHead>
+                <TableHead>Isi</TableHead>
+                <TableHead className="text-right">Nilai</TableHead>
+                <TableHead className="pr-5">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {daftarPengadaan.map((po) => (
+                <TableRow key={po.id}>
+                  <TableCell className="pl-5">
+                    <span className="tnum block font-mono text-xs font-semibold">{po.id}</span>
+                    <span className="text-[11px] text-muted">
+                      {formatTanggal(po.tanggal)}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-muted">{po.pemasok}</TableCell>
+                  <TableCell>
+                    <span className="block text-[13px]">{po.isi}</span>
+                    <span className="text-[11px] text-muted">{po.catatan}</span>
+                  </TableCell>
+                  <TableCell className="tnum text-right font-mono">
+                    {formatRupiah(po.nilai)}
+                  </TableCell>
+                  <TableCell className="pr-5">
+                    <Badge
+                      variant={
+                        ({ draft: "netral", dikirim: "amber", diterima: "hijau" } as const)[
+                          po.status as StatusPo
+                        ]
+                      }
+                    >
+                      {po.status === "draft"
+                        ? "Draft"
+                        : po.status === "dikirim"
+                          ? "Dikirim"
+                          : "Diterima"}
+                    </Badge>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
       <Sheet open={terpilih !== null} onOpenChange={(o) => !o && setTerpilih(null)}>
         <SheetContent>
           {terpilih ? (
@@ -199,6 +275,49 @@ function HalamanInventori() {
                     </p>
                   </div>
                 </div>
+
+                {(() => {
+                  const pred = prediksiStok(terpilih);
+                  return (
+                    <div className="mt-3 rounded-lg border border-hijau/30 bg-hijau-soft p-3">
+                      <p className="text-[10px] font-semibold tracking-wide text-hijau uppercase">
+                        Prediksi permintaan
+                      </p>
+                      <p className="mt-1 text-xs leading-relaxed">
+                        Rata-rata terjual{" "}
+                        <span className="tnum font-mono font-semibold">
+                          {pred.lajuHarian} {terpilih.satuan}/hari
+                        </span>{" "}
+                        — stok diperkirakan habis dalam{" "}
+                        <span
+                          className={
+                            "tnum font-mono font-semibold " +
+                            (pred.habisDalamHari < 7 ? "text-merah" : "")
+                          }
+                        >
+                          ± {pred.habisDalamHari} hari
+                        </span>
+                        .
+                      </p>
+                      {pred.saranPesan > 0 ? (
+                        <p className="mt-1 text-xs leading-relaxed">
+                          Saran pesan ulang:{" "}
+                          <span className="tnum font-mono font-semibold">
+                            {pred.saranPesan} {terpilih.satuan}
+                          </span>{" "}
+                          (kebutuhan 7 hari + stok aman) ·{" "}
+                          <span className="tnum font-mono">
+                            {formatRupiah(pred.estimasiBiayaPesan)}
+                          </span>
+                        </p>
+                      ) : (
+                        <p className="mt-1 text-xs text-muted">
+                          Stok masih cukup — belum perlu pesan ulang.
+                        </p>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {terpilih.batch ? (
                   <div className="mt-3 rounded-lg border border-line bg-paper p-3 text-xs">
