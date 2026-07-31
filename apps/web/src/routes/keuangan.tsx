@@ -28,6 +28,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { LogoBni } from "~/components/bni/LogoBni";
 import { WARNA_KAS } from "~/lib/chart";
 import { formatRupiah, formatRupiahSingkat, formatTanggal } from "~/lib/format";
 import { entriKas, proyeksiKas, saldoKas } from "~/mocks/kas";
@@ -53,7 +54,7 @@ function TooltipProyeksi({ active, payload, label }: any) {
           <p key={p.dataKey} className="flex items-center gap-1.5">
             <span className="size-2 rounded-full" style={{ background: p.fill }} />
             <span className="text-muted">
-              {p.dataKey === "netKas" ? "Sisa kas operasional" : "Angsuran BRI"}
+              {p.dataKey === "netKas" ? "Sisa kas operasional" : "Angsuran BNI"}
             </span>
             <span className="tnum ml-auto pl-4 font-mono">
               {formatRupiahSingkat(p.value)}
@@ -76,7 +77,7 @@ const isiLaporan: Record<JenisLaporan, { judul: string; baris: [string, number][
       ["Persediaan barang dagang", 64_750_000],
       ["Aset tetap (bangunan gerai & peralatan)", 2_410_000_000],
       ["TOTAL ASET", 2_686_270_000],
-      ["Utang bank Himbara (BRI)", 2_547_000_000],
+      ["Utang bank Himbara (BNI)", 2_547_000_000],
       ["Simpanan anggota (kewajiban)", 48_350_000],
       ["Ekuitas (simpanan pokok/wajib + cadangan)", 90_920_000],
       ["TOTAL KEWAJIBAN + EKUITAS", 2_686_270_000],
@@ -129,7 +130,9 @@ function HalamanKeuangan() {
               <Landmark className="size-4" />
             </span>
             <div>
-              <CardTitle>Monitor Pinjaman Himbara — {pinjamanHimbara.bank}</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                Monitor Pinjaman Himbara — {pinjamanHimbara.bank} <LogoBni />
+              </CardTitle>
               <p className="mt-0.5 text-xs text-muted">
                 Plafon {formatRupiahSingkat(pinjamanHimbara.plafon)} · dicairkan{" "}
                 {formatRupiahSingkat(pinjamanHimbara.dicairkan)} · bunga 6%/tahun ·
@@ -199,7 +202,7 @@ function HalamanKeuangan() {
               Kas gerai + rekening koperasi, per hari ini
             </p>
             <div className="mt-4 rounded-lg border border-amber/30 bg-amber-soft p-3 text-xs leading-relaxed text-ink">
-              Setelah angsuran BRI (25 Jul) dan gaji, perkiraan sisa kas akhir
+              Setelah angsuran BNI (25 Jul) dan gaji, perkiraan sisa kas akhir
               bulan <span className="tnum font-mono font-semibold">Rp 71 jt</span>.
               Jaga pembelian stok tetap di bawah{" "}
               <span className="tnum font-mono font-semibold">Rp 40 jt</span>{" "}
@@ -215,7 +218,7 @@ function HalamanKeuangan() {
             <div>
               <CardTitle>Proyeksi kas vs angsuran (4 bulan)</CardTitle>
               <p className="mt-0.5 text-xs text-muted">
-                Sisa kas operasional per bulan dibandingkan kewajiban angsuran BRI
+                Sisa kas operasional per bulan dibandingkan kewajiban angsuran BNI
               </p>
             </div>
             <div className="flex items-center gap-3 text-[11px] text-muted">
@@ -225,7 +228,7 @@ function HalamanKeuangan() {
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="size-2 rounded-full" style={{ background: WARNA_KAS.angsuran }} />
-                Angsuran BRI
+                Angsuran BNI
               </span>
             </div>
           </CardHeader>
@@ -294,6 +297,42 @@ function HalamanKeuangan() {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader className="flex-row items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              Layanan BNI untuk Koperasi <LogoBni />
+            </CardTitle>
+            <p className="mt-0.5 text-xs text-muted">
+              Seluruh arus uang platform berjalan di rel perbankan BNI — mockup
+              Spark Arc 2026
+            </p>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
+            {[
+              { nama: "Giro BNI Koperasi", ket: "Rekening operasional — dana koperasi & simpanan anggota", status: "Terhubung", varian: "hijau" as const },
+              { nama: "QRIS BNI Merchant", ket: "Pembayaran non-tunai di kasir, dana masuk ke giro", status: "Aktif di Kasir", varian: "hijau" as const },
+              { nama: "BNI Virtual Account", ket: "Tagihan angsuran & setoran simpanan anggota otomatis", status: "Segera", varian: "netral" as const },
+              { nama: "Agen46", ket: "Koperasi jadi agen layanan bank untuk warga desa", status: "Segera", varian: "netral" as const },
+            ].map((l) => (
+              <div key={l.nama} className="rounded-lg border border-line p-3">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-[13px] font-semibold">{l.nama}</p>
+                  <Badge variant={l.varian}>{l.status}</Badge>
+                </div>
+                <p className="mt-1 text-[11px] leading-relaxed text-muted">{l.ket}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-2.5 text-[11px] text-muted/80">
+            BNI telah bekerja sama dengan Kemenkop untuk digitalisasi koperasi
+            (Agen46, cash management, EDC/QRIS).
+          </p>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

@@ -49,7 +49,7 @@ export const kesiapanEkspor = {
       skor: 68,
       status: "baik",
       ringkasan:
-        "Kas Rp128,4 jt sehat, tapi masih terbebani angsuran BRI Rp43,1 jt/bulan.",
+        "Kas Rp128,4 jt sehat, tapi masih terbebani angsuran BNI Rp43,1 jt/bulan.",
       caraMenaikkan:
         "Ekspor perdana sebaiknya lewat skema pembiayaan LPEI, bukan kas sendiri.",
     },
@@ -93,6 +93,17 @@ export const kesiapanEkspor = {
 };
 
 export const programPendampingan = [
+  {
+    nama: "BNI Xpora",
+    penyelenggara: "Bank Negara Indonesia",
+    deskripsi:
+      "Solusi UMKM Go Productive, Go Digital, Go Global: pendampingan ekspor, kurasi buyer, pembiayaan, dan trade finance. Kantor layanan a.l. di Denpasar — terdekat dari Tabanan.",
+    syaratUtama: "UMKM/koperasi dengan produk potensial ekspor + rekening BNI",
+    status: "Belum terdaftar",
+    url: "https://xpora.bni.co.id",
+    cocokKarena:
+      "Koperasi sudah memakai rel perbankan BNI (giro, pinjaman Himbara) — satu pintu dari pembiayaan sampai buyer.",
+  },
   {
     nama: "Desa Devisa",
     penyelenggara: "LPEI / Indonesia Eximbank",
@@ -259,7 +270,7 @@ export const legalitasDasar = [
   { nama: "Badan hukum koperasi", keterangan: "AHU-0012345.AH.01.29.2025", status: "siap" as StatusDokumen },
   { nama: "NIB (Nomor Induk Berusaha)", keterangan: "Terbit via OSS — berlaku juga sebagai identitas eksportir", status: "siap" as StatusDokumen },
   { nama: "Akses kepabeanan", keterangan: "Aktivasi di OSS/portal Bea Cukai — syarat membuat PEB", status: "belum" as StatusDokumen },
-  { nama: "Rekening devisa koperasi", keterangan: "Untuk menerima pembayaran valas (bisa via bank Himbara)", status: "belum" as StatusDokumen },
+  { nama: "Rekening devisa koperasi", keterangan: "Untuk menerima pembayaran valas — buka di BNI (mendukung valas & terhubung BNI Xpora)", status: "belum" as StatusDokumen },
 ];
 
 export const dokumenPerPengiriman = [

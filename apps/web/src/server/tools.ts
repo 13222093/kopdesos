@@ -7,6 +7,7 @@ import {
   dataKas,
   dataKesiapanEkspor,
   dataLaporan,
+  dataLayananBni,
   dataPeluangEkspor,
   dataPenjualan,
   dataPinjamanAnggota,
@@ -63,7 +64,7 @@ export const toolsPendamping = {
 
   lihat_pinjaman_himbara: tool({
     description:
-      "Pinjaman modal koperasi dari bank Himbara (BRI): plafon, sisa pokok, angsuran bulanan, jatuh tempo berikutnya, progres tenor, riwayat angsuran.",
+      "Pinjaman modal koperasi dari bank Himbara (BNI): plafon, sisa pokok, angsuran bulanan, jatuh tempo berikutnya, progres tenor, riwayat angsuran.",
     inputSchema: z.object({}),
     execute: async () => dataPinjamanHimbara(),
   }),
@@ -83,6 +84,13 @@ export const toolsPendamping = {
     }),
     execute: async ({ kata_kunci }: { kata_kunci: string }) =>
       cariAnggota(kata_kunci),
+  }),
+
+  lihat_layanan_bni: tool({
+    description:
+      "Layanan perbankan BNI yang relevan untuk koperasi (giro/CASA, QRIS merchant, virtual account, Agen46, Xpora, pembiayaan Himbara): penjelasan sederhana, manfaat, dan status di platform.",
+    inputSchema: z.object({}),
+    execute: async () => dataLayananBni(),
   }),
 
   lihat_kesiapan_ekspor: tool({

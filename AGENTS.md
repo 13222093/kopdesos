@@ -28,6 +28,10 @@ KopdesOS — CRM+ERP multi-tenant untuk Koperasi Desa Merah Putih + AI pendampin
 - AI tools: `lihat_kesiapan_ekspor`, `lihat_peluang_ekspor`, `lihat_dokumen_ekspor(komoditas?, negara?)`.
 - **Aturan keras**: regulasi ekspor = data kurasi deterministik. AI dilarang menjawab regulasi di luar data (guard di SYSTEM_PROMPT aturan #8 + `catatanPenting` di `dataDokumenEkspor`). Kombinasi baru → tambah ke `checklistKombinasi`, jangan andalkan pengetahuan model.
 
+## Konteks BNI (Spark Arc 2026)
+
+Produk ini didemokan untuk challenge BNI Ventures (CASA + fee-based income). Bank di semua mock = **BNI** (bukan BRI). Elemen BNI: logo `public/bni.svg` via `components/bni/LogoBni.tsx` (monitor pinjaman, kartu Layanan BNI di /keuangan, dialog QRIS POS, kartu Xpora di ekspor, footer sidebar), data kurasi `src/mocks/bni.ts` + tool AI `lihat_layanan_bni`. Framing jujur: status "Segera" = mockup, bukan klaim kemitraan. AI dilarang mengarang produk/tarif bank di luar data kurasi.
+
 ## Perintah
 
 - `pnpm dev` — jalankan dev server (dari root atau `apps/web`)

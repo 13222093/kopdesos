@@ -141,7 +141,7 @@ function Beranda() {
           arah="turun"
         />
         <KpiCard
-          label="Angsuran BRI berikutnya"
+          label="Angsuran BNI berikutnya"
           nilai={formatRupiahSingkat(pinjamanHimbara.angsuranBulanan)}
           keterangan="Jatuh tempo 25 Jul — 7 hari lagi"
           arah="netral"
@@ -281,7 +281,7 @@ function Beranda() {
           <CardContent className="flex flex-col divide-y divide-line-soft">
             <div className="flex items-center gap-3 py-2.5">
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium">Angsuran pinjaman BRI ke-3</p>
+                <p className="text-sm font-medium">Angsuran pinjaman BNI ke-3</p>
                 <p className="text-[11px] text-muted">Jatuh tempo 25 Juli 2026</p>
               </div>
               <p className="tnum font-mono text-sm font-semibold">

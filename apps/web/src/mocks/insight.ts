@@ -12,7 +12,7 @@ export const daftarInsight: Insight[] = [
     id: "INS-01",
     tipe: "peringatan",
     judul: "Angsuran bank jatuh tempo 7 hari lagi",
-    isi: "Angsuran BRI Rp43,1 juta jatuh tempo 25 Juli. Saldo kas sekarang Rp128,4 juta — cukup, tapi setelah bayar gaji dan belanja stok minggu depan sisanya tipis. Saran saya: tunda pembelian stok yang tidak mendesak sampai tanggal 26.",
+    isi: "Angsuran BNI Rp43,1 juta jatuh tempo 25 Juli. Saldo kas sekarang Rp128,4 juta — cukup, tapi setelah bayar gaji dan belanja stok minggu depan sisanya tipis. Saran saya: tunda pembelian stok yang tidak mendesak sampai tanggal 26.",
     waktu: "Hari ini 06.00",
     aksi: "Lihat Keuangan",
   },

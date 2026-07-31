@@ -3,7 +3,7 @@
 // Pencairan 15 Okt 2025; angsuran penuh mulai 25 Mei 2026.
 
 export const pinjamanHimbara = {
-  bank: "BRI (Himbara)",
+  bank: "BNI (Himbara)",
   plafon: 3_000_000_000,
   dicairkan: 2_600_000_000,
   tanggalPencairan: "2025-10-15",

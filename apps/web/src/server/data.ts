@@ -166,6 +166,18 @@ export function cariAnggota(kataKunci: string) {
   }));
 }
 
+// ── Layanan BNI ──────────────────────────────────────────────────
+
+import { layananBni } from "../mocks/bni";
+
+export function dataLayananBni() {
+  return {
+    layanan: layananBni,
+    catatan:
+      "Data kurasi mockup Spark Arc 2026 — status menunjukkan kondisi di platform, bukan klaim kemitraan resmi. Jangan mengarang produk/tarif bank di luar daftar ini.",
+  };
+}
+
 // ── Ekspor ───────────────────────────────────────────────────────
 
 import {

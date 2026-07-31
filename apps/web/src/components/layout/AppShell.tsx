@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import * as React from "react";
 
+import { LogoBni } from "~/components/bni/LogoBni";
 import { PendampingAI } from "~/components/pendamping/PendampingAI";
 import { Avatar } from "~/components/ui/avatar";
 import { Input } from "~/components/ui/input";
@@ -130,8 +131,11 @@ function SidebarContent() {
         </span>
       </nav>
 
-      <div className="border-t border-line px-4 py-3">
-        <div className="flex items-center gap-2.5">
+      <div className="border-t border-line px-4 py-2.5">
+        <div className="flex items-center gap-1.5 pb-2 text-[10px] whitespace-nowrap text-muted/70">
+          Perbankan oleh <LogoBni className="h-3" /> · Spark Arc 2026
+        </div>
+        <div className="flex items-center gap-2.5 border-t border-line-soft pt-2.5">
           <Avatar nama={koperasi.manajer} />
           <div className="min-w-0">
             <p className="truncate text-sm font-medium">{koperasi.manajer}</p>

@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Banknote, Minus, Plus, QrCode, Search, ShoppingCart, Trash2 } from "lucide-react";
 import * as React from "react";
 
+import { LogoBni } from "~/components/bni/LogoBni";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
@@ -193,8 +194,14 @@ function HalamanPos() {
 
       <Dialog open={dialogBayar !== null} onOpenChange={(o) => !o && setDialogBayar(null)}>
         <DialogContent>
-          <DialogTitle>
-            {dialogBayar === "qris" ? "Pembayaran QRIS" : "Pembayaran tunai"}
+          <DialogTitle className="flex items-center gap-2">
+            {dialogBayar === "qris" ? (
+              <>
+                Pembayaran QRIS <LogoBni className="h-4" />
+              </>
+            ) : (
+              "Pembayaran tunai"
+            )}
           </DialogTitle>
           <DialogDescription>
             Total belanja{" "}
@@ -208,7 +215,8 @@ function HalamanPos() {
                 <QrCode className="size-16 text-muted/50" />
               </div>
               <p className="text-center text-xs text-muted">
-                Minta pembeli memindai kode QRIS koperasi.
+                Minta pembeli memindai kode QRIS BNI Merchant koperasi — dana
+                langsung masuk ke Giro BNI.
                 <br />
                 (Mockup — pembayaran tidak diproses)
               </p>
