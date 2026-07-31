@@ -166,6 +166,53 @@ export function cariAnggota(kataKunci: string) {
   }));
 }
 
+// ── Ekspor ───────────────────────────────────────────────────────
+
+import {
+  checklistKombinasi,
+  DISCLAIMER_EKSPOR,
+  dokumenPerPengiriman,
+  kesiapanEkspor,
+  legalitasDasar,
+  peluangEkspor,
+  programPendampingan,
+} from "../mocks/ekspor";
+
+export function dataKesiapanEkspor() {
+  return {
+    ...kesiapanEkspor,
+    programPendampingan,
+    disclaimer: DISCLAIMER_EKSPOR,
+  };
+}
+
+export function dataPeluangEkspor() {
+  return { peluang: peluangEkspor, disclaimer: DISCLAIMER_EKSPOR };
+}
+
+export function dataDokumenEkspor(komoditas?: string, negara?: string) {
+  const cocok = checklistKombinasi.filter((k) => {
+    const kCocok = komoditas
+      ? k.komoditas.toLowerCase().includes(komoditas.toLowerCase())
+      : true;
+    const nCocok = negara
+      ? k.negara.toLowerCase().includes(negara.toLowerCase())
+      : true;
+    return kCocok && nCocok;
+  });
+  return {
+    legalitasDasar,
+    dokumenPerPengiriman,
+    kombinasiTerkurasi: checklistKombinasi.map((k) => `${k.komoditas} → ${k.negara}`),
+    hasil: cocok,
+    catatanPenting:
+      cocok.length === 0
+        ? "Kombinasi produk/negara ini BELUM ada di data kurasi. Jangan mengarang persyaratan — arahkan pengguna ke InaExport atau Dinas Perdagangan."
+        : undefined,
+    disclaimer: DISCLAIMER_EKSPOR,
+  };
+}
+
 /** angka laporan mock — sama dengan halaman /keuangan */
 export function dataLaporan(jenis: "neraca" | "phu" | "arus_kas") {
   const laporan = {

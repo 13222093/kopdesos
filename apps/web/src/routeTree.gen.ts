@@ -15,7 +15,10 @@ import { Route as KeuanganRouteImport } from './routes/keuangan'
 import { Route as InventoriRouteImport } from './routes/inventori'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EksporIndexRouteImport } from './routes/ekspor.index'
 import { Route as AnggotaIndexRouteImport } from './routes/anggota.index'
+import { Route as EksporPeluangRouteImport } from './routes/ekspor.peluang'
+import { Route as EksporDokumenRouteImport } from './routes/ekspor.dokumen'
 import { Route as AnggotaAnggotaIdRouteImport } from './routes/anggota.$anggotaId'
 
 const SimpanPinjamRoute = SimpanPinjamRouteImport.update({
@@ -48,9 +51,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EksporIndexRoute = EksporIndexRouteImport.update({
+  id: '/ekspor/',
+  path: '/ekspor/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnggotaIndexRoute = AnggotaIndexRouteImport.update({
   id: '/anggota/',
   path: '/anggota/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EksporPeluangRoute = EksporPeluangRouteImport.update({
+  id: '/ekspor/peluang',
+  path: '/ekspor/peluang',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EksporDokumenRoute = EksporDokumenRouteImport.update({
+  id: '/ekspor/dokumen',
+  path: '/ekspor/dokumen',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnggotaAnggotaIdRoute = AnggotaAnggotaIdRouteImport.update({
@@ -67,7 +85,10 @@ export interface FileRoutesByFullPath {
   '/pos': typeof PosRoute
   '/simpan-pinjam': typeof SimpanPinjamRoute
   '/anggota/$anggotaId': typeof AnggotaAnggotaIdRoute
+  '/ekspor/dokumen': typeof EksporDokumenRoute
+  '/ekspor/peluang': typeof EksporPeluangRoute
   '/anggota/': typeof AnggotaIndexRoute
+  '/ekspor/': typeof EksporIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -77,7 +98,10 @@ export interface FileRoutesByTo {
   '/pos': typeof PosRoute
   '/simpan-pinjam': typeof SimpanPinjamRoute
   '/anggota/$anggotaId': typeof AnggotaAnggotaIdRoute
+  '/ekspor/dokumen': typeof EksporDokumenRoute
+  '/ekspor/peluang': typeof EksporPeluangRoute
   '/anggota': typeof AnggotaIndexRoute
+  '/ekspor': typeof EksporIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -88,7 +112,10 @@ export interface FileRoutesById {
   '/pos': typeof PosRoute
   '/simpan-pinjam': typeof SimpanPinjamRoute
   '/anggota/$anggotaId': typeof AnggotaAnggotaIdRoute
+  '/ekspor/dokumen': typeof EksporDokumenRoute
+  '/ekspor/peluang': typeof EksporPeluangRoute
   '/anggota/': typeof AnggotaIndexRoute
+  '/ekspor/': typeof EksporIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -100,7 +127,10 @@ export interface FileRouteTypes {
     | '/pos'
     | '/simpan-pinjam'
     | '/anggota/$anggotaId'
+    | '/ekspor/dokumen'
+    | '/ekspor/peluang'
     | '/anggota/'
+    | '/ekspor/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -110,7 +140,10 @@ export interface FileRouteTypes {
     | '/pos'
     | '/simpan-pinjam'
     | '/anggota/$anggotaId'
+    | '/ekspor/dokumen'
+    | '/ekspor/peluang'
     | '/anggota'
+    | '/ekspor'
   id:
     | '__root__'
     | '/'
@@ -120,7 +153,10 @@ export interface FileRouteTypes {
     | '/pos'
     | '/simpan-pinjam'
     | '/anggota/$anggotaId'
+    | '/ekspor/dokumen'
+    | '/ekspor/peluang'
     | '/anggota/'
+    | '/ekspor/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -131,7 +167,10 @@ export interface RootRouteChildren {
   PosRoute: typeof PosRoute
   SimpanPinjamRoute: typeof SimpanPinjamRoute
   AnggotaAnggotaIdRoute: typeof AnggotaAnggotaIdRoute
+  EksporDokumenRoute: typeof EksporDokumenRoute
+  EksporPeluangRoute: typeof EksporPeluangRoute
   AnggotaIndexRoute: typeof AnggotaIndexRoute
+  EksporIndexRoute: typeof EksporIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -178,11 +217,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ekspor/': {
+      id: '/ekspor/'
+      path: '/ekspor'
+      fullPath: '/ekspor/'
+      preLoaderRoute: typeof EksporIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/anggota/': {
       id: '/anggota/'
       path: '/anggota'
       fullPath: '/anggota/'
       preLoaderRoute: typeof AnggotaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ekspor/peluang': {
+      id: '/ekspor/peluang'
+      path: '/ekspor/peluang'
+      fullPath: '/ekspor/peluang'
+      preLoaderRoute: typeof EksporPeluangRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ekspor/dokumen': {
+      id: '/ekspor/dokumen'
+      path: '/ekspor/dokumen'
+      fullPath: '/ekspor/dokumen'
+      preLoaderRoute: typeof EksporDokumenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/anggota/$anggotaId': {
@@ -203,7 +263,10 @@ const rootRouteChildren: RootRouteChildren = {
   PosRoute: PosRoute,
   SimpanPinjamRoute: SimpanPinjamRoute,
   AnggotaAnggotaIdRoute: AnggotaAnggotaIdRoute,
+  EksporDokumenRoute: EksporDokumenRoute,
+  EksporPeluangRoute: EksporPeluangRoute,
   AnggotaIndexRoute: AnggotaIndexRoute,
+  EksporIndexRoute: EksporIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

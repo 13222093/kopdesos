@@ -54,7 +54,7 @@ const SAPAAN_AWAL =
 const pertanyaanCepat = [
   "Berapa untung minggu ini?",
   "Kas cukup untuk bayar cicilan?",
-  "Stok apa yang harus dibeli?",
+  "Apakah koperasi kita siap ekspor?",
   "Bagaimana pinjaman yang macet?",
 ];
 

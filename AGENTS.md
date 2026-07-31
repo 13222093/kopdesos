@@ -22,6 +22,12 @@ KopdesOS — CRM+ERP multi-tenant untuk Koperasi Desa Merah Putih + AI pendampin
 - Dev: `/api/*` dilayani `@hono/vite-dev-server` di dalam `pnpm dev`. Produksi: Vercel serverless via `apps/web/api/index.ts` + rewrite di `vercel.json`.
 - Env: `MOONSHOT_API_KEY` (wajib), `MOONSHOT_MODEL`, `MOONSHOT_BASE_URL` (opsional) — lihat `.env.example`. Tanpa key, panel jatuh ke mode scripted (demo tetap jalan).
 
+## Fitur Ekspor
+
+- 3 halaman: `/ekspor` (skor kesiapan 5 dimensi), `/ekspor/peluang` (komoditas × negara, termasuk potensi RENDAH yang jujur), `/ekspor/dokumen` (checklist bertingkat + picker produk×negara). Data kurasi di `src/mocks/ekspor.ts`.
+- AI tools: `lihat_kesiapan_ekspor`, `lihat_peluang_ekspor`, `lihat_dokumen_ekspor(komoditas?, negara?)`.
+- **Aturan keras**: regulasi ekspor = data kurasi deterministik. AI dilarang menjawab regulasi di luar data (guard di SYSTEM_PROMPT aturan #8 + `catatanPenting` di `dataDokumenEkspor`). Kombinasi baru → tambah ke `checklistKombinasi`, jangan andalkan pengetahuan model.
+
 ## Perintah
 
 - `pnpm dev` — jalankan dev server (dari root atau `apps/web`)

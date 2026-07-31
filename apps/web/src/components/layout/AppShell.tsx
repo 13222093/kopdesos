@@ -3,10 +3,13 @@ import {
   Bell,
   BookOpenText,
   Boxes,
+  FileCheck2,
+  Globe2,
   HandCoins,
   LayoutDashboard,
   Menu,
   MessageCircle,
+  Rocket,
   Search,
   Settings,
   ShoppingCart,
@@ -59,13 +62,19 @@ const navErp: NavItem[] = [
   { to: "/keuangan", label: "Keuangan", icon: BookOpenText },
 ];
 
+const navEkspor: NavItem[] = [
+  { to: "/ekspor", label: "Kesiapan Ekspor", icon: Rocket },
+  { to: "/ekspor/peluang", label: "Peluang Pasar", icon: Globe2 },
+  { to: "/ekspor/dokumen", label: "Dokumen & Regulasi", icon: FileCheck2 },
+];
+
 function NavLink({ item }: { item: NavItem }) {
   const Icon = item.icon;
   return (
     <Link
       to={item.to}
       className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-line-soft hover:text-ink"
-      activeOptions={{ exact: item.to === "/" }}
+      activeOptions={{ exact: item.to === "/" || item.to === "/ekspor" }}
       activeProps={{
         className: "bg-merah-soft text-merah font-medium hover:bg-merah-soft hover:text-merah",
       }}
@@ -108,6 +117,7 @@ function SidebarContent() {
         <NavGroup items={navUtama} />
         <NavGroup label="CRM" items={navCrm} />
         <NavGroup label="ERP" items={navErp} />
+        <NavGroup label="Ekspor" items={navEkspor} />
         <p className="px-3 pt-4 pb-1 text-[10px] font-semibold tracking-[0.14em] text-muted/70 uppercase">
           Lainnya
         </p>

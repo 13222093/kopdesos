@@ -3,8 +3,11 @@ import { z } from "zod";
 
 import {
   cariAnggota,
+  dataDokumenEkspor,
   dataKas,
+  dataKesiapanEkspor,
   dataLaporan,
+  dataPeluangEkspor,
   dataPenjualan,
   dataPinjamanAnggota,
   dataPinjamanHimbara,
@@ -80,6 +83,31 @@ export const toolsPendamping = {
     }),
     execute: async ({ kata_kunci }: { kata_kunci: string }) =>
       cariAnggota(kata_kunci),
+  }),
+
+  lihat_kesiapan_ekspor: tool({
+    description:
+      "Skor kesiapan ekspor koperasi (0-100) dengan 5 dimensi penilaian, langkah berikutnya untuk menaikkan skor, dan daftar program pendampingan pemerintah (Desa Devisa, Desa BISA Ekspor, UMKM BISA Ekspor).",
+    inputSchema: z.object({}),
+    execute: async () => dataKesiapanEkspor(),
+  }),
+
+  lihat_peluang_ekspor: tool({
+    description:
+      "Peluang ekspor per komoditas koperasi: potensi (tinggi/menengah/rendah) beserta alasannya, negara tujuan dengan harga indikatif vs harga lokal, volume tersedia, dan syarat kunci. Termasuk komoditas yang SEBAIKNYA TIDAK diekspor dulu.",
+    inputSchema: z.object({}),
+    execute: async () => dataPeluangEkspor(),
+  }),
+
+  lihat_dokumen_ekspor: tool({
+    description:
+      "Checklist dokumen & regulasi ekspor: legalitas dasar koperasi, dokumen per pengiriman, dan persyaratan spesifik per kombinasi produk × negara yang sudah dikurasi (kopi→Jepang/AS, ikan beku→Jepang, kentang→Singapura). Bisa difilter.",
+    inputSchema: z.object({
+      komoditas: z.string().optional().describe("mis. kopi, ikan, kentang"),
+      negara: z.string().optional().describe("mis. Jepang, Amerika, Singapura"),
+    }),
+    execute: async ({ komoditas, negara }: { komoditas?: string; negara?: string }) =>
+      dataDokumenEkspor(komoditas, negara),
   }),
 
   lihat_laporan_keuangan: tool({
