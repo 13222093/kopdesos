@@ -4,7 +4,7 @@ Panduan untuk AI coding agent di repo ini.
 
 ## Konteks project
 
-KopdesOS — CRM+ERP multi-tenant untuk Koperasi Desa Merah Putih + AI pendamping proaktif. Arsitektur mengikuti pola codebase HaloAI (TanStack + Postgres/PostgREST + entity-EAV + config-driven UI). Saat ini baru **frontend mockup**: seluruh data dari `apps/web/src/mocks/`, tidak ada backend.
+KopPilot (sebelumnya KopdesOS) — CRM+ERP multi-tenant untuk Koperasi Desa Merah Putih + AI pendamping proaktif. Arsitektur mengikuti pola codebase HaloAI (TanStack + Postgres/PostgREST + entity-EAV + config-driven UI). Saat ini baru **frontend mockup**: seluruh data dari `apps/web/src/mocks/`, tidak ada backend.
 
 ## Konvensi
 

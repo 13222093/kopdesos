@@ -110,7 +110,9 @@ function SidebarContent() {
           <p className="truncate font-display text-sm font-semibold leading-tight">
             {koperasi.namaPendek}
           </p>
-          <p className="text-[11px] text-muted">KopdesOS</p>
+          <p className="text-[11px] text-muted">
+            <span className="font-semibold">Kop</span>Pilot
+          </p>
         </div>
       </div>
 

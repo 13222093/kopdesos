@@ -1,4 +1,6 @@
-# KopdesOS
+# KopPilot
+
+> AI-Powered Cooperative Operating System — Tim 3 Pilar, Spark Arc 2026 (BNI Ventures)
 
 Platform CRM + ERP untuk pengelolaan Koperasi Desa/Kelurahan Merah Putih, dengan AI pendamping proaktif yang memberi insight dalam bahasa sederhana.
 
