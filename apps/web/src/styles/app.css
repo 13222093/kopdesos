@@ -1,17 +1,23 @@
 @import "tailwindcss";
 
+/*
+  Tema "Sage" — latar hijau muda ke-abu-abuan (sage mist), kalem & agraris:
+  hijau = uang, tumbuh, desa. Font Geist + Geist Mono (selaras haloai).
+  Identitas KopdesOS: merah bendera sebagai satu-satunya aksen + angka uang
+  selalu mono tabular. Nama token dipertahankan (paper/ink/line/dst).
+*/
 @theme {
-  --font-sans: "Public Sans Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bricolage Grotesque Variable", "Public Sans Variable", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, monospace;
 
-  /* Kertas & tinta — nuansa buku kas */
-  --color-paper: #faf7f1;
+  /* Sage: hijau muda berkabut, bukan mint terang */
+  --color-paper: #edf3ea;
   --color-card: #ffffff;
-  --color-ink: #221d17;
-  --color-muted: #6f675b;
-  --color-line: #e7e0d4;
-  --color-line-soft: #f1ece2;
+  --color-ink: #1c211c;
+  --color-muted: #65706a;
+  --color-line: #dbe4d7;
+  --color-line-soft: #e7eee3;
 
   /* Merah bendera — dipakai hemat */
   --color-merah: #b7202e;
@@ -20,17 +26,34 @@
 
   /* Semantik keuangan */
   --color-hijau: #1e7a46;
-  --color-hijau-soft: #e9f4ec;
+  --color-hijau-soft: #e6f3ea;
   --color-amber: #b45309;
-  --color-amber-soft: #fcf3e6;
+  --color-amber-soft: #fdf4e5;
 
   /* WhatsApp */
   --color-wa: #128c7e;
-  --color-wa-bubble: #e7f8e4;
+  --color-wa-bubble: #e2f6e6;
+
+  /* Tangga radius ala haloai */
+  --radius-xl: 10px;
+  --radius-2xl: 12px;
+
+  /* Shadow flat halus */
+  --shadow-2xs: 0 1px 0 0 rgb(28 33 28 / 0.05);
+  --shadow-xs: 0 1px 2px 0 rgb(28 33 28 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(28 33 28 / 0.1), 0 1px 2px -1px rgb(28 33 28 / 0.1);
 }
 
 body {
   @apply bg-paper text-ink font-sans antialiased;
+  line-height: 1.35;
+}
+
+/* Tracking optik: judul dikencangkan, teks kecil dibiarkan */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
 }
 
 /* Angka ala buku besar: selalu tabular */
@@ -39,8 +62,9 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-merah);
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #4a554c;
+  border-radius: 6px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -53,5 +77,5 @@ body {
 }
 
 ::selection {
-  background: var(--color-merah-soft);
+  background: #d9e7d5;
 }
