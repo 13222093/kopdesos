@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SimpanPinjamRouteImport } from './routes/simpan-pinjam'
 import { Route as ProdukDigitalRouteImport } from './routes/produk-digital'
 import { Route as PosRouteImport } from './routes/pos'
+import { Route as PendampingRouteImport } from './routes/pendamping'
 import { Route as KeuanganRouteImport } from './routes/keuangan'
 import { Route as InventoriRouteImport } from './routes/inventori'
 import { Route as InboxRouteImport } from './routes/inbox'
@@ -35,6 +36,11 @@ const ProdukDigitalRoute = ProdukDigitalRouteImport.update({
 const PosRoute = PosRouteImport.update({
   id: '/pos',
   path: '/pos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PendampingRoute = PendampingRouteImport.update({
+  id: '/pendamping',
+  path: '/pendamping',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KeuanganRoute = KeuanganRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/inbox': typeof InboxRoute
   '/inventori': typeof InventoriRoute
   '/keuangan': typeof KeuanganRoute
+  '/pendamping': typeof PendampingRoute
   '/pos': typeof PosRoute
   '/produk-digital': typeof ProdukDigitalRoute
   '/simpan-pinjam': typeof SimpanPinjamRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/inbox': typeof InboxRoute
   '/inventori': typeof InventoriRoute
   '/keuangan': typeof KeuanganRoute
+  '/pendamping': typeof PendampingRoute
   '/pos': typeof PosRoute
   '/produk-digital': typeof ProdukDigitalRoute
   '/simpan-pinjam': typeof SimpanPinjamRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/inbox': typeof InboxRoute
   '/inventori': typeof InventoriRoute
   '/keuangan': typeof KeuanganRoute
+  '/pendamping': typeof PendampingRoute
   '/pos': typeof PosRoute
   '/produk-digital': typeof ProdukDigitalRoute
   '/simpan-pinjam': typeof SimpanPinjamRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/inventori'
     | '/keuangan'
+    | '/pendamping'
     | '/pos'
     | '/produk-digital'
     | '/simpan-pinjam'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/inventori'
     | '/keuangan'
+    | '/pendamping'
     | '/pos'
     | '/produk-digital'
     | '/simpan-pinjam'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/inventori'
     | '/keuangan'
+    | '/pendamping'
     | '/pos'
     | '/produk-digital'
     | '/simpan-pinjam'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   InboxRoute: typeof InboxRoute
   InventoriRoute: typeof InventoriRoute
   KeuanganRoute: typeof KeuanganRoute
+  PendampingRoute: typeof PendampingRoute
   PosRoute: typeof PosRoute
   ProdukDigitalRoute: typeof ProdukDigitalRoute
   SimpanPinjamRoute: typeof SimpanPinjamRoute
@@ -207,6 +220,13 @@ declare module '@tanstack/react-router' {
       path: '/pos'
       fullPath: '/pos'
       preLoaderRoute: typeof PosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pendamping': {
+      id: '/pendamping'
+      path: '/pendamping'
+      fullPath: '/pendamping'
+      preLoaderRoute: typeof PendampingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/keuangan': {
@@ -280,6 +300,7 @@ const rootRouteChildren: RootRouteChildren = {
   InboxRoute: InboxRoute,
   InventoriRoute: InventoriRoute,
   KeuanganRoute: KeuanganRoute,
+  PendampingRoute: PendampingRoute,
   PosRoute: PosRoute,
   ProdukDigitalRoute: ProdukDigitalRoute,
   SimpanPinjamRoute: SimpanPinjamRoute,

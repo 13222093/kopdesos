@@ -14,6 +14,7 @@ import {
   Settings,
   ShoppingCart,
   Smartphone,
+  Sparkles,
   Users,
 } from "lucide-react";
 import * as React from "react";
@@ -50,6 +51,7 @@ type NavItem = {
 
 const navUtama: NavItem[] = [
   { to: "/", label: "Beranda", icon: LayoutDashboard },
+  { to: "/pendamping", label: "Pendamping AI", icon: Sparkles },
 ];
 
 const navCrm: NavItem[] = [
