@@ -95,7 +95,7 @@ export const toolsPendamping = {
 
   lihat_kesiapan_ekspor: tool({
     description:
-      "Skor kesiapan ekspor koperasi (0-100) dengan 5 dimensi penilaian, langkah berikutnya untuk menaikkan skor, dan daftar program pendampingan pemerintah (Desa Devisa, Desa BISA Ekspor, UMKM BISA Ekspor).",
+      "Skor kesiapan ekspor koperasi (0-100) dengan 5 dimensi penilaian, langkah berikutnya untuk menaikkan skor, dan daftar 4 program pendampingan (BNI Xpora, Desa Devisa LPEI, Desa BISA Ekspor, UMKM BISA Ekspor).",
     inputSchema: z.object({}),
     execute: async () => dataKesiapanEkspor(),
   }),

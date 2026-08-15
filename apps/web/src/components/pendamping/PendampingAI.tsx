@@ -100,7 +100,7 @@ export function PendampingAI() {
             <p className="text-[11px] text-white/80">
               {modeAi === false
                 ? "Mode demo (AI belum tersambung)"
-                : "Kimi K2 · membaca data koperasi langsung"}
+                : "Membaca data koperasi langsung"}
             </p>
           </div>
           <button

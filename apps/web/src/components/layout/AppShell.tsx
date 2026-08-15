@@ -1,4 +1,4 @@
-import { Link, type LinkProps } from "@tanstack/react-router";
+import { Link, useNavigate, type LinkProps } from "@tanstack/react-router";
 import {
   Bell,
   BookOpenText,
@@ -11,10 +11,10 @@ import {
   MessageCircle,
   Rocket,
   Search,
-  Settings,
   ShoppingCart,
   Smartphone,
   Sparkles,
+  User,
   Users,
 } from "lucide-react";
 import * as React from "react";
@@ -25,6 +25,7 @@ import { Avatar } from "~/components/ui/avatar";
 import { Input } from "~/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { formatTanggal } from "~/lib/format";
+import { daftarAnggota } from "~/mocks/anggota";
 import { HARI_INI, koperasi } from "~/mocks/koperasi";
 import { cn } from "~/lib/utils";
 
@@ -43,34 +44,56 @@ function Emblem({ className }: { className?: string }) {
   );
 }
 
+type Peran = "manajer" | "kasir" | "anggota";
+
+const infoPeran: Record<Peran, { nama: string; label: string }> = {
+  manajer: { nama: koperasi.manajer, label: "Manajer KDMP" },
+  kasir: { nama: koperasi.kasir, label: "Kasir" },
+  anggota: { nama: daftarAnggota[0].nama, label: "Anggota" },
+};
+
 type NavItem = {
   to: LinkProps["to"];
+  params?: LinkProps["params"];
   label: string;
   icon: React.ComponentType<{ className?: string }>;
 };
 
 const navUtama: NavItem[] = [
   { to: "/", label: "Beranda", icon: LayoutDashboard },
-  { to: "/pendamping", label: "Pendamping AI", icon: Sparkles },
 ];
 
-const navCrm: NavItem[] = [
-  { to: "/anggota", label: "Keanggotaan", icon: Users },
+const navPendamping: NavItem[] = [
+  { to: "/pendamping", label: "Chat Pendamping", icon: Sparkles },
   { to: "/inbox", label: "Inbox WhatsApp", icon: MessageCircle },
 ];
 
-const navErp: NavItem[] = [
+const navOperasi: NavItem[] = [
   { to: "/pos", label: "Kasir", icon: ShoppingCart },
+  { to: "/inventori", label: "Inventori & Pengadaan", icon: Boxes },
   { to: "/produk-digital", label: "Produk Digital", icon: Smartphone },
-  { to: "/inventori", label: "Inventori", icon: Boxes },
+];
+
+const navKeuangan: NavItem[] = [
+  { to: "/keuangan", label: "Keuangan & Laporan", icon: BookOpenText },
   { to: "/simpan-pinjam", label: "Simpan Pinjam", icon: HandCoins },
-  { to: "/keuangan", label: "Keuangan", icon: BookOpenText },
+  { to: "/anggota", label: "Keanggotaan", icon: Users },
 ];
 
 const navEkspor: NavItem[] = [
-  { to: "/ekspor", label: "Kesiapan Ekspor", icon: Rocket },
+  { to: "/ekspor", label: "Kesiapan", icon: Rocket },
   { to: "/ekspor/peluang", label: "Peluang Pasar", icon: Globe2 },
   { to: "/ekspor/dokumen", label: "Dokumen & Regulasi", icon: FileCheck2 },
+];
+
+const navAnggota: NavItem[] = [
+  {
+    to: "/anggota/$anggotaId",
+    params: { anggotaId: daftarAnggota[0].id },
+    label: "Profil Saya",
+    icon: User,
+  },
+  { to: "/pendamping", label: "Chat Pendamping", icon: Sparkles },
 ];
 
 function NavLink({ item }: { item: NavItem }) {
@@ -78,6 +101,7 @@ function NavLink({ item }: { item: NavItem }) {
   return (
     <Link
       to={item.to}
+      params={item.params}
       className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-line-soft hover:text-ink"
       activeOptions={{ exact: item.to === "/" || item.to === "/ekspor" }}
       activeProps={{
@@ -99,13 +123,14 @@ function NavGroup({ label, items }: { label?: string; items: NavItem[] }) {
         </p>
       ) : null}
       {items.map((item) => (
-        <NavLink key={item.to as string} item={item} />
+        <NavLink key={`${item.to as string}-${item.label}`} item={item} />
       ))}
     </div>
   );
 }
 
-function SidebarContent() {
+function SidebarContent({ peran }: { peran: Peran }) {
+  const identitas = infoPeran[peran];
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-3 border-b border-line px-4 py-4">
@@ -121,20 +146,21 @@ function SidebarContent() {
       </div>
 
       <nav className="flex-1 overflow-y-auto px-2 py-2">
-        <NavGroup items={navUtama} />
-        <NavGroup label="CRM" items={navCrm} />
-        <NavGroup label="ERP" items={navErp} />
-        <NavGroup label="Ekspor" items={navEkspor} />
-        <p className="px-3 pt-4 pb-1 text-[10px] font-semibold tracking-[0.14em] text-muted/70 uppercase">
-          Lainnya
-        </p>
-        <span className="flex cursor-not-allowed items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted/50">
-          <Settings className="size-4 shrink-0" />
-          Pengaturan
-          <span className="ml-auto rounded-full border border-line px-1.5 text-[9px] tracking-wide text-muted/60 uppercase">
-            segera
-          </span>
-        </span>
+        {peran === "anggota" ? (
+          <NavGroup items={navAnggota} />
+        ) : (
+          <>
+            <NavGroup items={navUtama} />
+            <NavGroup label="Pendamping AI" items={navPendamping} />
+            <NavGroup label="Copilot Operasi" items={navOperasi} />
+            {peran === "manajer" ? (
+              <>
+                <NavGroup label="Copilot Keuangan" items={navKeuangan} />
+                <NavGroup label="Copilot Ekspor" items={navEkspor} />
+              </>
+            ) : null}
+          </>
+        )}
       </nav>
 
       <div className="border-t border-line px-4 py-2.5">
@@ -142,10 +168,10 @@ function SidebarContent() {
           Perbankan oleh <LogoBni className="h-3" /> · Spark Arc 2026
         </div>
         <div className="flex items-center gap-2.5 border-t border-line-soft pt-2.5">
-          <Avatar nama={koperasi.manajer} />
+          <Avatar nama={identitas.nama} />
           <div className="min-w-0">
-            <p className="truncate text-sm font-medium">{koperasi.manajer}</p>
-            <p className="text-[11px] text-muted">Manajer KDMP</p>
+            <p className="truncate text-sm font-medium">{identitas.nama}</p>
+            <p className="text-[11px] text-muted">{identitas.label}</p>
           </div>
         </div>
       </div>
@@ -154,10 +180,28 @@ function SidebarContent() {
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
+  const [peran, setPeran] = React.useState<Peran>("manajer");
+  const identitas = infoPeran[peran];
+
+  function gantiPeran(baru: Peran) {
+    setPeran(baru);
+    if (baru === "manajer") {
+      navigate({ to: "/" });
+    } else if (baru === "kasir") {
+      navigate({ to: "/pos" });
+    } else {
+      navigate({
+        to: "/anggota/$anggotaId",
+        params: { anggotaId: daftarAnggota[0].id },
+      });
+    }
+  }
+
   return (
     <div className="flex min-h-dvh">
       <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 border-r border-line bg-card lg:block">
-        <SidebarContent />
+        <SidebarContent peran={peran} />
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
@@ -168,7 +212,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <span className="sr-only">Buka menu</span>
             </SheetTrigger>
             <SheetContent className="left-0 right-auto w-72 max-w-[80vw] border-r border-l-0 p-0">
-              <SidebarContent />
+              <SidebarContent peran={peran} />
             </SheetContent>
           </Sheet>
 
@@ -185,6 +229,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <p className="hidden text-xs text-muted sm:block">
               {formatTanggal(HARI_INI)}
             </p>
+            <select
+              value={peran}
+              onChange={(e) => gantiPeran(e.target.value as Peran)}
+              className="h-9 rounded-lg border border-line bg-card px-2.5 text-xs font-medium text-ink"
+              aria-label="Pilih peran"
+            >
+              <option value="manajer">Manajer Koperasi</option>
+              <option value="kasir">Kasir</option>
+              <option value="anggota">Anggota</option>
+            </select>
             <button
               type="button"
               className="relative rounded-lg p-2 text-muted hover:bg-line-soft"
@@ -193,7 +247,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-merah" />
               <span className="sr-only">Notifikasi</span>
             </button>
-            <Avatar nama={koperasi.manajer} />
+            <Avatar nama={identitas.nama} />
           </div>
         </header>
 

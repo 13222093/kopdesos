@@ -70,7 +70,7 @@ function HalamanPendamping() {
   }
 
   return (
-    <div className="mx-auto flex h-[calc(100dvh-7.5rem)] max-w-3xl flex-col gap-3">
+    <div className="mx-auto flex h-[calc(100dvh-7.5rem)] max-w-6xl flex-col gap-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
           <span className="flex size-9 items-center justify-center rounded-full bg-merah text-white">
@@ -86,7 +86,7 @@ function HalamanPendamping() {
         {modeAi === false ? (
           <Badge variant="netral">Mode demo</Badge>
         ) : (
-          <Badge variant="hijau">● Kimi K2 tersambung</Badge>
+          <Badge variant="hijau">● AI tersambung</Badge>
         )}
       </div>
 

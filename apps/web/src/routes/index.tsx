@@ -17,10 +17,11 @@ import { LABEL_GERAI, WARNA_GERAI } from "~/lib/chart";
 import {
   formatRupiah,
   formatRupiahSingkat,
+  formatTanggal,
   formatTanggalPendek,
 } from "~/lib/format";
 import { daftarInsight } from "~/mocks/insight";
-import { koperasi } from "~/mocks/koperasi";
+import { HARI_INI, koperasi } from "~/mocks/koperasi";
 import {
   penjualan90Hari,
   penjualanHariIni,
@@ -117,7 +118,7 @@ function Beranda() {
           Selamat pagi, Bu {koperasi.manajer.split(" ")[0]} 👋
         </h1>
         <p className="mt-0.5 text-sm text-muted">
-          Ringkasan {koperasi.nama} — Sabtu, 18 Juli 2026
+          Ringkasan {koperasi.nama} — {formatTanggal(HARI_INI)}
         </p>
       </div>
 

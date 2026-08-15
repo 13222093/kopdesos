@@ -22,6 +22,7 @@ export const koperasi = {
     ketua: "I Nyoman Artha (Kepala Desa, ex-officio)",
   },
   manajer: "Sari Wulandari",
+  kasir: "Ni Luh Sri Antari",
   gerai: [
     { id: "sembako", nama: "Gerai Sembako", aktif: true },
     { id: "apotek", nama: "Apotek Desa", aktif: true },
