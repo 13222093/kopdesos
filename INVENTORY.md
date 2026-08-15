@@ -6,7 +6,7 @@ Perubahan putaran UI/UX (ringkas):
 - Komponen baru: `components/pendamping/TanyaAI.tsx` (tombol AI kontekstual → `/pendamping?q=`, auto-kirim sekali), `components/ekspor/NavEkspor.tsx` (segmented control 3 langkah, Link + activeProps), `components/ekspor/GaugeSkor.tsx` (gauge SVG setengah lingkaran).
 - `routes/pendamping.tsx` (190 baris): `validateSearch` param `q`; auto-send sekali dengan guard `useRef`, lalu URL dibersihkan (`navigate replace`).
 - `routes/ekspor.index.tsx` (151): gauge + dimensi/langkah/program memakai `<details>` accordion; link silang diganti `NavEkspor`.
-- `routes/ekspor.peluang.tsx` (171): `BarHarga` (bar lokal vs ekspor, parsing `angkaHarga`), alasan & syaratKunci dalam `<details>`; `TanyaAI` per komoditas.
+- `routes/ekspor.peluang.tsx` (±300): `BarHarga` (bar lokal vs ekspor, parsing `angkaHarga`), alasan & syaratKunci dalam `<details>`; `TanyaAI` per komoditas; layout 2 kolom dengan `PanelPasar` (kurs valas, implikasi, sparkline arabika dunia via Recharts `LineChart`, daftar `kabarPasar` + badge dampak, badge "N kabar" di kartu komoditas). Data dari `mocks/pasar.ts` (baru); juga masuk `dataPeluangEkspor()`.
 - `routes/ekspor.dokumen.tsx` (152): link silang diganti `NavEkspor`.
 - `routes/index.tsx` (339): strip "Tahap koperasi" (`tahapKoperasi` di `mocks/koperasi.ts`, chips Rintisan→Berkembang→Siap Ekspor) di atas KPI; `InsightCard` mode `ringkas` kini `<details>` 1 baris.
 - `routes/inventori.tsx` (379): kolom `TanyaAI` per baris + bar mini stok di kolom Stok.

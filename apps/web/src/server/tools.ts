@@ -102,7 +102,7 @@ export const toolsPendamping = {
 
   lihat_peluang_ekspor: tool({
     description:
-      "Peluang ekspor per komoditas koperasi: potensi (tinggi/menengah/rendah) beserta alasannya, negara tujuan dengan harga indikatif vs harga lokal, volume tersedia, dan syarat kunci. Termasuk komoditas yang SEBAIKNYA TIDAK diekspor dulu.",
+      "Peluang ekspor per komoditas koperasi: potensi (tinggi/menengah/rendah) beserta alasannya, negara tujuan dengan harga indikatif vs harga lokal, volume tersedia, dan syarat kunci. Termasuk komoditas yang SEBAIKNYA TIDAK diekspor dulu, plus data pasar terkurasi: kurs valas (USD/JPY/SGD ke IDR), tren harga kopi dunia 12 bulan, dan kabar pasar terkini.",
     inputSchema: z.object({}),
     execute: async () => dataPeluangEkspor(),
   }),

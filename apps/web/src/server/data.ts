@@ -208,6 +208,13 @@ import {
   peluangEkspor,
   programPendampingan,
 } from "../mocks/ekspor";
+import {
+  DISCLAIMER_PASAR,
+  implikasiKurs,
+  kabarPasar,
+  kursValas,
+  trenKopiDunia,
+} from "../mocks/pasar";
 
 export function dataKesiapanEkspor() {
   return {
@@ -218,7 +225,17 @@ export function dataKesiapanEkspor() {
 }
 
 export function dataPeluangEkspor() {
-  return { peluang: peluangEkspor, disclaimer: DISCLAIMER_EKSPOR };
+  return {
+    peluang: peluangEkspor,
+    pasar: {
+      kurs: kursValas,
+      implikasiKurs,
+      trenKopiDunia,
+      kabarPasar,
+      catatan: DISCLAIMER_PASAR,
+    },
+    disclaimer: DISCLAIMER_EKSPOR,
+  };
 }
 
 export function dataDokumenEkspor(komoditas?: string, negara?: string) {
