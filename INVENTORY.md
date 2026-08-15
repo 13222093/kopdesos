@@ -1,45 +1,53 @@
 # INVENTORY.md
 
-Read-only inventory of `apps/web/src`. Facts only. Generated 1 Agustus 2026 dari commit `eff35fb`. Semua identifier ditulis apa adanya (konvensi bahasa Indonesia).
+Read-only inventory of `apps/web/src`. Facts only. Generated 1 Agustus 2026 dari commit `eff35fb`; diperbarui setelah implementasi SPEC_FOKUS §1/§2/§4. Semua identifier ditulis apa adanya (konvensi bahasa Indonesia).
 
 ---
 
-## 1. AppShell.tsx — struktur sidebar (188 baris)
+## 1. AppShell.tsx — struktur sidebar (236 baris)
+
+Sidebar difilter oleh state `peran` (`Peran = "manajer" | "kasir" | "anggota"`, awal `"manajer"`). Struktur penuh (peran `manajer`):
 
 ```
-SidebarContent
+SidebarContent({ peran })
 ├── Header
 │   ├── <Emblem/>                        (dua strip: merah atas, putih bawah)
 │   ├── koperasi.namaPendek              ("Kopdes Sukamaju")
 │   └── "KopPilot"                       (Kop tebal, Pilot regular)
 ├── nav (tanpa label grup)               — navUtama
-│   ├── Beranda            → /            icon: LayoutDashboard
-│   └── Pendamping AI      → /pendamping  icon: Sparkles
-├── "CRM"                                — navCrm
-│   ├── Keanggotaan        → /anggota     icon: Users
-│   └── Inbox WhatsApp     → /inbox       icon: MessageCircle
-├── "ERP"                                — navErp
-│   ├── Kasir              → /pos             icon: ShoppingCart
-│   ├── Produk Digital     → /produk-digital  icon: Smartphone
-│   ├── Inventori          → /inventori       icon: Boxes
-│   ├── Simpan Pinjam      → /simpan-pinjam   icon: HandCoins
-│   └── Keuangan           → /keuangan        icon: BookOpenText
-├── "Ekspor"                             — navEkspor
-│   ├── Kesiapan Ekspor    → /ekspor          icon: Rocket
-│   ├── Peluang Pasar      → /ekspor/peluang  icon: Globe2
-│   └── Dokumen & Regulasi → /ekspor/dokumen  icon: FileCheck2
-├── "Lainnya"
-│   └── Pengaturan         (bukan NavItem; <span> nonaktif, icon: Settings,
-│                           pill "segera", cursor-not-allowed)
+│   └── Beranda                → /                LayoutDashboard
+├── "PENDAMPING AI"                      — navPendamping
+│   ├── Chat Pendamping        → /pendamping      Sparkles
+│   └── Inbox WhatsApp         → /inbox           MessageCircle
+├── "COPILOT OPERASI"                    — navOperasi
+│   ├── Kasir                  → /pos             ShoppingCart
+│   ├── Inventori & Pengadaan  → /inventori       Boxes
+│   └── Produk Digital         → /produk-digital  Smartphone
+├── "COPILOT KEUANGAN"                   — navKeuangan
+│   ├── Keuangan & Laporan     → /keuangan        BookOpenText
+│   ├── Simpan Pinjam          → /simpan-pinjam   HandCoins
+│   └── Keanggotaan            → /anggota         Users
+├── "COPILOT EKSPOR"                     — navEkspor
+│   ├── Kesiapan               → /ekspor          Rocket
+│   ├── Peluang Pasar          → /ekspor/peluang  Globe2
+│   └── Dokumen & Regulasi     → /ekspor/dokumen  FileCheck2
 └── Footer
     ├── "Perbankan oleh <LogoBni/> · Spark Arc 2026"
-    └── <Avatar koperasi.manajer/> + "Sari Wulandari" / "Manajer KDMP"
+    └── <Avatar infoPeran[peran].nama/> + nama + label peran
 ```
 
+Filter per peran:
+- `manajer`: semua grup di atas (12 item)
+- `kasir`: Beranda + PENDAMPING AI + COPILOT OPERASI (6 item)
+- `anggota`: `navAnggota` saja — Profil Saya → `/anggota/$anggotaId` (`params` dari `daftarAnggota[0].id`, icon `User`) + Chat Pendamping → `/pendamping` (Sparkles)
+
 Perilaku terkait:
-- `NavLink` memakai `activeOptions={{ exact: item.to === "/" || item.to === "/ekspor" }}`.
-- `SidebarContent` dirender dua kali: `<aside>` (≥lg) dan di dalam `Sheet` mobile (trigger hamburger `Menu` di topbar).
-- Topbar: `Input` pencarian `readOnly` (placeholder "Cari anggota, produk, transaksi…"), tanggal `formatTanggal(HARI_INI)`, tombol lonceng `Bell` dengan titik merah statis, `Avatar`.
+- `NavLink` memakai `activeOptions={{ exact: item.to === "/" || item.to === "/ekspor" }}`; `NavItem` punya field opsional `params`.
+- Pemilih peran: `<select>` di topbar (kiri tombol `Bell`), opsi `Manajer Koperasi` / `Kasir` / `Anggota`; `gantiPeran()` memanggil `navigate()` → `manajer` `/`, `kasir` `/pos`, `anggota` `/anggota/$anggotaId`.
+- Identitas footer & avatar topbar dari `infoPeran`: manajer → `koperasi.manajer` "Manajer KDMP"; kasir → `koperasi.kasir` ("Ni Luh Sri Antari", field mock) "Kasir"; anggota → `daftarAnggota[0].nama` "Anggota".
+- Grup "Lainnya"/`Pengaturan` sudah dihapus.
+- `SidebarContent` dirender dua kali: `<aside>` (≥lg) dan di dalam `Sheet` mobile (trigger hamburger `Menu` di topbar); keduanya menerima `peran`.
+- Topbar: `Input` pencarian `readOnly` (placeholder "Cari anggota, produk, transaksi…"), tanggal `formatTanggal(HARI_INI)`, pemilih peran, tombol lonceng `Bell` dengan titik merah statis, `Avatar`.
 - `<PendampingAI/>` di-mount global di AppShell (menyembunyikan diri sendiri di path `/pendamping` via `useRouterState`).
 
 ---
@@ -49,7 +57,7 @@ Perilaku terkait:
 | File | Route path | Judul halaman (h1) | Baris |
 |---|---|---|---|
 | `__root.tsx` | (root layout) | — | 9 |
-| `index.tsx` | `/` | "Selamat pagi, Bu Sari 👋" | 303 |
+| `index.tsx` | `/` | "Selamat pagi, Bu Sari 👋" | 304 |
 | `pendamping.tsx` | `/pendamping` | "Pendamping AI" | 168 |
 | `anggota.index.tsx` | `/anggota/` | "Keanggotaan" | 110 |
 | `anggota.$anggotaId.tsx` | `/anggota/$anggotaId` | `{anggota.nama}` (dinamis) | 209 |
@@ -68,7 +76,7 @@ Perilaku terkait:
 **`__root.tsx`** — hanya membungkus `<Outlet/>` dalam `<AppShell>`. Tanpa mock.
 
 **`index.tsx`** — mocks: `insight`, `koperasi`, `penjualan` (`penjualan90Hari`, `penjualanHariIni`, `penjualanKemarin`, `totalHari`), `pinjaman` (`pinjamanHimbara`, `ringkasanSimpanPinjam`), `kas` (`saldoKas`), `produk` (`daftarProduk`, `stokMenipis`). Section:
-1. Header sapaan + subjudul tanggal (hardcoded "Sabtu, 18 Juli 2026")
+1. Header sapaan + subjudul tanggal (`formatTanggal(HARI_INI)`)
 2. Grid 4 × `KpiCard` (lokal): Penjualan hari ini, Saldo kas, Piutang anggota, Angsuran BNI berikutnya
 3. Card "Penjualan 30 hari terakhir" — Recharts `BarChart` stacked 3 seri + legend manual + `TooltipPenjualan` (lokal)
 4. Card "Insight hari ini" — `Badge "3 baru"` + 3 × `InsightCard` (`daftarInsight.slice(0,3)`)
@@ -76,7 +84,7 @@ Perilaku terkait:
 6. Card "Kewajiban terdekat" — 3 baris statis (angsuran BNI ke-3, gaji, pajak)
 
 **`pendamping.tsx`** — mocks: tidak ada (memakai `~/components/pendamping/shared`). Section:
-1. Header ikon + judul + `Badge` status (`Kimi K2 tersambung` / `Mode demo`)
+1. Header ikon + judul + `Badge` status (`AI tersambung` / `Mode demo`)
 2. Card chat: area pesan (`SAPAAN_AWAL`, `pesanScripted`, `messages` via `IsiMarkdown`, indikator mengetik), chips `pertanyaanCepatLengkap` (8), form input + disclaimer
 State: `useChat`, `teks`, `modeAi`, `pesanScripted`; `inputRef` auto-focus saat mount; fetch `/api/health` saat mount.
 
@@ -166,12 +174,10 @@ State: `useChat`, `teks`, `modeAi`, `pesanScripted`; `inputRef` auto-focus saat 
 | 6 | `lihat_kas` | "Kas koperasi: saldo saat ini, buku kas (transaksi terakhir), dan proyeksi 4 bulan ke depan dibandingkan kewajiban angsuran bank." | `z.object({})` | `dataKas()` |
 | 7 | `cari_anggota` | "Cari anggota berdasarkan nama, ID (AGT-xxx), atau banjar/dusun. Mengembalikan profil, simpanan, pinjaman aktif, dan total belanja 90 hari (maks 5 hasil)." | `{ kata_kunci: z.string().min(2).describe("Nama, ID anggota, atau nama banjar") }` | `cariAnggota(kata_kunci)` |
 | 8 | `lihat_layanan_bni` | "Layanan perbankan BNI yang relevan untuk koperasi (giro/CASA, QRIS merchant, virtual account, Agen46, Xpora, pembiayaan Himbara): penjelasan sederhana, manfaat, dan status di platform." | `z.object({})` | `dataLayananBni()` |
-| 9 | `lihat_kesiapan_ekspor` | "Skor kesiapan ekspor koperasi (0-100) dengan 5 dimensi penilaian, langkah berikutnya untuk menaikkan skor, dan daftar program pendampingan pemerintah (Desa Devisa, Desa BISA Ekspor, UMKM BISA Ekspor)." | `z.object({})` | `dataKesiapanEkspor()` |
+| 9 | `lihat_kesiapan_ekspor` | "Skor kesiapan ekspor koperasi (0-100) dengan 5 dimensi penilaian, langkah berikutnya untuk menaikkan skor, dan daftar 4 program pendampingan (BNI Xpora, Desa Devisa LPEI, Desa BISA Ekspor, UMKM BISA Ekspor)." | `z.object({})` | `dataKesiapanEkspor()` |
 | 10 | `lihat_peluang_ekspor` | "Peluang ekspor per komoditas koperasi: potensi (tinggi/menengah/rendah) beserta alasannya, negara tujuan dengan harga indikatif vs harga lokal, volume tersedia, dan syarat kunci. Termasuk komoditas yang SEBAIKNYA TIDAK diekspor dulu." | `z.object({})` | `dataPeluangEkspor()` |
 | 11 | `lihat_dokumen_ekspor` | "Checklist dokumen & regulasi ekspor: legalitas dasar koperasi, dokumen per pengiriman, dan persyaratan spesifik per kombinasi produk × negara yang sudah dikurasi (kopi→Jepang/AS, ikan beku→Jepang, kentang→Singapura). Bisa difilter." | `{ komoditas: z.string().optional().describe("mis. kopi, ikan, kentang"), negara: z.string().optional().describe("mis. Jepang, Amerika, Singapura") }` | `dataDokumenEkspor(komoditas, negara)` |
 | 12 | `lihat_laporan_keuangan` | "Laporan keuangan SAK-EP bulan lalu (Juni 2026): neraca, perhitungan hasil usaha (PHU), atau arus kas." | `{ jenis: z.enum(["neraca","phu","arus_kas"]) }` | `dataLaporan(jenis)` |
-
-Catatan tools #9 (`lihat_kesiapan_ekspor`): deskripsi menyebut 3 program; data aktual `programPendampingan` berisi 4 entri (ditambah "BNI Xpora").
 
 ---
 
@@ -212,7 +218,7 @@ Kriteria: jumlah baris + jumlah section unik yang dirender (angka baris dicantum
 9. `anggota.$anggotaId.tsx` (209) — 4 card, data dinamis per param
 10. `pos.tsx` (233) — grid produk + keranjang stateful + 2 dialog
 11. `simpan-pinjam.tsx` (246) — 3 card + tabel + sheet dengan jadwal ter-generate
-12. `index.tsx` (303) — 4 KPI + chart Recharts + 3 card, agregasi dari 6 file mock
+12. `index.tsx` (304) — 4 KPI + chart Recharts + 3 card, agregasi dari 6 file mock
 13. `inventori.tsx` (357) — tabs 3 gerai + tabel berprediksi + card PO + sheet kartu stok
 14. `keuangan.tsx` (421) — 7 section termasuk chart, dialog laporan, dan 2 card BNI
 
@@ -242,7 +248,7 @@ Kriteria: jumlah baris + jumlah section unik yang dirender (angka baris dicantum
 
 1. **Dua instance `useChat`**: `pendamping.tsx` dan `PendampingAI.tsx` masing-masing membuat chat terpisah (riwayat tidak dibagi). Panel mengambang menyembunyikan diri berdasarkan `pathname.startsWith("/pendamping")`; jika chat menjadi tab pada path lain, kondisi ini tidak terpenuhi dan panel + tab chat tampil bersamaan sebagai dua percakapan berbeda.
 2. **Tinggi terkunci viewport**: `inbox.tsx` dan `pendamping.tsx` memakai `h-[calc(100dvh-7.5rem)]` yang mengasumsikan konten adalah anak langsung `<main>`; di dalam halaman tab dengan header tambahan, tinggi total melebihi viewport (muncul scroll ganda).
-3. **Lebar kontainer berbeda**: `pendamping.tsx` memakai `max-w-3xl`, halaman lain `max-w-6xl`; satu halaman tab hanya bisa memakai satu wrapper.
+3. **Lebar kontainer**: `pendamping.tsx` kini memakai `max-w-6xl` sama dengan halaman lain (perbedaan lebar sudah tidak berlaku sejak fix SPEC_FOKUS §4.4).
 4. **Radix `Tabs` bersarang**: `inventori.tsx` sudah memakai `Tabs` untuk gerai; tab tingkat halaman akan menghasilkan dua `Tabs` bersarang dengan navigasi keyboard panah pada masing-masing tingkat.
 5. **Reset state saat pindah tab**: `TabsContent` (ui/tabs.tsx) tidak memakai `forceMount`, sehingga konten tab nonaktif di-unmount; state lokal hilang saat berpindah tab: `keranjang`/`dialogBayar` (pos), `terpilih` (inventori, simpan-pinjam, ekspor.dokumen, produk-digital), `cari` (anggota.index, pos), `aktifId` (inbox), seluruh state chat `pendamping`.
 6. **Auto-focus**: `pendamping.tsx` menjalankan `inputRef.current?.focus()` pada mount; setiap kali tab chat diaktifkan, fokus keyboard berpindah ke input tersebut.

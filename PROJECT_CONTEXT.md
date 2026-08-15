@@ -2,7 +2,7 @@
 
 > Dokumen handoff konteks. Tujuan: dibaca oleh AI assistant / anggota tim baru
 > agar langsung paham project ini apa, sudah sampai mana, dan aturan mainnya.
-> Status per: 1 Agustus 2026.
+> Status per: 1 Agustus 2026 (termasuk restrukturisasi SPEC_FOKUS §1/§2/§4).
 
 ## 1. Apa ini
 
@@ -43,6 +43,8 @@
 
 **Floating panel Pendamping** ada di semua halaman kecuali `/pendamping` (otomatis sembunyi di sana).
 
+**Navigasi & peran (hasil SPEC_FOKUS.md):** grup sidebar mengikuti bahasa deck — (Beranda) · PENDAMPING AI (Chat Pendamping, Inbox WhatsApp) · COPILOT OPERASI (Kasir, Inventori & Pengadaan, Produk Digital) · COPILOT KEUANGAN (Keuangan & Laporan, Simpan Pinjam, Keanggotaan) · COPILOT EKSPOR (Kesiapan, Peluang Pasar, Dokumen & Regulasi). Item "Pengaturan" dihapus. Ada **pemilih peran** (`<select>` di topbar): `manajer` melihat semua; `kasir` hanya Beranda + Pendamping AI + Copilot Operasi; `anggota` hanya Profil Saya (`/anggota/AGT-001` via `daftarAnggota[0]`) + Chat Pendamping. Ganti peran memicu `navigate()` ke halaman utama peran; identitas footer/topbar ikut berubah (manajer=`koperasi.manajer`, kasir=`koperasi.kasir`, anggota=`daftarAnggota[0].nama`). Ini murni pemilih tampilan untuk demo — TANPA auth, guard route, atau penyaringan data. Rencana konsolidasi 12 route → 4 halaman ber-tab DIBATALKAN dengan alasan terdokumentasi (SPEC_FOKUS §6 + INVENTORY §6); SPEC_FOKUS §3 (NavEkspor segmented control) BELUM dikerjakan. UI tidak menyebut nama model AI (aturan §4).
+
 ## 4. Arsitektur & file penting
 
 Monorepo pnpm, satu app: `apps/web` (Vite + React + TanStack Router SPA + Tailwind v4).
@@ -62,7 +64,7 @@ apps/web/
 │   └── data.ts                      # data-access layer — SATU-SATUNYA jembatan mock↔AI.
 │                                    #   Saat backend nyata dibangun, HANYA file ini diganti.
 ├── src/components/
-│   ├── layout/AppShell.tsx          # sidebar (grup: utama/CRM/ERP/EKSPOR), topbar, footer BNI
+│   ├── layout/AppShell.tsx          # sidebar (grup Copilot ala deck) + pemilih peran + topbar + footer BNI
 │   ├── pendamping/shared.tsx        # sapaan, chips, jawabScripted, IsiMarkdown (dipakai panel+halaman)
 │   ├── pendamping/PendampingAI.tsx  # panel mengambang
 │   ├── bni/LogoBni.tsx
@@ -101,6 +103,7 @@ apps/web/
 
 ## 8. Belum dikerjakan / antrian ide
 
+- SPEC_FOKUS §3: komponen `NavEkspor` (segmented control 3 langkah di halaman ekspor, pakai Link bukan Tabs) — spec sudah ada, belum diimplementasikan.
 - 3 GIF tambahan untuk deck: inbox CRM, alur ekspor, gabungan ERP (kasir+prediksi).
 - GIF `09` versi halaman penuh `/pendamping` (lebih terbaca di proyektor).
 - Logo KopPilot di aplikasi: menunggu file PNG transparan dari tim (emblem sidebar masih dua-strip merah putih).
