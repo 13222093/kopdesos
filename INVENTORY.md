@@ -1,6 +1,20 @@
 # INVENTORY.md
 
-Read-only inventory of `apps/web/src`. Facts only. Generated 1 Agustus 2026 dari commit `eff35fb`; diperbarui setelah implementasi SPEC_FOKUS §1/§2/§4. Semua identifier ditulis apa adanya (konvensi bahasa Indonesia).
+Read-only inventory of `apps/web/src`. Facts only. Generated 1 Agustus 2026 dari commit `eff35fb`; diperbarui setelah SPEC_FOKUS §1/§2/§4 dan putaran UI/UX (15 Agustus 2026): AI kontekstual, aksi generatif, progressive disclosure, NavEkspor (§3).
+
+Perubahan putaran UI/UX (ringkas):
+- Komponen baru: `components/pendamping/TanyaAI.tsx` (tombol AI kontekstual → `/pendamping?q=`, auto-kirim sekali), `components/ekspor/NavEkspor.tsx` (segmented control 3 langkah, Link + activeProps), `components/ekspor/GaugeSkor.tsx` (gauge SVG setengah lingkaran).
+- `routes/pendamping.tsx` (190 baris): `validateSearch` param `q`; auto-send sekali dengan guard `useRef`, lalu URL dibersihkan (`navigate replace`).
+- `routes/ekspor.index.tsx` (151): gauge + dimensi/langkah/program memakai `<details>` accordion; link silang diganti `NavEkspor`.
+- `routes/ekspor.peluang.tsx` (171): `BarHarga` (bar lokal vs ekspor, parsing `angkaHarga`), alasan & syaratKunci dalam `<details>`; `TanyaAI` per komoditas.
+- `routes/ekspor.dokumen.tsx` (152): link silang diganti `NavEkspor`.
+- `routes/index.tsx` (339): strip "Tahap koperasi" (`tahapKoperasi` di `mocks/koperasi.ts`, chips Rintisan→Berkembang→Siap Ekspor) di atas KPI; `InsightCard` mode `ringkas` kini `<details>` 1 baris.
+- `routes/inventori.tsx` (379): kolom `TanyaAI` per baris + bar mini stok di kolom Stok.
+- `routes/simpan-pinjam.tsx` (333): tombol "Buatkan pesan penagihan" → `Dialog` dengan instance `useChat` sendiri (draf pesan WA streaming, fallback `templatePenagihan`, tombol Salin/clipboard).
+- `routes/pos.tsx` (233): harga `text-base font-bold`, kartu produk `p-3.5` + `active:scale-[0.98]`.
+- `routes/keuangan.tsx`: `TanyaAI` di header Monitor Pinjaman.
+
+Isi detail section 2 di bawah belum ditulis ulang per halaman untuk putaran ini; rujuk ringkasan di atas untuk delta.
 
 ---
 

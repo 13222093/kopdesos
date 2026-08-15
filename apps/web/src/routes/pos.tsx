@@ -92,13 +92,13 @@ function HalamanPos() {
                 key={p.id}
                 type="button"
                 onClick={() => tambah(p)}
-                className="flex flex-col rounded-xl border border-line bg-card p-3 text-left transition-colors hover:border-merah/40 hover:bg-merah-soft/40"
+                className="flex flex-col rounded-xl border border-line bg-card p-3.5 text-left transition-all hover:border-merah/40 hover:bg-merah-soft/40 active:scale-[0.98]"
               >
                 <span className="text-[13px] leading-snug font-medium">{p.nama}</span>
                 <span className="mt-0.5 text-[11px] text-muted">
                   Stok {p.stok} {p.satuan}
                 </span>
-                <span className="tnum mt-2 font-mono text-sm font-semibold">
+                <span className="tnum mt-2 font-mono text-base font-bold">
                   {formatRupiah(p.hargaJual)}
                 </span>
                 {p.stok < p.stokMinimum ? (

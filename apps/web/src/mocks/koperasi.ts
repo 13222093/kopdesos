@@ -32,3 +32,10 @@ export const koperasi = {
     { id: "logistik", nama: "Gerai Logistik", aktif: false },
   ],
 } as const;
+
+/** Tahap perjalanan koperasi di platform — dasar elemen adaptive di Beranda */
+export const tahapKoperasi = {
+  daftar: ["Rintisan", "Berkembang", "Siap Ekspor"],
+  sekarang: 1, // index di daftar
+  keterangan: "3 langkah lagi menuju Siap Ekspor",
+} as const;

@@ -29,6 +29,7 @@ import {
   TableRow,
 } from "~/components/ui/table";
 import { LogoBni } from "~/components/bni/LogoBni";
+import { TanyaAI } from "~/components/pendamping/TanyaAI";
 import { WARNA_KAS } from "~/lib/chart";
 import { formatRupiah, formatRupiahSingkat, formatTanggal } from "~/lib/format";
 import { entriKas, proyeksiKas, saldoKas } from "~/mocks/kas";
@@ -132,6 +133,11 @@ function HalamanKeuangan() {
             <div>
               <CardTitle className="flex items-center gap-2">
                 Monitor Pinjaman Himbara — {pinjamanHimbara.bank} <LogoBni />
+                <TanyaAI
+                  label="Tanya AI"
+                  q="Kas kita cukup untuk bayar angsuran BNI bulan ini?"
+                  className="ml-1"
+                />
               </CardTitle>
               <p className="mt-0.5 text-xs text-muted">
                 Plafon {formatRupiahSingkat(pinjamanHimbara.plafon)} · dicairkan{" "}

@@ -1,6 +1,16 @@
+import { useChat } from "@ai-sdk/react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { HandCoins, PiggyBank, ShieldAlert } from "lucide-react";
+import { DefaultChatTransport } from "ai";
+import { Copy, HandCoins, PiggyBank, ShieldAlert, Sparkles } from "lucide-react";
 import * as React from "react";
+
+import { IsiMarkdown } from "~/components/pendamping/shared";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "~/components/ui/dialog";
 
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -43,8 +53,58 @@ function buatJadwal(p: PinjamanAnggota) {
   return jadwal;
 }
 
+function templatePenagihan(p: PinjamanAnggota): string {
+  return `Selamat siang ${p.namaAnggota} 🙏\n\nKami dari Kopdes Sukamaju mengingatkan angsuran pinjaman ${p.tujuan.toLowerCase()} sebesar ${formatRupiah(p.angsuranBulanan)} dengan jatuh tempo ${formatTanggal(p.jatuhTempoBerikut)}. Sisa pinjaman saat ini ${formatRupiah(p.sisa)}.\n\nPembayaran bisa dilakukan di kantor koperasi atau transfer. Kalau ada kendala, silakan hubungi kami, kita cari jalan keluarnya bersama. Terima kasih 🙏`;
+}
+
 function HalamanSimpanPinjam() {
   const [terpilih, setTerpilih] = React.useState<PinjamanAnggota | null>(null);
+  const [bukaPenagihan, setBukaPenagihan] = React.useState(false);
+  const [drafScripted, setDrafScripted] = React.useState<string | null>(null);
+  const [modeAi, setModeAi] = React.useState<boolean | null>(null);
+  const [tersalin, setTersalin] = React.useState(false);
+
+  const { messages, sendMessage, status, setMessages } = useChat({
+    transport: new DefaultChatTransport({ api: "/api/pendamping" }),
+  });
+
+  React.useEffect(() => {
+    fetch("/api/health")
+      .then((r) => r.json())
+      .then((d) => setModeAi(Boolean(d.aiSiap)))
+      .catch(() => setModeAi(false));
+  }, []);
+
+  const sedangMenulis = status === "submitted" || status === "streaming";
+
+  function buatPenagihan(p: PinjamanAnggota) {
+    setTersalin(false);
+    setBukaPenagihan(true);
+    if (modeAi) {
+      setDrafScripted(null);
+      setMessages([]);
+      sendMessage({
+        text: `Buatkan draf pesan WhatsApp penagihan yang sopan untuk anggota ${p.namaAnggota} (pinjaman ${p.tujuan}, sisa ${formatRupiah(p.sisa)}, angsuran ${formatRupiah(p.angsuranBulanan)} per bulan, jatuh tempo ${formatTanggal(p.jatuhTempoBerikut)}, status ${labelKolektibilitas[p.kolektibilitas]}). Gaya bahasa ramah khas koperasi desa, maksimal 80 kata. Tulis isi pesannya saja, tanpa penjelasan tambahan.`,
+      });
+    } else {
+      setDrafScripted(templatePenagihan(p));
+    }
+  }
+
+  const drafAi = messages
+    .filter((m) => m.role === "assistant")
+    .map((m) =>
+      m.parts
+        .filter((pt): pt is Extract<typeof pt, { type: "text" }> => pt.type === "text")
+        .map((pt) => pt.text)
+        .join(""),
+    )
+    .at(-1);
+  const draf = drafScripted ?? drafAi ?? "";
+
+  function salin() {
+    navigator.clipboard.writeText(draf).then(() => setTersalin(true));
+  }
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-4">
@@ -244,8 +304,13 @@ function HalamanSimpanPinjam() {
                   <Button size="sm" className="flex-1">
                     Catat pembayaran
                   </Button>
-                  <Button size="sm" variant="secondary" className="flex-1">
-                    Kirim pengingat WA
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="flex-1"
+                    onClick={() => buatPenagihan(terpilih)}
+                  >
+                    <Sparkles /> Buatkan pesan penagihan
                   </Button>
                 </div>
               </div>
@@ -253,6 +318,37 @@ function HalamanSimpanPinjam() {
           ) : null}
         </SheetContent>
       </Sheet>
+
+      <Dialog open={bukaPenagihan} onOpenChange={setBukaPenagihan}>
+        <DialogContent className="max-w-lg">
+          <DialogTitle className="flex items-center gap-2">
+            <Sparkles className="size-4 text-merah" /> Draf pesan penagihan
+          </DialogTitle>
+          <DialogDescription>
+            Disusun Pendamping AI dari data pinjaman — periksa dulu sebelum
+            dikirim ke anggota.
+          </DialogDescription>
+          <div className="mt-3 min-h-24 rounded-lg border border-line bg-paper p-3.5 text-[13px] leading-relaxed whitespace-pre-line">
+            {sedangMenulis && !draf ? (
+              <span className="flex items-center gap-1.5 text-muted">
+                <Sparkles className="size-3.5 animate-pulse" /> menyusun pesan…
+              </span>
+            ) : drafScripted ? (
+              draf
+            ) : (
+              <IsiMarkdown teks={draf} />
+            )}
+          </div>
+          <Button
+            className="mt-3 w-full"
+            variant="secondary"
+            disabled={!draf || sedangMenulis}
+            onClick={salin}
+          >
+            <Copy /> {tersalin ? "Tersalin ✓" : "Salin pesan"}
+          </Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowDownRight, ArrowUpRight, CalendarClock } from "lucide-react";
+import * as React from "react";
 import {
   Bar,
   BarChart,
@@ -21,7 +22,7 @@ import {
   formatTanggalPendek,
 } from "~/lib/format";
 import { daftarInsight } from "~/mocks/insight";
-import { HARI_INI, koperasi } from "~/mocks/koperasi";
+import { HARI_INI, koperasi, tahapKoperasi } from "~/mocks/koperasi";
 import {
   penjualan90Hari,
   penjualanHariIni,
@@ -121,6 +122,41 @@ function Beranda() {
           Ringkasan {koperasi.nama} — {formatTanggal(HARI_INI)}
         </p>
       </div>
+
+      <Card>
+        <CardContent className="flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-3">
+          <span className="text-[11px] font-semibold tracking-wide text-muted uppercase">
+            Tahap koperasi
+          </span>
+          <div className="flex items-center gap-1.5">
+            {tahapKoperasi.daftar.map((t, i) => (
+              <React.Fragment key={t}>
+                {i > 0 ? <span className="text-muted/40">→</span> : null}
+                <span
+                  className={cn(
+                    "rounded-full px-2.5 py-1 text-[11px] font-medium",
+                    i < tahapKoperasi.sekarang && "bg-hijau-soft text-hijau",
+                    i === tahapKoperasi.sekarang &&
+                      "bg-merah-soft font-semibold text-merah",
+                    i > tahapKoperasi.sekarang &&
+                      "border border-line text-muted",
+                  )}
+                >
+                  {i < tahapKoperasi.sekarang ? "✓ " : ""}
+                  {t}
+                </span>
+              </React.Fragment>
+            ))}
+          </div>
+          <span className="text-xs text-muted">{tahapKoperasi.keterangan}</span>
+          <Link
+            to="/ekspor"
+            className="ml-auto text-xs font-medium text-merah hover:underline"
+          >
+            Lihat langkahnya →
+          </Link>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <KpiCard

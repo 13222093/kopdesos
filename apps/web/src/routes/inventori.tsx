@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PackagePlus } from "lucide-react";
 import * as React from "react";
 
+import { TanyaAI } from "~/components/pendamping/TanyaAI";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -58,6 +59,9 @@ function TabelProduk({
             <TableHead className="text-right">Perkiraan Habis</TableHead>
             {adaKedaluwarsa ? <TableHead>Batch / Kedaluwarsa</TableHead> : null}
             <TableHead>Status</TableHead>
+            <TableHead className="w-10">
+              <span className="sr-only">Tanya AI</span>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -79,9 +83,22 @@ function TabelProduk({
               <TableCell className="tnum text-right font-mono">
                 {formatRupiah(p.hargaJual)}
               </TableCell>
-              <TableCell className="tnum text-right font-mono">
-                {p.stok}{" "}
-                <span className="text-[11px] text-muted">{p.satuan}</span>
+              <TableCell className="text-right">
+                <span className="tnum font-mono">
+                  {p.stok}{" "}
+                  <span className="text-[11px] text-muted">{p.satuan}</span>
+                </span>
+                <span className="mt-1 ml-auto block h-1 w-16 overflow-hidden rounded-full bg-line-soft">
+                  <span
+                    className={
+                      "block h-full rounded-full " +
+                      (stokMenipis(p) ? "bg-merah" : "bg-hijau")
+                    }
+                    style={{
+                      width: `${Math.min(100, Math.round((p.stok / (p.stokMinimum * 2)) * 100))}%`,
+                    }}
+                  />
+                </span>
               </TableCell>
               <TableCell
                 className={
@@ -117,6 +134,11 @@ function TabelProduk({
                     <Badge variant="hijau">Aman</Badge>
                   ) : null}
                 </div>
+              </TableCell>
+              <TableCell>
+                <TanyaAI
+                  q={`Kapan ${p.nama} habis dan berapa yang harus dipesan ulang?`}
+                />
               </TableCell>
             </TableRow>
           ))}

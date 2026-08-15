@@ -1,6 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, CircleCheck, CircleDashed, ExternalLink, Rocket } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { ChevronDown, CircleDashed, CircleCheck, ExternalLink } from "lucide-react";
 
+import { GaugeSkor } from "~/components/ekspor/GaugeSkor";
+import { NavEkspor } from "~/components/ekspor/NavEkspor";
+import { TanyaAI } from "~/components/pendamping/TanyaAI";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
@@ -23,39 +26,30 @@ const warnaStatus = {
 function HalamanKesiapan() {
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-4">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="font-display text-xl font-bold">Kesiapan Ekspor</h1>
-          <p className="mt-0.5 text-sm text-muted">
-            Dinilai otomatis dari data koperasi — bukan kuesioner kosong
-          </p>
-        </div>
-        <div className="flex gap-2 text-xs">
-          <Link to="/ekspor/peluang" className="font-medium text-merah hover:underline">
-            Peluang Pasar →
-          </Link>
-          <Link to="/ekspor/dokumen" className="font-medium text-merah hover:underline">
-            Dokumen & Regulasi →
-          </Link>
-        </div>
+      <div>
+        <h1 className="font-display text-xl font-bold">Kesiapan Ekspor</h1>
+        <p className="mt-0.5 text-sm text-muted">
+          Dinilai otomatis dari data koperasi
+        </p>
       </div>
+
+      <NavEkspor />
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
         <Card>
           <CardContent className="flex flex-col items-center px-5 py-6 text-center">
-            <span className="flex size-12 items-center justify-center rounded-full bg-merah-soft text-merah">
-              <Rocket className="size-6" />
-            </span>
-            <p className="tnum mt-3 font-mono text-5xl font-bold">
-              {kesiapanEkspor.skorTotal}
-              <span className="text-lg font-normal text-muted">/100</span>
-            </p>
-            <Badge variant="amber" className="mt-2">
+            <GaugeSkor skor={kesiapanEkspor.skorTotal} />
+            <Badge variant="amber" className="mt-3">
               {kesiapanEkspor.label}
             </Badge>
-            <p className="mt-3 text-xs leading-relaxed text-muted">
-              {kesiapanEkspor.keterangan}
+            <p className="mt-2 text-xs leading-relaxed text-muted">
+              Siap masuk program pendampingan dalam 6–12 bulan
             </p>
+            <TanyaAI
+              label="Bagaimana menaikkan skor?"
+              q="Bagaimana cara menaikkan skor kesiapan ekspor koperasi kita? Mulai dari mana?"
+              className="mt-3"
+            />
           </CardContent>
         </Card>
 
@@ -63,31 +57,30 @@ function HalamanKesiapan() {
           <CardHeader>
             <CardTitle>5 dimensi penilaian</CardTitle>
             <p className="mt-0.5 text-xs text-muted">
-              Skor dihitung dari data legalitas, katalog, stok, dan keuangan yang
-              sudah tercatat di platform
+              Klik dimensi untuk detail dan cara menaikkannya
             </p>
           </CardHeader>
-          <CardContent className="flex flex-col gap-3.5">
+          <CardContent className="flex flex-col divide-y divide-line-soft">
             {kesiapanEkspor.dimensi.map((d) => (
-              <div key={d.nama}>
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-sm font-medium">{d.nama}</p>
-                  <p className="tnum font-mono text-sm font-semibold">{d.skor}</p>
-                </div>
-                <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-line-soft">
-                  <div
-                    className={cn("h-full rounded-full", warnaStatus[d.status])}
-                    style={{ width: `${d.skor}%` }}
-                  />
-                </div>
-                <p className="mt-1 text-[11px] leading-relaxed text-muted">
-                  {d.ringkasan}{" "}
-                  <span className="text-ink">
-                    <ArrowUpRight className="inline size-3 text-hijau" />{" "}
-                    {d.caraMenaikkan}
+              <details key={d.nama} className="group py-2">
+                <summary className="flex cursor-pointer list-none items-center gap-3 [&::-webkit-details-marker]:hidden">
+                  <span className="w-40 shrink-0 text-sm font-medium">{d.nama}</span>
+                  <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-line-soft">
+                    <span
+                      className={cn("block h-full rounded-full", warnaStatus[d.status])}
+                      style={{ width: `${d.skor}%` }}
+                    />
                   </span>
-                </p>
-              </div>
+                  <span className="tnum w-8 text-right font-mono text-sm font-semibold">
+                    {d.skor}
+                  </span>
+                  <ChevronDown className="size-3.5 shrink-0 text-muted transition-transform group-open:rotate-180" />
+                </summary>
+                <div className="mt-2 ml-0 rounded-lg bg-paper p-3 text-xs leading-relaxed text-muted">
+                  {d.ringkasan}{" "}
+                  <span className="font-medium text-ink">→ {d.caraMenaikkan}</span>
+                </div>
+              </details>
             ))}
           </CardContent>
         </Card>
@@ -97,63 +90,66 @@ function HalamanKesiapan() {
         <Card>
           <CardHeader>
             <CardTitle>Langkah berikutnya</CardTitle>
-            <p className="mt-0.5 text-xs text-muted">
-              Urutan aksi yang paling menaikkan skor
-            </p>
           </CardHeader>
           <CardContent className="flex flex-col divide-y divide-line-soft">
             {kesiapanEkspor.langkahBerikutnya.map((l, i) => (
-              <div key={l.aksi} className="flex items-start gap-2.5 py-2.5">
-                {l.status === "berjalan" ? (
-                  <CircleDashed className="mt-0.5 size-4 shrink-0 text-amber" />
-                ) : (
-                  <CircleCheck className="mt-0.5 size-4 shrink-0 text-muted/40" />
-                )}
-                <div className="min-w-0 flex-1">
-                  <p className="text-[13px] leading-snug font-medium">
+              <details key={l.aksi} className="group py-1.5">
+                <summary className="flex cursor-pointer list-none items-center gap-2.5 py-1 [&::-webkit-details-marker]:hidden">
+                  {l.status === "berjalan" ? (
+                    <CircleDashed className="size-4 shrink-0 text-amber" />
+                  ) : (
+                    <CircleCheck className="size-4 shrink-0 text-muted/40" />
+                  )}
+                  <span className="min-w-0 flex-1 truncate text-[13px] font-medium">
                     {i + 1}. {l.aksi}
-                  </p>
-                  <p className="mt-0.5 text-[11px] text-muted">{l.dampak}</p>
-                </div>
-                <Badge variant={l.status === "berjalan" ? "amber" : "netral"}>
-                  {l.status === "berjalan" ? "Berjalan" : "Belum"}
-                </Badge>
-              </div>
+                  </span>
+                  <Badge variant={l.status === "berjalan" ? "amber" : "netral"}>
+                    {l.status === "berjalan" ? "Berjalan" : "Belum"}
+                  </Badge>
+                  <ChevronDown className="size-3.5 shrink-0 text-muted transition-transform group-open:rotate-180" />
+                </summary>
+                <p className="mt-1 ml-6.5 pb-1 text-[11px] text-muted">{l.dampak}</p>
+              </details>
             ))}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Program pendampingan pemerintah</CardTitle>
+            <CardTitle>Program pendampingan</CardTitle>
             <p className="mt-0.5 text-xs text-muted">
-              Kopdes tidak perlu ekspor sendirian — masuk lewat jalur resmi ini
+              Kopdes tidak perlu ekspor sendirian
             </p>
           </CardHeader>
-          <CardContent className="flex flex-col gap-3">
+          <CardContent className="flex flex-col divide-y divide-line-soft">
             {programPendampingan.map((p) => (
-              <div key={p.nama} className="rounded-lg border border-line p-3">
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="text-sm font-semibold">{p.nama}</p>
-                  <Badge variant="garis">{p.penyelenggara}</Badge>
+              <details key={p.nama} className="group py-1.5">
+                <summary className="flex cursor-pointer list-none items-center gap-2 py-1 [&::-webkit-details-marker]:hidden">
+                  <span className="min-w-0 flex-1 truncate text-[13px] font-semibold">
+                    {p.nama}
+                  </span>
+                  <Badge variant="garis" className="max-w-36 truncate">
+                    {p.penyelenggara}
+                  </Badge>
                   <Badge variant="netral">{p.status}</Badge>
-                </div>
-                <p className="mt-1.5 text-[11px] leading-relaxed text-muted">
+                  <ChevronDown className="size-3.5 shrink-0 text-muted transition-transform group-open:rotate-180" />
+                </summary>
+                <div className="mt-1 rounded-lg bg-paper p-3 text-[11px] leading-relaxed text-muted">
                   {p.deskripsi}
-                </p>
-                <p className="mt-1 text-[11px]">
-                  <span className="font-medium text-hijau">Kenapa cocok:</span>{" "}
-                  <span className="text-muted">{p.cocokKarena}</span>
-                </p>
-                <a
-                  href={p.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-merah hover:underline"
-                >
-                  Pelajari program <ExternalLink className="size-3" />
-                </a>
-              </div>
+                  <p className="mt-1">
+                    <span className="font-medium text-hijau">Kenapa cocok:</span>{" "}
+                    {p.cocokKarena}
+                  </p>
+                  <a
+                    href={p.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-1.5 inline-flex items-center gap-1 font-medium text-merah hover:underline"
+                  >
+                    Pelajari program <ExternalLink className="size-3" />
+                  </a>
+                </div>
+              </details>
             ))}
           </CardContent>
         </Card>

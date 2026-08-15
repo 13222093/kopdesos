@@ -1,6 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { CircleCheck, CircleDashed, CircleX } from "lucide-react";
 import * as React from "react";
+
+import { NavEkspor } from "~/components/ekspor/NavEkspor";
 
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -44,22 +46,14 @@ function HalamanDokumen() {
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-4">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="font-display text-xl font-bold">Dokumen & Regulasi Ekspor</h1>
-          <p className="mt-0.5 text-sm text-muted">
-            Checklist bertingkat: legalitas dasar → per pengiriman → per produk & negara
-          </p>
-        </div>
-        <div className="flex gap-2 text-xs">
-          <Link to="/ekspor" className="font-medium text-merah hover:underline">
-            ← Kesiapan
-          </Link>
-          <Link to="/ekspor/peluang" className="font-medium text-merah hover:underline">
-            ← Peluang Pasar
-          </Link>
-        </div>
+      <div>
+        <h1 className="font-display text-xl font-bold">Dokumen & Regulasi Ekspor</h1>
+        <p className="mt-0.5 text-sm text-muted">
+          Checklist bertingkat: legalitas dasar → per pengiriman → per produk & negara
+        </p>
       </div>
+
+      <NavEkspor />
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <Card>

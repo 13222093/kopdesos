@@ -15,19 +15,42 @@ import { Badge } from "~/components/ui/badge";
 import { cn } from "~/lib/utils";
 
 export const Route = createFileRoute("/pendamping")({
+  validateSearch: (search: Record<string, unknown>): { q?: string } => ({
+    q: typeof search.q === "string" && search.q.trim() ? search.q : undefined,
+  }),
   component: HalamanPendamping,
 });
 
 function HalamanPendamping() {
+  const { q } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const [teks, setTeks] = React.useState("");
   const [modeAi, setModeAi] = React.useState<boolean | null>(null);
   const [pesanScripted, setPesanScripted] = React.useState<PesanLokal[]>([]);
   const ujungRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const sudahKirimQ = React.useRef(false);
 
   const { messages, sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({ api: "/api/pendamping" }),
   });
+
+  // pertanyaan kontekstual dari halaman lain (search param q): kirim sekali
+  React.useEffect(() => {
+    if (!q || modeAi === null || sudahKirimQ.current) return;
+    sudahKirimQ.current = true;
+    if (modeAi) {
+      sendMessage({ text: q });
+    } else {
+      setPesanScripted((p) => [
+        ...p,
+        { id: `${p.length}-q`, dari: "saya", teks: q },
+        { id: `${p.length}-a`, dari: "ai", teks: jawabScripted(q) },
+      ]);
+    }
+    // bersihkan URL supaya refresh tidak mengirim ulang
+    navigate({ search: {}, replace: true });
+  }, [q, modeAi, sendMessage, navigate]);
 
   React.useEffect(() => {
     fetch("/api/health")
