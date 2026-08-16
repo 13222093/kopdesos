@@ -7,33 +7,8 @@ import {
 } from "ai";
 import { Hono } from "hono";
 
-import { HARI_INI, koperasi } from "./data";
+import { jawabPendamping, konfigurasi, SYSTEM_PROMPT } from "./otak";
 import { toolsPendamping } from "./tools";
-
-const MODEL_DEFAULT = "kimi-k3";
-
-function konfigurasi() {
-  return {
-    apiKey: process.env.MOONSHOT_API_KEY,
-    baseURL: process.env.MOONSHOT_BASE_URL ?? "https://api.moonshot.ai/v1",
-    model: process.env.MOONSHOT_MODEL ?? MODEL_DEFAULT,
-  };
-}
-
-const SYSTEM_PROMPT = `Kamu adalah "Pendamping AI" — asisten pengelola ${koperasi.nama} (${koperasi.desa}, ${koperasi.kabupaten}).
-Lawan bicaramu adalah pengurus/manajer koperasi desa, umumnya BUKAN orang keuangan atau IT.
-
-Hari ini: Sabtu, 18 Juli 2026 (${HARI_INI}).
-
-ATURAN WAJIB:
-1. SEBELUM menyebut angka apa pun (uang, stok, jumlah), WAJIB panggil tool yang sesuai. Jangan pernah mengarang atau mengira-ngira angka. Kalau tool tidak menyediakan datanya, katakan datanya belum tersedia.
-2. Bahasa Indonesia sederhana, hangat, tanpa jargon. Jangan pakai istilah seperti "DSCR", "likuiditas", "kolektibilitas" tanpa menjelaskannya dengan kata sehari-hari.
-3. Jawaban ringkas: maksimal ±150 kata. Pakai daftar bernomor/butir bila menyebut beberapa hal.
-4. Format uang gaya Indonesia: Rp136.000, Rp43,1 juta, Rp2,5 miliar.
-5. Akhiri dengan SATU saran tindakan konkret bila relevan (mis. "tunda belanja stok sampai tanggal 26").
-6. Konteks penting koperasi: punya pinjaman modal dari BNI (Himbara) dengan angsuran bulanan — kesehatan kas vs angsuran adalah hal paling penting untuk diawasi. Layanan perbankan koperasi berjalan di atas BNI (giro, QRIS merchant, VA, Agen46, Xpora) — detail via tool lihat_layanan_bni.
-7. Kamu hanya membantu urusan koperasi ini. Tolak halus pertanyaan di luar itu.
-8. EKSPOR — ATURAN KHUSUS REGULASI: pertanyaan soal syarat/dokumen/regulasi ekspor WAJIB dijawab HANYA dari tool lihat_dokumen_ekspor / lihat_peluang_ekspor / lihat_kesiapan_ekspor. Jika kombinasi produk/negara yang ditanya TIDAK ada di data kurasi, katakan terus terang bahwa datanya belum dikurasi dan arahkan ke InaExport (inaexport.kemendag.go.id) atau Dinas Perdagangan setempat. DILARANG KERAS mengarang persyaratan, tarif, atau aturan ekspor dari pengetahuan umum — salah informasi regulasi bisa merugikan koperasi secara hukum. Selalu tutup jawaban regulasi dengan anjuran verifikasi. Aturan yang sama berlaku untuk produk/tarif perbankan BNI: jawab hanya dari tool lihat_layanan_bni, jangan mengarang suku bunga atau syarat produk bank.`;
 
 const app = new Hono().basePath("/api");
 
@@ -53,9 +28,16 @@ function bolehLewat(ip: string): boolean {
 
 app.get("/health", (c) => {
   const { apiKey, model, baseURL } = konfigurasi();
-  return c.json({ ok: true, aiSiap: Boolean(apiKey), model, baseURL });
+  return c.json({
+    ok: true,
+    aiSiap: Boolean(apiKey),
+    telegramSiap: Boolean(process.env.TELEGRAM_BOT_TOKEN),
+    model,
+    baseURL,
+  });
 });
 
+// ── chat web (streaming) ─────────────────────────────────────────
 app.post("/pendamping", async (c) => {
   const { apiKey, baseURL, model } = konfigurasi();
   if (!apiKey) {
@@ -95,6 +77,97 @@ app.post("/pendamping", async (c) => {
   });
 
   return result.toUIMessageStreamResponse();
+});
+
+// ── kanal Telegram ───────────────────────────────────────────────
+
+const SAPAAN_TELEGRAM =
+  "Halo! Saya Pendamping AI KopPilot — asisten Kopdes Merah Putih Sukamaju 🙏\n\nTanya apa saja soal koperasi dengan bahasa sehari-hari, misalnya:\n• Berapa penjualan hari ini?\n• Kapan beras premium habis?\n• Kas cukup untuk bayar cicilan BNI?\n• Apakah koperasi kita siap ekspor?";
+
+/** Markdown Kimi → Markdown legacy Telegram: **x** jadi *x*, buang heading */
+function markdownTelegram(teks: string): string {
+  return teks
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\*\*(.+?)\*\*/g, "*$1*");
+}
+
+async function panggilTelegram(
+  token: string,
+  metode: string,
+  body: Record<string, unknown>,
+): Promise<Response> {
+  return fetch(`https://api.telegram.org/bot${token}/${metode}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
+app.post("/telegram", async (c) => {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) return c.json({ error: "TELEGRAM_BOT_TOKEN belum diatur" }, 503);
+
+  // verifikasi opsional: secret_token yang didaftarkan saat setWebhook
+  const rahasia = process.env.TELEGRAM_SECRET;
+  if (rahasia && c.req.header("x-telegram-bot-api-secret-token") !== rahasia) {
+    return c.json({ error: "secret tidak cocok" }, 401);
+  }
+
+  const update = (await c.req.json()) as {
+    message?: { chat?: { id?: number }; text?: string };
+  };
+  const chatId = update.message?.chat?.id;
+  const teks = update.message?.text?.trim();
+  if (!chatId || !teks) return c.json({ ok: true });
+
+  if (!bolehLewat(`tg-${chatId}`)) {
+    c.executionCtx?.waitUntil?.(
+      panggilTelegram(token, "sendMessage", {
+        chat_id: chatId,
+        text: "Terlalu banyak pertanyaan dalam waktu singkat — tunggu sebentar ya 🙏",
+      }).then(() => undefined),
+    );
+    return c.json({ ok: true });
+  }
+
+  const kerja = (async () => {
+    try {
+      await panggilTelegram(token, "sendChatAction", {
+        chat_id: chatId,
+        action: "typing",
+      });
+      const jawaban =
+        teks === "/start" || teks === "/help"
+          ? SAPAAN_TELEGRAM
+          : markdownTelegram(await jawabPendamping(teks));
+      const kirim = await panggilTelegram(token, "sendMessage", {
+        chat_id: chatId,
+        text: jawaban,
+        parse_mode: "Markdown",
+      });
+      if (!kirim.ok) {
+        // fallback bila markdown gagal diparse Telegram
+        await panggilTelegram(token, "sendMessage", {
+          chat_id: chatId,
+          text: jawaban.replace(/\*/g, ""),
+        });
+      }
+    } catch (e) {
+      console.error("[telegram] gagal:", e);
+      await panggilTelegram(token, "sendMessage", {
+        chat_id: chatId,
+        text: "Maaf, saya sedang gangguan. Coba lagi sebentar lagi ya 🙏",
+      }).catch(() => undefined);
+    }
+  })();
+
+  // balas 200 secepatnya; proses AI berlanjut di background (edge waitUntil)
+  try {
+    c.executionCtx.waitUntil(kerja);
+  } catch {
+    await kerja; // dev server lokal: tidak ada executionCtx, tunggu langsung
+  }
+  return c.json({ ok: true });
 });
 
 export default app;
