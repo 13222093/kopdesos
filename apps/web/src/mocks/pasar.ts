@@ -45,6 +45,10 @@ export type KabarPasar = {
   ringkas: string;
   komoditas: string[]; // id komoditas di mocks/ekspor.ts
   dampak: "peluang" | "perhatian" | "info";
+  /** path thumbnail di public/, mis. /gambar/berita/arabika-brasil.jpg */
+  gambar: string;
+  /** emoji fallback saat file gambar belum ada */
+  emoji: string;
 };
 
 export const kabarPasar: KabarPasar[] = [
@@ -55,6 +59,8 @@ export const kabarPasar: KabarPasar[] = [
     ringkas: "Momentum bagus untuk mempercepat konsolidasi kopi anggota.",
     komoditas: ["kopi"],
     dampak: "peluang",
+    gambar: "/gambar/berita/arabika-brasil.jpg",
+    emoji: "☕",
   },
   {
     tanggal: "2026-07-12",
@@ -63,6 +69,8 @@ export const kabarPasar: KabarPasar[] = [
     ringkas: "Uji lab residu jadi makin penting sebelum kirim sampel kopi.",
     komoditas: ["kopi"],
     dampak: "perhatian",
+    gambar: "/gambar/berita/residu-jepang.jpg",
+    emoji: "🇯🇵",
   },
   {
     tanggal: "2026-07-10",
@@ -71,6 +79,8 @@ export const kabarPasar: KabarPasar[] = [
     ringkas: "Permintaan ikan beku stabil; sertifikasi HACCP tetap jadi kuncinya.",
     komoditas: ["ikan-beku"],
     dampak: "peluang",
+    gambar: "/gambar/berita/ekspor-perikanan.jpg",
+    emoji: "🐟",
   },
   {
     tanggal: "2026-07-08",
@@ -79,6 +89,8 @@ export const kabarPasar: KabarPasar[] = [
     ringkas: "Menegaskan saran kami: jual cabai di pasar lokal dulu.",
     komoditas: ["cabai-bawang"],
     dampak: "info",
+    gambar: "/gambar/berita/harga-cabai.jpg",
+    emoji: "🌶️",
   },
 ];
 

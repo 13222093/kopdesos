@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ChevronDown, CircleDashed, CircleCheck, ExternalLink } from "lucide-react";
 
 import { GaugeSkor } from "~/components/ekspor/GaugeSkor";
+import { GambarSlot } from "~/components/ui/GambarSlot";
 import { NavEkspor } from "~/components/ekspor/NavEkspor";
 import { TanyaAI } from "~/components/pendamping/TanyaAI";
 import { Badge } from "~/components/ui/badge";
@@ -124,7 +125,17 @@ function HalamanKesiapan() {
           <CardContent className="flex flex-col divide-y divide-line-soft">
             {programPendampingan.map((p) => (
               <details key={p.nama} className="group py-1.5">
-                <summary className="flex cursor-pointer list-none items-center gap-2 py-1 [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center gap-2.5 py-1 [&::-webkit-details-marker]:hidden">
+                  <GambarSlot
+                    src={p.logo}
+                    alt={p.nama}
+                    fallback={
+                      <span className="text-[11px] font-bold text-muted">
+                        {p.nama[0]}
+                      </span>
+                    }
+                    className="size-7 rounded-lg border border-line bg-card object-contain p-1"
+                  />
                   <span className="min-w-0 flex-1 truncate text-[13px] font-semibold">
                     {p.nama}
                   </span>

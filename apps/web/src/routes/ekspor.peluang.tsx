@@ -3,6 +3,7 @@ import { ChevronDown, Newspaper, TriangleAlert, TrendingUp } from "lucide-react"
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 
 import { NavEkspor } from "~/components/ekspor/NavEkspor";
+import { GambarSlot } from "~/components/ui/GambarSlot";
 import { TanyaAI } from "~/components/pendamping/TanyaAI";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -164,19 +165,29 @@ function PanelPasar() {
         </CardHeader>
         <CardContent className="flex flex-col divide-y divide-line-soft">
           {kabarPasar.map((b) => (
-            <div key={b.judul} className="py-2.5">
-              <div className="flex items-center gap-2">
-                <span className="tnum font-mono text-[10px] text-muted">
-                  {formatTanggalPendek(b.tanggal)} · {b.sumber}
-                </span>
-                <Badge variant={badgeDampak[b.dampak].variant}>
-                  {badgeDampak[b.dampak].label}
-                </Badge>
+            <div key={b.judul} className="flex items-start gap-3 py-3">
+              <GambarSlot
+                src={b.gambar}
+                alt={b.judul}
+                fallback={<span className="text-2xl">{b.emoji}</span>}
+                className="size-16 rounded-lg border border-line"
+              />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                  <span className="tnum font-mono text-[10px] text-muted">
+                    {formatTanggalPendek(b.tanggal)} · {b.sumber}
+                  </span>
+                  <Badge variant={badgeDampak[b.dampak].variant}>
+                    {badgeDampak[b.dampak].label}
+                  </Badge>
+                </div>
+                <p className="mt-0.5 line-clamp-2 text-[13px] leading-snug font-medium">
+                  {b.judul}
+                </p>
+                <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-muted">
+                  {b.ringkas}
+                </p>
               </div>
-              <p className="mt-1 text-[13px] leading-snug font-medium">{b.judul}</p>
-              <p className="mt-0.5 text-[11px] leading-relaxed text-muted">
-                {b.ringkas}
-              </p>
             </div>
           ))}
           <p className="pt-2.5 text-[10px] text-muted/70">{DISCLAIMER_PASAR}</p>
@@ -208,15 +219,23 @@ function HalamanPeluang() {
             );
             return (
               <Card key={p.id}>
-                <CardHeader className="flex-row flex-wrap items-center justify-between gap-2">
-                  <div className="flex flex-wrap items-center gap-2">
+                <CardHeader className="flex-row flex-wrap items-center gap-3">
+                  <GambarSlot
+                    src={`/gambar/komoditas/${p.id}.jpg`}
+                    alt={p.komoditas}
+                    fallback={<span className="text-3xl">{p.emoji}</span>}
+                    className="size-14 rounded-xl border border-line"
+                  />
+                  <div className="min-w-0 flex-1">
                     <CardTitle className="text-base">{p.komoditas}</CardTitle>
-                    <Badge variant={badge.variant}>{badge.label}</Badge>
-                    {beritaTerkait.length > 0 ? (
-                      <Badge variant="garis">
-                        <Newspaper className="size-3" /> {beritaTerkait.length} kabar
-                      </Badge>
-                    ) : null}
+                    <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                      <Badge variant={badge.variant}>{badge.label}</Badge>
+                      {beritaTerkait.length > 0 ? (
+                        <Badge variant="garis">
+                          <Newspaper className="size-3" /> {beritaTerkait.length} kabar
+                        </Badge>
+                      ) : null}
+                    </div>
                   </div>
                   <TanyaAI
                     label="Tanya AI"

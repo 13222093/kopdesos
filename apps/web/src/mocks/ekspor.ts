@@ -95,6 +95,7 @@ export const kesiapanEkspor = {
 export const programPendampingan = [
   {
     nama: "BNI Xpora",
+    logo: "/bni.svg",
     penyelenggara: "Bank Negara Indonesia",
     deskripsi:
       "Solusi UMKM Go Productive, Go Digital, Go Global: pendampingan ekspor, kurasi buyer, pembiayaan, dan trade finance. Kantor layanan a.l. di Denpasar — terdekat dari Tabanan.",
@@ -106,6 +107,7 @@ export const programPendampingan = [
   },
   {
     nama: "Desa Devisa",
+    logo: "/gambar/program/desa-devisa.png",
     penyelenggara: "LPEI / Indonesia Eximbank",
     deskripsi:
       "Pendampingan komunitas/koperasi menuju ekspor: mutu produk, kurasi buyer, hingga pembiayaan. Berjalan sejak 2019, berbasis klaster desa.",
@@ -116,6 +118,7 @@ export const programPendampingan = [
   },
   {
     nama: "Desa BISA Ekspor",
+    logo: "/gambar/program/desa-bisa-ekspor.png",
     penyelenggara: "Kemendag + Kemendes + Kementan + LPEI + Astra",
     deskripsi:
       "Payung nasional (diluncurkan Sep 2025) yang menggabungkan 5 program desa ekspor. Kemendag sedang mengidentifikasi 2.616 desa potensial.",
@@ -126,6 +129,7 @@ export const programPendampingan = [
   },
   {
     nama: "UMKM BISA Ekspor",
+    logo: "/gambar/program/umkm-bisa-ekspor.png",
     penyelenggara: "Kementerian Perdagangan",
     deskripsi:
       "Pembinaan UMKM siap ekspor: kurasi produk, pelatihan, business matching dengan buyer lewat Atase Perdagangan/ITPC di 46 negara.",
@@ -141,6 +145,8 @@ export const programPendampingan = [
 export type PeluangKomoditas = {
   id: string;
   komoditas: string;
+  /** emoji fallback slot gambar /gambar/komoditas/{id}.jpg */
+  emoji: string;
   sumber: string;
   potensi: "tinggi" | "menengah" | "rendah";
   alasan: string;
@@ -159,6 +165,7 @@ export const peluangEkspor: PeluangKomoditas[] = [
   {
     id: "kopi",
     komoditas: "Kopi Arabika Bali (biji, green bean)",
+    emoji: "☕",
     sumber: "Agregasi 20 petani anggota (±2,4 ton/tahun) — belum dikonsolidasi",
     potensi: "tinggi",
     alasan:
@@ -196,6 +203,7 @@ export const peluangEkspor: PeluangKomoditas[] = [
   {
     id: "ikan-beku",
     komoditas: "Ikan Tongkol Beku",
+    emoji: "🐟",
     sumber: "Cold storage koperasi (stok saat ini 85 kg dari nelayan anggota)",
     potensi: "menengah",
     alasan:
@@ -226,6 +234,7 @@ export const peluangEkspor: PeluangKomoditas[] = [
   {
     id: "kentang",
     komoditas: "Kentang Granola",
+    emoji: "🥔",
     sumber: "Gudang koperasi (120 kg) + petani hortikultura anggota",
     potensi: "menengah",
     alasan:
@@ -252,6 +261,7 @@ export const peluangEkspor: PeluangKomoditas[] = [
   {
     id: "cabai-bawang",
     komoditas: "Cabai Merah & Bawang Merah",
+    emoji: "🌶️",
     sumber: "Titipan petani di cold storage (cabai 52 kg, bawang 14 kg)",
     potensi: "rendah",
     alasan:

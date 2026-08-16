@@ -60,6 +60,32 @@ export function stokMenipis(p: Produk): boolean {
   return p.stok < p.stokMinimum;
 }
 
+/** emoji fallback slot gambar produk (/gambar/produk/{id}.jpg) per kategori */
+export const EMOJI_KATEGORI: Record<string, string> = {
+  Beras: "🍚",
+  Minyak: "🫗",
+  Gula: "🍯",
+  Protein: "🥚",
+  Tepung: "🌾",
+  Mie: "🍜",
+  Minuman: "☕",
+  Bumbu: "🧂",
+  Kebersihan: "🧼",
+  Energi: "🔥",
+  Susu: "🥛",
+  "Obat Bebas": "💊",
+  Vitamin: "💊",
+  P3K: "🩹",
+  Herbal: "🌿",
+  Alkes: "🩺",
+  "Hasil Laut": "🐟",
+  Hortikultura: "🥬",
+};
+
+export function emojiProduk(p: Produk): string {
+  return EMOJI_KATEGORI[p.kategori] ?? "📦";
+}
+
 /** Rata-rata laju penjualan harian per produk (unit/hari) — dasar prediksi permintaan */
 const LAJU_JUAL_HARIAN: Record<string, number> = {
   "SMB-001": 4, "SMB-002": 5, "SMB-003": 3, "SMB-004": 4, "SMB-005": 6,

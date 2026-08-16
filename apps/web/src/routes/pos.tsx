@@ -14,7 +14,8 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { formatRupiah } from "~/lib/format";
-import { daftarProduk, type Produk } from "~/mocks/produk";
+import { GambarSlot } from "~/components/ui/GambarSlot";
+import { daftarProduk, emojiProduk, type Produk } from "~/mocks/produk";
 
 export const Route = createFileRoute("/pos")({
   component: HalamanPos,
@@ -92,8 +93,15 @@ function HalamanPos() {
                 key={p.id}
                 type="button"
                 onClick={() => tambah(p)}
-                className="flex flex-col rounded-xl border border-line bg-card p-3.5 text-left transition-all hover:border-merah/40 hover:bg-merah-soft/40 active:scale-[0.98]"
+                className="flex flex-col overflow-hidden rounded-xl border border-line bg-card text-left transition-all hover:border-merah/40 hover:bg-merah-soft/40 active:scale-[0.98]"
               >
+                <GambarSlot
+                  src={`/gambar/produk/${p.id}.jpg`}
+                  alt={p.nama}
+                  fallback={<span className="text-3xl">{emojiProduk(p)}</span>}
+                  className="h-16 w-full border-b border-line-soft"
+                />
+                <span className="flex flex-1 flex-col p-3">
                 <span className="text-[13px] leading-snug font-medium">{p.nama}</span>
                 <span className="mt-0.5 text-[11px] text-muted">
                   Stok {p.stok} {p.satuan}
@@ -106,6 +114,7 @@ function HalamanPos() {
                     Menipis
                   </Badge>
                 ) : null}
+                </span>
               </button>
             ))}
           </div>
