@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronDown, Newspaper, TriangleAlert, TrendingUp } from "lucide-react";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 
+import { LogoBni } from "~/components/bni/LogoBni";
 import { NavEkspor } from "~/components/ekspor/NavEkspor";
 import { GambarSlot } from "~/components/ui/GambarSlot";
 import { TanyaAI } from "~/components/pendamping/TanyaAI";
@@ -297,6 +298,19 @@ function HalamanPeluang() {
                           </details>
                         </div>
                       ))}
+                    </div>
+                  ) : null}
+
+                  {p.potensi === "tinggi" ? (
+                    <div className="flex flex-wrap items-center gap-2 rounded-lg border border-line bg-card px-3 py-2">
+                      <LogoBni className="h-3.5" />
+                      <span className="text-[11px] text-muted">
+                        Butuh modal konsolidasi panen?{" "}
+                        <span className="font-medium text-ink">
+                          Pembiayaan ekspor BNI
+                        </span>
+                      </span>
+                      <Badge variant="netral">Segera</Badge>
                     </div>
                   ) : null}
 

@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CircleCheck, CircleDashed, CircleX } from "lucide-react";
 import * as React from "react";
 
+import { LogoBni } from "~/components/bni/LogoBni";
 import { NavEkspor } from "~/components/ekspor/NavEkspor";
+import { TanyaAI } from "~/components/pendamping/TanyaAI";
 
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -157,6 +159,24 @@ function HalamanDokumen() {
               ))}
             </TableBody>
           </Table>
+        </CardContent>
+      </Card>
+
+      <Card className="border-merah/25">
+        <CardContent className="flex flex-wrap items-center gap-3 px-5 py-3.5">
+          <LogoBni className="h-5" />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold">Trade Finance & Letter of Credit BNI</p>
+            <p className="text-[11px] text-muted">
+              Saat pesanan pertama datang, pembayaran buyer diamankan lewat LC
+              BNI — koperasi tidak menanggung risiko gagal bayar sendirian.
+            </p>
+          </div>
+          <Badge variant="netral">Segera</Badge>
+          <TanyaAI
+            label="Tanya AI"
+            q="Apa itu letter of credit dan bagaimana BNI membantu pembayaran ekspor pertama koperasi?"
+          />
         </CardContent>
       </Card>
 

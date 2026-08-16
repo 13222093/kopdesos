@@ -1,5 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronDown, CircleDashed, CircleCheck, ExternalLink } from "lucide-react";
+import {
+  Banknote,
+  ChevronDown,
+  CircleDashed,
+  CircleCheck,
+  ExternalLink,
+  FileCheck2,
+  GraduationCap,
+  MapPin,
+  Users,
+} from "lucide-react";
+import * as React from "react";
+
+import { LogoBni } from "~/components/bni/LogoBni";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "~/components/ui/dialog";
 
 import { GaugeSkor } from "~/components/ekspor/GaugeSkor";
 import { GambarSlot } from "~/components/ui/GambarSlot";
@@ -24,7 +44,20 @@ const warnaStatus = {
   kurang: "bg-merah",
 } as const;
 
+const benefitXpora = [
+  { ikon: GraduationCap, label: "Pendampingan ekspor" },
+  { ikon: Users, label: "Kurasi buyer luar negeri" },
+  { ikon: Banknote, label: "Pembiayaan ekspor" },
+  { ikon: FileCheck2, label: "Trade finance & LC" },
+];
+
 function HalamanKesiapan() {
+  const [bukaAjukan, setBukaAjukan] = React.useState(false);
+  const [terkirim, setTerkirim] = React.useState(false);
+  const xpora = programPendampingan.find((p) => p.nama === "BNI Xpora");
+  const programPemerintah = programPendampingan.filter(
+    (p) => p.nama !== "BNI Xpora",
+  );
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-4">
       <div>
@@ -87,6 +120,56 @@ function HalamanKesiapan() {
         </Card>
       </div>
 
+      <Card className="border-merah/25 bg-gradient-to-br from-merah-soft/50 via-card to-card">
+        <CardContent className="flex flex-col gap-4 px-5 py-5 lg:flex-row lg:items-center">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <LogoBni className="h-6" />
+              <h2 className="font-display text-lg font-bold">BNI Xpora</h2>
+              <Badge variant="merah">Direkomendasikan</Badge>
+            </div>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted">
+              Koperasi Anda sudah berjalan di rel BNI: giro, QRIS, dan pinjaman
+              Himbara. Xpora adalah pintu ekspornya — satu jalur dari
+              pendampingan sampai pembayaran buyer.
+            </p>
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {benefitXpora.map((b) => (
+                <span
+                  key={b.label}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-2.5 py-1 text-[11px] font-medium"
+                >
+                  <b.ikon className="size-3 text-merah" /> {b.label}
+                </span>
+              ))}
+            </div>
+            <p className="mt-2.5 flex items-center gap-1 text-[11px] text-muted">
+              <MapPin className="size-3" /> Kantor layanan terdekat: Denpasar
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-col gap-2 lg:w-56">
+            <Button onClick={() => setBukaAjukan(true)}>
+              Ajukan lewat BNI Xpora
+            </Button>
+            <TanyaAI
+              label="Tanya soal Xpora"
+              q="Apa itu BNI Xpora dan apa manfaatnya untuk rencana ekspor kopi koperasi kita?"
+              className="justify-center py-2"
+            />
+            {xpora ? (
+              <a
+                href={xpora.url}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-1 text-[11px] font-medium text-merah hover:underline"
+              >
+                xpora.bni.co.id <ExternalLink className="size-3" />
+              </a>
+            ) : null}
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
         <Card>
           <CardHeader>
@@ -117,13 +200,13 @@ function HalamanKesiapan() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Program pendampingan</CardTitle>
+            <CardTitle>Program pemerintah pelengkap</CardTitle>
             <p className="mt-0.5 text-xs text-muted">
-              Kopdes tidak perlu ekspor sendirian
+              Bisa berjalan bersamaan dengan jalur BNI Xpora
             </p>
           </CardHeader>
           <CardContent className="flex flex-col divide-y divide-line-soft">
-            {programPendampingan.map((p) => (
+            {programPemerintah.map((p) => (
               <details key={p.nama} className="group py-1.5">
                 <summary className="flex cursor-pointer list-none items-center gap-2.5 py-1 [&::-webkit-details-marker]:hidden">
                   <GambarSlot
@@ -167,6 +250,69 @@ function HalamanKesiapan() {
       </div>
 
       <p className="text-[11px] text-muted/80">{DISCLAIMER_EKSPOR}</p>
+
+      <Dialog
+        open={bukaAjukan}
+        onOpenChange={(o) => {
+          setBukaAjukan(o);
+          if (!o) setTerkirim(false);
+        }}
+      >
+        <DialogContent>
+          {terkirim ? (
+            <>
+              <DialogTitle>Pengajuan terkirim ✅</DialogTitle>
+              <DialogDescription>
+                Tim BNI Xpora Denpasar akan menghubungi pengurus koperasi dalam
+                3 hari kerja. Ringkasan pengajuan tersimpan di platform.
+                (Mockup — pengajuan tidak benar-benar dikirim.)
+              </DialogDescription>
+              <Button
+                variant="secondary"
+                className="mt-4 w-full"
+                onClick={() => setBukaAjukan(false)}
+              >
+                Tutup
+              </Button>
+            </>
+          ) : (
+            <>
+              <DialogTitle className="flex items-center gap-2">
+                Ajukan lewat <LogoBni className="h-5" /> Xpora
+              </DialogTitle>
+              <DialogDescription>
+                Data berikut akan dikirim sebagai profil pengajuan koperasi:
+              </DialogDescription>
+              <div className="mt-3 flex flex-col divide-y divide-line-soft rounded-lg border border-line bg-paper px-3 text-sm">
+                <div className="flex justify-between py-2">
+                  <span className="text-muted">Koperasi</span>
+                  <span className="font-medium">Kopdes Merah Putih Sukamaju</span>
+                </div>
+                <div className="flex justify-between py-2">
+                  <span className="text-muted">Skor kesiapan ekspor</span>
+                  <span className="tnum font-mono font-semibold">
+                    {kesiapanEkspor.skorTotal}/100
+                  </span>
+                </div>
+                <div className="flex justify-between py-2">
+                  <span className="text-muted">Komoditas unggulan</span>
+                  <span className="font-medium">Kopi Arabika Bali (±2,4 ton/th)</span>
+                </div>
+                <div className="flex justify-between py-2">
+                  <span className="text-muted">Relasi BNI</span>
+                  <span className="font-medium">Giro · QRIS · Pinjaman Himbara</span>
+                </div>
+              </div>
+              <Button className="mt-4 w-full" onClick={() => setTerkirim(true)}>
+                Kirim pengajuan
+              </Button>
+              <p className="mt-2 text-center text-[10px] text-muted">
+                Mockup — data tidak benar-benar dikirim
+              </p>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
