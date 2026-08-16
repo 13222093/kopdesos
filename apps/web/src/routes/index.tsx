@@ -11,6 +11,7 @@ import {
   YAxis,
 } from "recharts";
 
+import { LogoBni } from "~/components/bni/LogoBni";
 import { InsightCard } from "~/components/insight/InsightCard";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -43,17 +44,20 @@ function KpiCard({
   nilai,
   keterangan,
   arah,
+  logo,
 }: {
   label: string;
   nilai: string;
   keterangan: string;
   arah?: "naik" | "turun" | "netral";
+  logo?: React.ReactNode;
 }) {
   return (
     <Card>
       <CardContent className="px-5 py-4">
-        <p className="text-[11px] font-semibold tracking-wide text-muted uppercase">
-          {label}
+        <p className="flex items-center justify-between gap-2 text-[11px] font-semibold tracking-wide text-muted uppercase">
+          <span>{label}</span>
+          {logo}
         </p>
         <p className="tnum mt-1.5 font-mono text-xl font-semibold">{nilai}</p>
         <p
@@ -168,8 +172,9 @@ function Beranda() {
         <KpiCard
           label="Saldo kas"
           nilai={formatRupiahSingkat(saldoKas)}
-          keterangan="Kas + rekening koperasi"
+          keterangan="Kas gerai + Giro BNI koperasi"
           arah="netral"
+          logo={<LogoBni className="h-3" />}
         />
         <KpiCard
           label="Piutang anggota"
@@ -182,6 +187,7 @@ function Beranda() {
           nilai={formatRupiahSingkat(pinjamanHimbara.angsuranBulanan)}
           keterangan="Jatuh tempo 25 Jul — 7 hari lagi"
           arah="netral"
+          logo={<LogoBni className="h-3" />}
         />
       </div>
 

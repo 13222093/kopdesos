@@ -154,7 +154,7 @@ export type PeluangKomoditas = {
   hargaLokal: string;
   negaraTujuan: {
     negara: string;
-    bendera: string;
+    kode: string;
     hargaIndikatif: string;
     permintaan: string;
     syaratKunci: string[];
@@ -175,7 +175,7 @@ export const peluangEkspor: PeluangKomoditas[] = [
     negaraTujuan: [
       {
         negara: "Jepang",
-        bendera: "🇯🇵",
+        kode: "jp",
         hargaIndikatif: "Rp180.000–250.000/kg (specialty grade)",
         permintaan: "Tinggi & stabil — roaster specialty cari single origin",
         syaratKunci: [
@@ -186,14 +186,14 @@ export const peluangEkspor: PeluangKomoditas[] = [
       },
       {
         negara: "Australia",
-        bendera: "🇦🇺",
+        kode: "au",
         hargaIndikatif: "Rp160.000–220.000/kg",
         permintaan: "Tinggi — pasar kafe besar, dekat secara logistik",
         syaratKunci: ["Biosecurity import permit", "Phytosanitary Certificate"],
       },
       {
         negara: "Amerika Serikat",
-        bendera: "🇺🇸",
+        kode: "us",
         hargaIndikatif: "Rp170.000–240.000/kg",
         permintaan: "Sangat besar tapi kompetitif",
         syaratKunci: ["Registrasi FDA", "FSVP importer", "Konsistensi volume"],
@@ -213,7 +213,7 @@ export const peluangEkspor: PeluangKomoditas[] = [
     negaraTujuan: [
       {
         negara: "Jepang",
-        bendera: "🇯🇵",
+        kode: "jp",
         hargaIndikatif: "Rp55.000–75.000/kg (frozen whole)",
         permintaan: "Stabil untuk katsuobushi & pengolahan",
         syaratKunci: [
@@ -224,7 +224,7 @@ export const peluangEkspor: PeluangKomoditas[] = [
       },
       {
         negara: "Singapura",
-        bendera: "🇸🇬",
+        kode: "sg",
         hargaIndikatif: "Rp45.000–60.000/kg",
         permintaan: "Menengah — pasar horeka, logistik mudah",
         syaratKunci: ["Health Certificate (BKIPM)", "SFA import requirements"],
@@ -244,14 +244,14 @@ export const peluangEkspor: PeluangKomoditas[] = [
     negaraTujuan: [
       {
         negara: "Singapura",
-        bendera: "🇸🇬",
+        kode: "sg",
         hargaIndikatif: "Rp22.000–28.000/kg",
         permintaan: "Menengah (horeka)",
         syaratKunci: ["Phytosanitary Certificate", "Grading & packing standar"],
       },
       {
         negara: "Malaysia",
-        bendera: "🇲🇾",
+        kode: "my",
         hargaIndikatif: "Rp20.000–25.000/kg",
         permintaan: "Menengah",
         syaratKunci: ["Phytosanitary Certificate", "Sertifikat halal (untuk olahan)"],

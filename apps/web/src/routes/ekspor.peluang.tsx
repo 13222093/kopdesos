@@ -3,6 +3,7 @@ import { ChevronDown, Newspaper, TriangleAlert, TrendingUp } from "lucide-react"
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 
 import { LogoBni } from "~/components/bni/LogoBni";
+import { Bendera } from "~/components/ekspor/Bendera";
 import { NavEkspor } from "~/components/ekspor/NavEkspor";
 import { GambarSlot } from "~/components/ui/GambarSlot";
 import { TanyaAI } from "~/components/pendamping/TanyaAI";
@@ -45,10 +46,12 @@ function BarHarga({
   hargaLokal,
   hargaEkspor,
   negara,
+  kode,
 }: {
   hargaLokal: string;
   hargaEkspor: string;
   negara: string;
+  kode: string;
 }) {
   const lokal = angkaHarga(hargaLokal);
   const ekspor = angkaHarga(hargaEkspor);
@@ -71,8 +74,8 @@ function BarHarga({
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="w-24 shrink-0 text-[11px] text-muted">
-            Ekspor {negara}
+          <span className="flex w-24 shrink-0 items-center gap-1 text-[11px] text-muted">
+            <Bendera kode={kode} className="h-2.5" /> {negara}
           </span>
           <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-line-soft">
             <span
@@ -255,7 +258,8 @@ function HalamanPeluang() {
                         <BarHarga
                           hargaLokal={p.hargaLokal}
                           hargaEkspor={negaraUtama.hargaIndikatif}
-                          negara={`${negaraUtama.bendera} ${negaraUtama.negara}`}
+                          negara={negaraUtama.negara}
+                          kode={negaraUtama.kode}
                         />
                       ) : null}
                       <details className="group">
@@ -275,8 +279,8 @@ function HalamanPeluang() {
                       {p.negaraTujuan.map((n) => (
                         <div key={n.negara} className="rounded-lg border border-line p-3">
                           <div className="flex items-center justify-between gap-2">
-                            <p className="text-sm font-semibold">
-                              {n.bendera} {n.negara}
+                            <p className="flex items-center gap-1.5 text-sm font-semibold">
+                              <Bendera kode={n.kode} /> {n.negara}
                             </p>
                             <p className="text-[11px] text-muted">{n.permintaan}</p>
                           </div>

@@ -25,6 +25,7 @@
     "ai": "^7.0.34",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "flag-icons": "^7.5.0",
     "hono": "^4.12.31",
     "lucide-react": "^0.545.0",
     "react": "^19.2.0",
