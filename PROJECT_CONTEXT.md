@@ -16,7 +16,7 @@
 
 ## 2. Status saat ini (yang penting dipahami)
 
-**REBRAND (17 Agu 2026, keputusan tim):** produk TIDAK lagi diposisikan untuk program pemerintah "Koperasi Desa Merah Putih" — sebagian juri tidak menyukai program itu. Positioning: koperasi & UMKM desa pada umumnya. Koperasi demo = **"Koperasi Sukamaju"** (dulu "Kopdes Merah Putih Sukamaju"); label "Manajer KDMP" → "Manajer Koperasi"; semua sebutan "Himbara" di teks UI/prompt/payload AI diganti "BNI"/"pinjaman modal". JANGAN memakai istilah Kopdes Merah Putih/KDMP/Himbara di teks baru. Catatan: identifier internal kode (variabel `pinjamanHimbara`, tool `lihat_pinjaman_himbara`, `koperasi.id`, nama repo `kopdesos`) SENGAJA tidak di-rename demi keamanan perubahan.
+**REBRAND (17 Agu 2026, keputusan tim):** produk TIDAK lagi diposisikan untuk program pemerintah "Koperasi Desa Merah Putih" — sebagian juri tidak menyukai program itu. Positioning: koperasi & UMKM desa pada umumnya. Koperasi demo = **"Koperasi Sukamaju"** (dulu "Kopdes Merah Putih Sukamaju"); label "Manajer KDMP" → "Manajer Koperasi"; semua sebutan "Himbara" di teks UI/prompt/payload AI diganti "BNI"/"pinjaman modal". JANGAN memakai istilah Kopdes Merah Putih/KDMP/Himbara di teks baru. Asisten AI kini bernama **"KopPilot AI"** di semua label yang tampil (dulu "Pendamping AI") — selaras penamaan Operation/Finance/Export Copilot di deck; route `/pendamping` & identifier internal tetap. Catatan: identifier internal kode (variabel `pinjamanHimbara`, tool `lihat_pinjaman_himbara`, `koperasi.id`, nama repo `kopdesos`) SENGAJA tidak di-rename demi keamanan perubahan.
 
 **Fase: MVP demo.** Frontend lengkap berjalan dengan **data mock deterministik** (belum ada database), TAPI **asisten AI-nya SUNGGUHAN** — bukan scripted:
 
