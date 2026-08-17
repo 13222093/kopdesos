@@ -50,6 +50,15 @@ export const layananBni: LayananBni[] = [
     statusDiPlatform: "segera",
   },
   {
+    nama: "BNI MOVE",
+    jenis: "Kredit UMKM digital",
+    penjelasanSederhana:
+      "Aplikasi pengajuan kredit UMKM BNI (KUR & BNI Wirausaha) tanpa perlu datang ke cabang — data usaha dianalisis otomatis.",
+    manfaatUntukKoperasi:
+      "Anggota koperasi bisa mengajukan pinjaman modal usaha langsung dari profil KopPilot; riwayat belanja & simpanan di platform jadi bahan penilaian kreditnya.",
+    statusDiPlatform: "segera",
+  },
+  {
     nama: "BNI Xpora",
     jenis: "Solusi UMKM Go Global",
     penjelasanSederhana:

@@ -7,6 +7,7 @@ import {
 } from "ai";
 import { Hono } from "hono";
 
+import { buatDigest } from "./digest";
 import { jawabPendamping, konfigurasi, SYSTEM_PROMPT } from "./otak";
 import { toolsPendamping } from "./tools";
 
@@ -130,6 +131,21 @@ app.post("/telegram", async (c) => {
     return c.json({ ok: true });
   }
 
+  // /langganan: balas ID chat untuk didaftarkan ke ringkasan pagi otomatis
+  if (teks === "/langganan") {
+    const balasLangganan = panggilTelegram(token, "sendMessage", {
+      chat_id: chatId,
+      text: `ID chat kamu: ${chatId}\n\nMinta admin menambahkan ID ini ke variabel TELEGRAM_CHAT_IDS di server, lalu kamu akan menerima *Ringkasan Pagi* otomatis setiap hari 🌅`,
+      parse_mode: "Markdown",
+    }).then(() => undefined);
+    try {
+      c.executionCtx.waitUntil(balasLangganan);
+    } catch {
+      await balasLangganan;
+    }
+    return c.json({ ok: true });
+  }
+
   const kerja = (async () => {
     try {
       await panggilTelegram(token, "sendChatAction", {
@@ -139,7 +155,9 @@ app.post("/telegram", async (c) => {
       const jawaban =
         teks === "/start" || teks === "/help"
           ? SAPAAN_TELEGRAM
-          : markdownTelegram(await jawabPendamping(teks));
+          : teks === "/ringkasan"
+            ? buatDigest()
+            : markdownTelegram(await jawabPendamping(teks));
       const kirim = await panggilTelegram(token, "sendMessage", {
         chat_id: chatId,
         text: jawaban,
@@ -168,6 +186,59 @@ app.post("/telegram", async (c) => {
     await kerja; // dev server lokal: tidak ada executionCtx, tunggu langsung
   }
   return c.json({ ok: true });
+});
+
+// ── digest pagi proaktif (dipicu Vercel Cron atau manual) ────────
+app.get("/digest", async (c) => {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) return c.json({ error: "TELEGRAM_BOT_TOKEN belum diatur" }, 503);
+
+  // otorisasi: Vercel Cron (Bearer CRON_SECRET otomatis) atau manual (?rahasia=TELEGRAM_SECRET)
+  const cronSecret = process.env.CRON_SECRET;
+  const rahasia = process.env.TELEGRAM_SECRET;
+  const auth = c.req.header("authorization");
+  const sah =
+    (cronSecret && auth === `Bearer ${cronSecret}`) ||
+    (rahasia && c.req.query("rahasia") === rahasia) ||
+    (!cronSecret && !rahasia);
+  if (!sah) return c.json({ error: "tidak berwenang" }, 401);
+
+  // ?pratinjau=1 → tampilkan isi digest tanpa mengirim (untuk cek/demo)
+  if (c.req.query("pratinjau")) {
+    return c.text(buatDigest());
+  }
+
+  const daftar = (process.env.TELEGRAM_CHAT_IDS ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (daftar.length === 0) {
+    return c.json({
+      terkirim: 0,
+      catatan:
+        "TELEGRAM_CHAT_IDS kosong. Kirim /langganan ke bot untuk melihat ID chat, lalu tambahkan ke env.",
+    });
+  }
+
+  const isi = buatDigest();
+  let terkirim = 0;
+  for (const id of daftar) {
+    const r = await panggilTelegram(token, "sendMessage", {
+      chat_id: Number(id),
+      text: isi,
+      parse_mode: "Markdown",
+    });
+    if (r.ok) {
+      terkirim++;
+    } else {
+      const ulang = await panggilTelegram(token, "sendMessage", {
+        chat_id: Number(id),
+        text: isi.replace(/[*_]/g, ""),
+      });
+      if (ulang.ok) terkirim++;
+    }
+  }
+  return c.json({ terkirim, total: daftar.length });
 });
 
 export default app;

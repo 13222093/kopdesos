@@ -53,6 +53,16 @@ export type KabarPasar = {
 
 export const kabarPasar: KabarPasar[] = [
   {
+    tanggal: "2026-07-16",
+    sumber: "BNI Economic Outlook",
+    judul: "BNI proyeksikan permintaan kopi specialty Asia Timur tumbuh dua digit hingga 2027",
+    ringkas: "Sinyal kuat untuk mempercepat agregasi kopi anggota — selaras jalur BNI Xpora.",
+    komoditas: ["kopi"],
+    dampak: "peluang",
+    gambar: "/gambar/berita/bni-outlook.jpg",
+    emoji: "🏦",
+  },
+  {
     tanggal: "2026-07-15",
     sumber: "Reuters",
     judul: "Harga arabika dunia naik 4% sepekan, pasokan Brasil terganggu embun beku",

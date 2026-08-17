@@ -40,9 +40,9 @@ export const daftarInsight: Insight[] = [
   {
     id: "INS-03",
     tipe: "info",
-    judul: "Penjualan kemarin naik 9% dari rata-rata",
-    inti: "Rp4,6 jt kemarin, penyumbang terbesar gerai sembako Rp3,3 jt.",
-    isi: "Total penjualan kemarin Rp4,6 juta, lebih tinggi dari rata-rata hari Jumat (Rp4,2 juta). Penyumbang terbesar: gerai sembako Rp3,3 juta. Margin kotor kemarin sekitar 11%.",
+    judul: "Penjualan kemarin tertinggi minggu ini",
+    inti: "Rp6,3 jt kemarin, penyumbang terbesar gerai sembako.",
+    isi: "Total penjualan kemarin Rp6,3 juta, tertinggi sepanjang minggu ini. Penyumbang terbesar: gerai sembako. Margin kotor kemarin sekitar 11%.",
     waktu: "Hari ini 06.00",
   },
   {

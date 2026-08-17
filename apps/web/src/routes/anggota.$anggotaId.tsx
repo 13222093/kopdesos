@@ -1,5 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, MessageCircle, Pencil, Phone } from "lucide-react";
+import { ArrowLeft, HandCoins, MessageCircle, Pencil, Phone } from "lucide-react";
+import * as React from "react";
+
+import { LogoBni } from "~/components/bni/LogoBni";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
 
 import { Avatar } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
@@ -36,6 +46,10 @@ const riwayatBelanjaContoh = [
 function DetailAnggota() {
   const { anggotaId } = Route.useParams();
   const anggota = daftarAnggota.find((a) => a.id === anggotaId);
+  const [bukaAjukan, setBukaAjukan] = React.useState(false);
+  const [terkirim, setTerkirim] = React.useState(false);
+  const [jumlah, setJumlah] = React.useState("");
+  const [tujuan, setTujuan] = React.useState("");
   if (!anggota) {
     return (
       <div className="mx-auto max-w-3xl py-12 text-center">
@@ -118,8 +132,11 @@ function DetailAnggota() {
         </Card>
 
         <Card className="lg:col-span-2">
-          <CardHeader>
+          <CardHeader className="flex-row items-center justify-between">
             <CardTitle>Pinjaman aktif</CardTitle>
+            <Button size="sm" onClick={() => { setTerkirim(false); setBukaAjukan(true); }}>
+              <HandCoins /> Ajukan Pinjaman
+            </Button>
           </CardHeader>
           <CardContent>
             {pinjaman.length === 0 ? (
@@ -214,6 +231,57 @@ function DetailAnggota() {
           </p>
         </CardContent>
       </Card>
+
+      <Dialog open={bukaAjukan} onOpenChange={setBukaAjukan}>
+        <DialogContent>
+          {terkirim ? (
+            <>
+              <DialogTitle>Pengajuan diterima ✅</DialogTitle>
+              <DialogDescription>
+                Pengajuan diteruskan ke pengurus koperasi dan diproses digital
+                melalui <span className="font-medium">BNI MOVE</span> — riwayat
+                simpanan dan belanja Anda di KopPilot ikut jadi bahan penilaian.
+                Kabar persetujuan dikirim lewat WhatsApp. (Mockup)
+              </DialogDescription>
+              <Button variant="secondary" className="mt-4 w-full" onClick={() => setBukaAjukan(false)}>
+                Tutup
+              </Button>
+            </>
+          ) : (
+            <>
+              <DialogTitle className="flex items-center gap-2">
+                Ajukan Pinjaman <LogoBni className="h-4" />
+              </DialogTitle>
+              <DialogDescription>
+                Atas nama {anggota.nama} — diproses digital via BNI MOVE (KUR /
+                BNI Wirausaha), tanpa perlu ke cabang.
+              </DialogDescription>
+              <div className="mt-4 flex flex-col gap-2.5">
+                <Input
+                  placeholder="Jumlah pinjaman (mis. 5.000.000)"
+                  value={jumlah}
+                  onChange={(e) => setJumlah(e.target.value)}
+                />
+                <Input
+                  placeholder="Tujuan (mis. modal dagang, alat tani)"
+                  value={tujuan}
+                  onChange={(e) => setTujuan(e.target.value)}
+                />
+              </div>
+              <Button
+                className="mt-4 w-full"
+                disabled={!jumlah || !tujuan}
+                onClick={() => setTerkirim(true)}
+              >
+                Kirim pengajuan
+              </Button>
+              <p className="mt-2 text-center text-[10px] text-muted">
+                Mockup — pengajuan tidak benar-benar dikirim
+              </p>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
