@@ -36,7 +36,8 @@ export function ringkasanHariIni() {
     penjualanHariIni: { ...penjualanHariIni, total: totalHari(penjualanHariIni) },
     penjualanKemarin: { ...penjualanKemarin, total: totalHari(penjualanKemarin) },
     saldoKas,
-    angsuranHimbaraBerikut: {
+    angsuranBankBerikut: {
+      bank: pinjamanHimbara.bank,
       jumlah: pinjamanHimbara.angsuranBulanan,
       jatuhTempo: pinjamanHimbara.jatuhTempoBerikut,
     },
@@ -147,7 +148,7 @@ export function dataKas() {
       perkiraanKasMasuk: p.kasMasuk,
       perkiraanKasKeluarOperasional: p.kasKeluar,
       sisaKasOperasional: p.kasMasuk - p.kasKeluar,
-      angsuranHimbara: p.angsuran,
+      angsuranBankBni: p.angsuran,
     })),
     bukuKasTerakhir: entriKas.slice(0, 12),
   };
@@ -272,7 +273,7 @@ export function dataLaporan(jenis: "neraca" | "phu" | "arus_kas") {
         persediaanBarang: 64_750_000,
         asetTetap: 2_410_000_000,
         totalAset: 2_686_270_000,
-        utangBankHimbara: 2_547_000_000,
+        utangBankBni: 2_547_000_000,
         simpananAnggota: 48_350_000,
         ekuitas: 90_920_000,
       },

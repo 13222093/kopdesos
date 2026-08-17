@@ -78,7 +78,7 @@ const isiLaporan: Record<JenisLaporan, { judul: string; baris: [string, number][
       ["Persediaan barang dagang", 64_750_000],
       ["Aset tetap (bangunan gerai & peralatan)", 2_410_000_000],
       ["TOTAL ASET", 2_686_270_000],
-      ["Utang bank Himbara (BNI)", 2_547_000_000],
+      ["Utang bank (BNI)", 2_547_000_000],
       ["Simpanan anggota (kewajiban)", 48_350_000],
       ["Ekuitas (simpanan pokok/wajib + cadangan)", 90_920_000],
       ["TOTAL KEWAJIBAN + EKUITAS", 2_686_270_000],
@@ -132,7 +132,7 @@ function HalamanKeuangan() {
             </span>
             <div>
               <CardTitle className="flex items-center gap-2">
-                Monitor Pinjaman Himbara — {pinjamanHimbara.bank} <LogoBni />
+                Monitor Pinjaman Modal — {pinjamanHimbara.bank} <LogoBni />
                 <TanyaAI
                   label="Tanya AI"
                   q="Kas kita cukup untuk bayar angsuran BNI bulan ini?"
@@ -441,4 +441,4 @@ function HalamanKeuangan() {
   );
 }
 
-const koperasiNama = "Kopdes Merah Putih Sukamaju";
+const koperasiNama = "Koperasi Sukamaju";

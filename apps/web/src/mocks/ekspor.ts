@@ -103,7 +103,7 @@ export const programPendampingan = [
     status: "Belum terdaftar",
     url: "https://xpora.bni.co.id",
     cocokKarena:
-      "Koperasi sudah memakai rel perbankan BNI (giro, pinjaman Himbara) — satu pintu dari pembiayaan sampai buyer.",
+      "Koperasi sudah memakai rel perbankan BNI (giro, pinjaman modal) — satu pintu dari pembiayaan sampai buyer.",
   },
   {
     nama: "Desa Devisa",
@@ -114,7 +114,7 @@ export const programPendampingan = [
     syaratUtama: "Ada komoditas unggulan + kelembagaan aktif (koperasi ✓)",
     status: "Belum terdaftar",
     url: "https://www.indonesiaeximbank.go.id",
-    cocokKarena: "Berbasis koperasi/klaster — jalur paling natural untuk kopdes.",
+    cocokKarena: "Berbasis koperasi/klaster — jalur paling natural untuk koperasi desa.",
   },
   {
     nama: "Desa BISA Ekspor",
@@ -122,7 +122,7 @@ export const programPendampingan = [
     penyelenggara: "Kemendag + Kemendes + Kementan + LPEI + Astra",
     deskripsi:
       "Payung nasional (diluncurkan Sep 2025) yang menggabungkan 5 program desa ekspor. Kemendag sedang mengidentifikasi 2.616 desa potensial.",
-    syaratUtama: "Desa dengan produk unggulan & kelembagaan (kopdes memenuhi)",
+    syaratUtama: "Desa dengan produk unggulan & kelembagaan (koperasi memenuhi)",
     status: "Belum terdaftar",
     url: "https://kemendag.go.id",
     cocokKarena: "Momentum: pemerintah sedang aktif mencari desa peserta.",

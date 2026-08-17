@@ -3,8 +3,8 @@ export const HARI_INI = "2026-07-18";
 
 export const koperasi = {
   id: "kopdes-sukamaju",
-  nama: "Kopdes Merah Putih Sukamaju",
-  namaPendek: "Kopdes Sukamaju",
+  nama: "Koperasi Sukamaju",
+  namaPendek: "Koperasi Sukamaju",
   desa: "Desa Sukamaju",
   kecamatan: "Kec. Tabanan",
   kabupaten: "Kab. Tabanan, Bali",

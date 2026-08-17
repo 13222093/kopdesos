@@ -130,7 +130,7 @@ function HalamanKesiapan() {
             </div>
             <p className="mt-1.5 text-sm leading-relaxed text-muted">
               Koperasi Anda sudah berjalan di rel BNI: giro, QRIS, dan pinjaman
-              Himbara. Xpora adalah pintu ekspornya — satu jalur dari
+              modal. Xpora adalah pintu ekspornya — satu jalur dari
               pendampingan sampai pembayaran buyer.
             </p>
             <div className="mt-3 flex flex-wrap gap-1.5">
@@ -286,7 +286,7 @@ function HalamanKesiapan() {
               <div className="mt-3 flex flex-col divide-y divide-line-soft rounded-lg border border-line bg-paper px-3 text-sm">
                 <div className="flex justify-between py-2">
                   <span className="text-muted">Koperasi</span>
-                  <span className="font-medium">Kopdes Merah Putih Sukamaju</span>
+                  <span className="font-medium">Koperasi Sukamaju</span>
                 </div>
                 <div className="flex justify-between py-2">
                   <span className="text-muted">Skor kesiapan ekspor</span>
@@ -300,7 +300,7 @@ function HalamanKesiapan() {
                 </div>
                 <div className="flex justify-between py-2">
                   <span className="text-muted">Relasi BNI</span>
-                  <span className="font-medium">Giro · QRIS · Pinjaman Himbara</span>
+                  <span className="font-medium">Giro · QRIS · Pinjaman modal</span>
                 </div>
               </div>
               <Button className="mt-4 w-full" onClick={() => setTerkirim(true)}>

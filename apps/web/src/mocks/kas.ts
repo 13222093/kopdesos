@@ -31,7 +31,7 @@ export const entriKas: EntriKas[] = [
   { id: "KAS-101", tanggal: "2026-07-09", uraian: "Setoran simpanan wajib kolektif", kategori: "Simpanan", masuk: 4_280_000, keluar: 0 },
 ];
 
-/** Proyeksi sederhana kas vs angsuran Himbara 4 bulan ke depan */
+/** Proyeksi sederhana kas vs angsuran bank 4 bulan ke depan */
 export const proyeksiKas = [
   { bulan: "Jul", kasMasuk: 96_000_000, kasKeluar: 84_000_000, angsuran: 43_100_000 },
   { bulan: "Agu", kasMasuk: 99_500_000, kasKeluar: 85_500_000, angsuran: 43_100_000 },

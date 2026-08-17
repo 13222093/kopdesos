@@ -16,6 +16,8 @@
 
 ## 2. Status saat ini (yang penting dipahami)
 
+**REBRAND (17 Agu 2026, keputusan tim):** produk TIDAK lagi diposisikan untuk program pemerintah "Koperasi Desa Merah Putih" — sebagian juri tidak menyukai program itu. Positioning: koperasi & UMKM desa pada umumnya. Koperasi demo = **"Koperasi Sukamaju"** (dulu "Kopdes Merah Putih Sukamaju"); label "Manajer KDMP" → "Manajer Koperasi"; semua sebutan "Himbara" di teks UI/prompt/payload AI diganti "BNI"/"pinjaman modal". JANGAN memakai istilah Kopdes Merah Putih/KDMP/Himbara di teks baru. Catatan: identifier internal kode (variabel `pinjamanHimbara`, tool `lihat_pinjaman_himbara`, `koperasi.id`, nama repo `kopdesos`) SENGAJA tidak di-rename demi keamanan perubahan.
+
 **Fase: MVP demo.** Frontend lengkap berjalan dengan **data mock deterministik** (belum ada database), TAPI **asisten AI-nya SUNGGUHAN** — bukan scripted:
 
 - Panel & halaman "Pendamping AI" memanggil `POST /api/pendamping` (Hono di **Vercel Edge**) → **Kimi K3** (Moonshot AI, OpenAI-compatible, via Vercel AI SDK `streamText`) → tool-calling loop maks 6 step → **12 tools deterministik** membaca data mock.

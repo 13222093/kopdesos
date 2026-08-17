@@ -54,7 +54,7 @@ function buatJadwal(p: PinjamanAnggota) {
 }
 
 function templatePenagihan(p: PinjamanAnggota): string {
-  return `Selamat siang ${p.namaAnggota} 🙏\n\nKami dari Kopdes Sukamaju mengingatkan angsuran pinjaman ${p.tujuan.toLowerCase()} sebesar ${formatRupiah(p.angsuranBulanan)} dengan jatuh tempo ${formatTanggal(p.jatuhTempoBerikut)}. Sisa pinjaman saat ini ${formatRupiah(p.sisa)}.\n\nPembayaran bisa dilakukan di kantor koperasi atau transfer. Kalau ada kendala, silakan hubungi kami, kita cari jalan keluarnya bersama. Terima kasih 🙏`;
+  return `Selamat siang ${p.namaAnggota} 🙏\n\nKami dari Koperasi Sukamaju mengingatkan angsuran pinjaman ${p.tujuan.toLowerCase()} sebesar ${formatRupiah(p.angsuranBulanan)} dengan jatuh tempo ${formatTanggal(p.jatuhTempoBerikut)}. Sisa pinjaman saat ini ${formatRupiah(p.sisa)}.\n\nPembayaran bisa dilakukan di kantor koperasi atau transfer. Kalau ada kendala, silakan hubungi kami, kita cari jalan keluarnya bersama. Terima kasih 🙏`;
 }
 
 function HalamanSimpanPinjam() {

@@ -47,7 +47,7 @@ function Emblem({ className }: { className?: string }) {
 type Peran = "manajer" | "kasir" | "anggota";
 
 const infoPeran: Record<Peran, { nama: string; label: string }> = {
-  manajer: { nama: koperasi.manajer, label: "Manajer KDMP" },
+  manajer: { nama: koperasi.manajer, label: "Manajer Koperasi" },
   kasir: { nama: koperasi.kasir, label: "Kasir" },
   anggota: { nama: daftarAnggota[0].nama, label: "Anggota" },
 };

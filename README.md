@@ -10,7 +10,7 @@
 
 ## Masalah yang diselesaikan
 
-Ada **80.000 Koperasi Desa Merah Putih** yang sedang dibangun pemerintah, dan 64,2 juta UMKM di belakangnya. Mereka bisa berjualan — tapi *stuck in survival mode*:
+Ada **lebih dari 130.000 koperasi aktif** di Indonesia dan 64,2 juta UMKM di belakangnya. Mereka bisa berjualan — tapi *stuck in survival mode*:
 
 - 🙍 *"Stok segini cukup nggak ya? Takut kurang, tapi kalau kebanyakan modal ketahan."* — pengelola tidak bisa memprediksi permintaan, stok, dan arus kas.
 - 🙍‍♀️ *"Katanya produk saya bisa dijual ke luar negeri. Tapi saya nggak tahu harus ngurus apa, mulai dari mana."* — akses pasar & ekspor gelap gulita.

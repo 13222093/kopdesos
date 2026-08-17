@@ -64,7 +64,7 @@ export const toolsPendamping = {
 
   lihat_pinjaman_himbara: tool({
     description:
-      "Pinjaman modal koperasi dari bank Himbara (BNI): plafon, sisa pokok, angsuran bulanan, jatuh tempo berikutnya, progres tenor, riwayat angsuran.",
+      "Pinjaman modal koperasi dari BNI: plafon, sisa pokok, angsuran bulanan, jatuh tempo berikutnya, progres tenor, riwayat angsuran.",
     inputSchema: z.object({}),
     execute: async () => dataPinjamanHimbara(),
   }),
@@ -88,7 +88,7 @@ export const toolsPendamping = {
 
   lihat_layanan_bni: tool({
     description:
-      "Layanan perbankan BNI yang relevan untuk koperasi (giro/CASA, QRIS merchant, virtual account, Agen46, Xpora, pembiayaan Himbara): penjelasan sederhana, manfaat, dan status di platform.",
+      "Layanan perbankan BNI yang relevan untuk koperasi (giro/CASA, QRIS merchant, virtual account, Agen46, Xpora, pinjaman modal usaha): penjelasan sederhana, manfaat, dan status di platform.",
     inputSchema: z.object({}),
     execute: async () => dataLayananBni(),
   }),

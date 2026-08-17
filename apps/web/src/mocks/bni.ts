@@ -59,7 +59,7 @@ export const layananBni: LayananBni[] = [
     statusDiPlatform: "segera",
   },
   {
-    nama: "Pembiayaan Kopdes Merah Putih (Himbara)",
+    nama: "Pinjaman Modal Usaha BNI",
     jenis: "Pinjaman modal",
     penjelasanSederhana:
       "Pinjaman modal koperasi hingga Rp3 miliar (bunga 6%/tahun, tenor 72 bulan) — sudah berjalan lewat BNI.",
