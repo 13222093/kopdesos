@@ -1,5 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowDownRight, ArrowUpRight, CalendarClock } from "lucide-react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  CalendarClock,
+  FileText,
+  PackagePlus,
+  ShoppingCart,
+  Sparkles,
+} from "lucide-react";
 import * as React from "react";
 import {
   Bar,
@@ -28,6 +36,7 @@ import {
   penjualan90Hari,
   penjualanHariIni,
   penjualanKemarin,
+  total30Hari,
   totalHari,
 } from "~/mocks/penjualan";
 import { pinjamanHimbara, ringkasanSimpanPinjam } from "~/mocks/pinjaman";
@@ -38,6 +47,32 @@ import { cn } from "~/lib/utils";
 export const Route = createFileRoute("/")({
   component: Beranda,
 });
+
+function AksiCepat({
+  to,
+  icon: Icon,
+  label,
+  utama,
+}: {
+  to: "/pos" | "/inventori" | "/keuangan" | "/pendamping";
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  utama?: boolean;
+}) {
+  return (
+    <Link
+      to={to}
+      className={cn(
+        "inline-flex h-9 items-center gap-1.5 rounded-lg border px-3 text-sm font-medium transition-colors",
+        utama
+          ? "border-merah bg-merah text-white hover:bg-merah-dark"
+          : "border-line bg-card text-ink hover:bg-line-soft",
+      )}
+    >
+      <Icon className="size-4" /> {label}
+    </Link>
+  );
+}
 
 function KpiCard({
   label,
@@ -118,13 +153,19 @@ function Beranda() {
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-4">
-      <div>
-        <h1 className="font-display text-xl font-bold">
-          Selamat pagi, Bu {koperasi.manajer.split(" ")[0]} 👋
-        </h1>
-        <p className="mt-0.5 text-sm text-muted">
-          Ringkasan {koperasi.nama} — {formatTanggal(HARI_INI)}
-        </p>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="font-display text-xl font-bold">
+            Selamat pagi, Bu {koperasi.manajer.split(" ")[0]} 👋
+          </h1>
+          <p className="mt-0.5 text-sm text-muted">Ringkasan {koperasi.nama}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <AksiCepat to="/pos" icon={ShoppingCart} label="Buka Kasir" />
+          <AksiCepat to="/inventori" icon={PackagePlus} label="Catat Barang" />
+          <AksiCepat to="/keuangan" icon={FileText} label="Laporan" />
+          <AksiCepat to="/pendamping" icon={Sparkles} label="Tanya AI" utama />
+        </div>
       </div>
 
       <Card>
@@ -191,13 +232,27 @@ function Beranda() {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
+      <div className="grid grid-cols-1 items-start gap-4 xl:grid-cols-3">
         <Card className="xl:col-span-2">
           <CardHeader className="flex-row items-center justify-between">
             <div>
               <CardTitle>Penjualan 30 hari terakhir</CardTitle>
               <p className="mt-0.5 text-xs text-muted">
-                Gabungan tiga gerai aktif, per hari
+                Total{" "}
+                <span className="tnum font-mono font-semibold text-ink">
+                  {formatRupiahSingkat(
+                    total30Hari.sembako + total30Hari.apotek + total30Hari.gudang,
+                  )}
+                </span>{" "}
+                · rata-rata{" "}
+                <span className="tnum font-mono font-semibold text-ink">
+                  {formatRupiahSingkat(
+                    Math.round(
+                      (total30Hari.sembako + total30Hari.apotek + total30Hari.gudang) / 30,
+                    ),
+                  )}
+                </span>
+                /hari · tiga gerai aktif
               </p>
             </div>
             <div className="flex items-center gap-3 text-[11px] text-muted">
