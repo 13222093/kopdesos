@@ -288,7 +288,7 @@ function HalamanKeuangan() {
             </div>
             <p className="mt-2 text-[11px] leading-relaxed text-muted">
               Sisa kas operasional masih di bawah angsuran — selisihnya ditutup
-              dari saldo kas. Pendamping AI menyarankan menaikkan omzet gerai
+              dari saldo kas. KopPilot AI menyarankan menaikkan omzet gerai
               atau menegosiasikan restrukturisasi sebelum kuartal IV.
             </p>
           </CardContent>
@@ -319,7 +319,7 @@ function HalamanKeuangan() {
             ))}
             <p className="mt-1 text-[11px] leading-relaxed text-muted">
               Disusun otomatis dari transaksi harian. Paket lengkap RAT (LPJ +
-              5 laporan) bisa dibuat oleh Pendamping AI menjelang tutup buku.
+              5 laporan) bisa dibuat oleh KopPilot AI menjelang tutup buku.
             </p>
           </CardContent>
         </Card>

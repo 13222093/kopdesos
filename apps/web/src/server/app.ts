@@ -83,7 +83,7 @@ app.post("/pendamping", async (c) => {
 // ── kanal Telegram ───────────────────────────────────────────────
 
 const SAPAAN_TELEGRAM =
-  "Halo! Saya Pendamping AI KopPilot — asisten Koperasi Sukamaju 🙏\n\nTanya apa saja soal koperasi dengan bahasa sehari-hari, misalnya:\n• Berapa penjualan hari ini?\n• Kapan beras premium habis?\n• Kas cukup untuk bayar cicilan BNI?\n• Apakah koperasi kita siap ekspor?";
+  "Halo! Saya KopPilot AI — asisten Koperasi Sukamaju 🙏\n\nTanya apa saja soal koperasi dengan bahasa sehari-hari, misalnya:\n• Berapa penjualan hari ini?\n• Kapan beras premium habis?\n• Kas cukup untuk bayar cicilan BNI?\n• Apakah koperasi kita siap ekspor?";
 
 /** Markdown Kimi → Markdown legacy Telegram: **x** jadi *x*, buang heading */
 function markdownTelegram(teks: string): string {

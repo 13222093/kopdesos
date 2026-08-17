@@ -325,7 +325,7 @@ function HalamanSimpanPinjam() {
             <Sparkles className="size-4 text-merah" /> Draf pesan penagihan
           </DialogTitle>
           <DialogDescription>
-            Disusun Pendamping AI dari data pinjaman — periksa dulu sebelum
+            Disusun KopPilot AI dari data pinjaman — periksa dulu sebelum
             dikirim ke anggota.
           </DialogDescription>
           <div className="mt-3 min-h-24 rounded-lg border border-line bg-paper p-3.5 text-[13px] leading-relaxed whitespace-pre-line">

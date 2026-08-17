@@ -61,7 +61,7 @@ export function InsightCard({
         <div className="px-3 pb-3 pl-[3.1rem]">
           <p className="text-xs leading-relaxed text-muted">{insight.isi}</p>
           <p className="mt-1.5 flex items-center gap-1 text-[10px] text-muted/70">
-            <Sparkles className="size-3" /> Pendamping AI · {insight.waktu}
+            <Sparkles className="size-3" /> KopPilot AI · {insight.waktu}
           </p>
         </div>
       </details>
@@ -79,7 +79,7 @@ export function InsightCard({
           </div>
           <p className="mt-1 text-xs leading-relaxed text-muted">{insight.isi}</p>
           <p className="mt-1.5 flex items-center gap-1 text-[10px] text-muted/70">
-            <Sparkles className="size-3" /> Pendamping AI · {insight.waktu}
+            <Sparkles className="size-3" /> KopPilot AI · {insight.waktu}
           </p>
         </div>
       </div>

@@ -100,7 +100,7 @@ function HalamanPendamping() {
             <Sparkles className="size-4" />
           </span>
           <div>
-            <h1 className="font-display text-xl font-bold">Pendamping AI</h1>
+            <h1 className="font-display text-xl font-bold">KopPilot AI</h1>
             <p className="text-xs text-muted">
               Membaca data koperasi langsung, menjawab dengan bahasa sederhana
             </p>
@@ -197,7 +197,7 @@ function HalamanPendamping() {
             </button>
           </form>
           <p className="mt-2 text-center text-[10px] text-muted/70">
-            Semua angka diambil langsung dari data koperasi — Pendamping tidak
+            Semua angka diambil langsung dari data koperasi — KopPilot AI tidak
             pernah mengarang angka atau aturan.
           </p>
         </div>

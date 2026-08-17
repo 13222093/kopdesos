@@ -21,7 +21,7 @@ export function TanyaAI({
       to="/pendamping"
       search={{ q }}
       onClick={(e) => e.stopPropagation()}
-      title="Tanya Pendamping AI"
+      title="Tanya KopPilot AI"
       className={cn(
         "inline-flex items-center gap-1 rounded-full border border-line bg-card px-2 py-1 text-[11px] font-medium text-muted transition-colors hover:border-merah/40 hover:bg-merah-soft hover:text-merah",
         className,

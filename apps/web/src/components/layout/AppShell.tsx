@@ -64,7 +64,7 @@ const navUtama: NavItem[] = [
 ];
 
 const navPendamping: NavItem[] = [
-  { to: "/pendamping", label: "Chat Pendamping", icon: Sparkles },
+  { to: "/pendamping", label: "Chat KopPilot AI", icon: Sparkles },
   { to: "/inbox", label: "Inbox WhatsApp", icon: MessageCircle },
 ];
 
@@ -93,7 +93,7 @@ const navAnggota: NavItem[] = [
     label: "Profil Saya",
     icon: User,
   },
-  { to: "/pendamping", label: "Chat Pendamping", icon: Sparkles },
+  { to: "/pendamping", label: "Chat KopPilot AI", icon: Sparkles },
 ];
 
 function NavLink({ item }: { item: NavItem }) {
@@ -151,7 +151,7 @@ function SidebarContent({ peran }: { peran: Peran }) {
         ) : (
           <>
             <NavGroup items={navUtama} />
-            <NavGroup label="Pendamping AI" items={navPendamping} />
+            <NavGroup label="KopPilot AI" items={navPendamping} />
             <NavGroup label="Copilot Operasi" items={navOperasi} />
             {peran === "manajer" ? (
               <>

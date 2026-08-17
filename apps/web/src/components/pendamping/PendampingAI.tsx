@@ -81,7 +81,7 @@ export function PendampingAI() {
         )}
       >
         <Sparkles className="size-4" />
-        Pendamping
+        KopPilot AI
         <span className="absolute -top-0.5 -right-0.5 size-3 rounded-full border-2 border-white bg-hijau" />
       </button>
 
@@ -96,7 +96,7 @@ export function PendampingAI() {
             <Sparkles className="size-4" />
           </span>
           <div className="flex-1">
-            <p className="font-display text-sm font-semibold">Pendamping AI</p>
+            <p className="font-display text-sm font-semibold">KopPilot AI</p>
             <p className="text-[11px] text-white/80">
               {modeAi === false
                 ? "Mode demo (AI belum tersambung)"
